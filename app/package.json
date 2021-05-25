@@ -1,0 +1,23 @@
+{
+  "name": "updriven",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.9.2",
+    "core-js": "^3.11.2",
+    "moment": "^2.29.1",
+    "v-calendar": "^2.3.0",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.6"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.5.12",
+    "@vue/cli-plugin-router": "^4.5.12",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0"
+  }
+}

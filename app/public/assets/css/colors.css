@@ -1,0 +1,104 @@
+
+/* Topnav */
+nav.topnav{background:#ffffff;}
+nav.topnav .option-profile:hover > a,
+nav.topnav .option-profile.active > a{background:#f1f1f1;}
+
+
+/* Leftnav */
+nav.leftnav .menu > a{color:#212121;}
+nav.leftnav .menu:hover > a, nav.leftnav .menu.active > a{color:#166c74;}
+nav.leftnav .menu.menu-tab.active > a{color:#ffffff; background:#166c74;}
+nav.leftnav .submenu > a{color:#0d0e0d;}
+nav.leftnav .submenu > a.load-more{color:#666665;}
+nav.leftnav .submenu:hover > a, nav.leftnav .submenu.active > a,
+nav.leftnav .submenu:hover > a.load-more{color:#166c74;}
+
+
+/* Buttons */
+.btn.btn-color-01 > span{position:relative;}
+.btn.btn-color-01::before{
+    content:''; position:absolute; top:0; bottom:0; left:0; right:0; transition:opacity .25s;
+    background-image:linear-gradient(to right,#b3c3cb,#7aa3ab,#176c74);
+}
+.btn.btn-color-01, .btn.btn-color-01:focus{color:#ffffff; background:#176c74;}
+.btn.btn-color-01:active{box-shadow:inset 0 0 0 100rem rgba(0,0,0,.05);}
+.btn.btn-color-01:hover::before, .btn.btn-color-01:active::before{opacity:0;}
+
+.btn.btn-color-02, .btn.btn-color-01:focus{color:#0d0e0d; background:#b3c3cb;}
+.btn.btn-color-02:hover{box-shadow:inset 0 0 0 100rem rgba(0,0,0,.05);}
+.btn.btn-color-02:active{box-shadow:inset 0 0 0 100rem rgba(0,0,0,.10);}
+
+
+/* Input */
+input[type=text], input[type=email], input[type=password], input[type=date], input[type=tel],
+input[type=number], input[type=phone], input[type=submit], input[type=file], select, textarea{
+    border-color:#c8c8c8; background:#ffffff; color:#212121;
+}
+.fgray > input[type=text], .fgray > input[type=email], .fgray > input[type=password], 
+.fgray > input[type=date], .fgray > input[type=tel], .fgray > input[type=number], 
+.fgray > input[type=phone], .fgray > input[type=submit], .fgray > input[type=file], 
+.fgray > select, .fgray > textarea{border-color:#f4f4f4; background:#f4f4f4;}
+
+input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, input[type=date]:focus, 
+input[type=tel]:focus, input[type=number]:focus, input[type=phone]:focus, input[type=submit]:focus, 
+input[type=file]:focus, select:focus, textarea:focus{border-color:#166c74!important;}
+
+::placeholder{color:#777777!important;}
+:-ms-input-placeholder{color:#777777!important;}
+::-ms-input-placeholder{color:#777777!important;}
+
+
+/* Popup Conent */
+.popup-container{background:rgba(0,0,0,.6);}
+
+/* Popup Comment */
+.popup-comment{background:#ffffff; border-color:#dddddd;}
+.popup-comment .blocks{border-color:#dddddd;}
+.popup-comment .blocks:last-child{background:#f4f4f4;}
+.popup-comment .menu{color:#212121;}
+.popup-comment .menu:hover, .popup-comment .menu.active{color:#166c74;}
+
+/* Popup Options */
+.popup-options{background:#ffffff; border-color:#dddddd;}
+.popup-options .menu-container{border-color:#dddddd;}
+
+
+/* Post */
+.post .stat .dot{background:#666666;}
+
+
+/* Special Card 01 */
+.ss-card-01{background:#ffffff;}
+
+/* Special Card 02 */
+.ss-card-02 .text-container .title{color:#212121;}
+.ss-card-02:hover .text-container .title{color:#166c74;}
+
+
+/* Special Image */
+.ss-img .hover-container{background:rgba(22,108,116,.5);}
+
+
+/* Colors */
+.color-white, .h-color-white:hover{color:#ffffff!important;}
+.color-black, .h-color-black:hover{color:#000000!important;}
+.color-dark, .h-color-dark:hover{color:#212121!important;}
+.color-gray, .h-color-gray:hover{color:#666666!important;}
+.color-fgray, .h-color-fgray:hover{color:#f4f4f4!important;}
+.color-01, .h-color-01:hover{color:#166c74!important;}
+
+.bg-white{background:#ffffff!important;}
+.bg-black{background:#000000!important;}
+.bg-dark{background:#212121!important;}
+.bg-gray{background:#666666!important;}
+.bg-fgray{background:#f4f4f4!important;}
+.bg-01{background:#166c74!important;}
+
+.bcolor-white{border-color:#ffffff!important;}
+.bcolor-black{border-color:#000000!important;}
+.bcolor-dark{border-color:#212121!important;}
+.bcolor-gray{border-color:#666666!important;}
+.bcolor-fgray{border-color:#f4f4f4!important;}
+.bcolor-01{border-color:#166c74!important;}
+
