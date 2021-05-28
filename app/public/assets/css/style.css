@@ -27,26 +27,34 @@ textarea, button{font-family:'Gotham', sans-serif;}
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, p, .p, li{
     margin:0; font-weight:300; line-height:1.50;
 }
+h2, .h2{font-size:3rem;}
 h4, .h4{font-size:1.75rem;}
 h5, .h5{font-size:1.5rem;}
 h6, .h6{font-size:1.25rem;}
 p, .p{font-size:1rem;} p.sm, .p.sm{font-size:.9375rem;} p.xs, .p.xs{font-size:.875rem;}
 p.xxs, .p.xxs{font-size:.8125rem;} p.xxxs, .p.xxxs{font-size:.75rem;}
+@media screen and (max-width:1299.98px){
+    h2, .h2{font-size:2.75rem;}
+}
 @media screen and (max-width:1199.98px){
+    h2, .h2{font-size:2.5rem;}
     h4, .h4{font-size:1.6875rem;}
     h5, .h5{font-size:1.4375rem;}
 }
 @media screen and (max-width:991.98px){
+    h2, .h2{font-size:2.25rem;}
     h4, .h4{font-size:1.5625rem;}
     h5, .h5{font-size:1.375rem;}
     h6, .h6{font-size:1.1875rem;}
 }
 @media screen and (max-width:767.98px){
+    h2, .h2{font-size:2rem;}
     h4, .h4{font-size:1.5rem;}
     h5, .h5{font-size:1.3125rem;}
     h6, .h6{font-size:1.125rem;}
 }
 @media screen and (max-width:575.98px){
+    h2, .h2{font-size:1.75rem;}
     h4, .h4{font-size:1.375rem;}
     h5, .h5{font-size:1.25rem;}
     h6, .h6{font-size:1.0625rem;}
@@ -72,6 +80,18 @@ p.xxs, .p.xxs{font-size:.8125rem;} p.xxxs, .p.xxxs{font-size:.75rem;}
 }
 .btn.btn-action:hover > .img-icon{filter:grayscale(0);}
 
+.btn.btn-action .img-social{
+    position:absolute; top:0; bottom:0; left:0; width:3.25rem;
+    display:flex; align-items:center; justify-content:center;
+}
+.btn.btn-action .img-social img{
+    display:block; width:auto; max-width:1.5rem; height:auto; max-height:1.5rem;
+}
+
+.btn.btn-action.btn-sm{font-size:.8125rem; padding:.5rem 2rem;}
+
+.btn.btn-action.btn-mw{min-width:12rem;}
+
 
 /* Inputs */
 input[type=text], input[type=email], input[type=password], input[type=date], input[type=tel],
@@ -81,6 +101,11 @@ input[type=number], input[type=phone], input[type=submit], input[type=file], sel
     line-height:1.5; width:100%; outline:none!important; transition:border-color .25s, color .25s;
 }
 select{padding:.5625rem .875rem .4375rem .875rem;}
+
+/* Labels */
+.form-group.label-sm > label{
+    display:block; font-size:.8125rem; font-weight:500; margin-bottom:.3125rem;
+}
 
 /* Input Wrapper */
 .form-group .prepend, .form-group .append{position:relative; width:100%;}
@@ -99,6 +124,15 @@ select{padding:.5625rem .875rem .4375rem .875rem;}
 .form-group .prepend textarea{padding-left:3rem!important;}
 .form-group .append input, .form-group .append select,
 .form-group .append textarea{padding-right:3rem!important;}
+
+/* Checkbox Single */
+.checkbox-single{width:100%; display:flex;}
+.checkbox-single > .checkbox{width:1.25rem; cursor:pointer;}
+.checkbox-single > .checkbox input{margin:0; cursor:pointer;}
+.checkbox-single > label{
+    display:block; width:calc(100% - 1.25rem); font-size:.8125rem; font-weight:500;
+    cursor:pointer;
+}
 
 
 /* Avatar */
@@ -166,6 +200,16 @@ select{padding:.5625rem .875rem .4375rem .875rem;}
 .ss-img .hover-container .icon > img{display:block; width:100%; height:auto;}
 
 
+/* Special Separation */
+.ss-sep{width:100%; overflow:hidden; display:flex; justify-content:center;}
+.ss-sep > *{position:relative; padding:0 .625rem;}
+.ss-sep > *::before, .ss-sep > *::after{
+    content:''; position:absolute; top:calc(50% - .0625rem); width:50vw; height:.125rem;
+}
+.ss-sep > *::before{right:100%;}
+.ss-sep > *::after{left:100%;}
+
+
 /* Exception */
 .grids.no-first-margin > .grid:first-child{margin-top:0!important;}
 
@@ -199,8 +243,9 @@ select{padding:.5625rem .875rem .4375rem .875rem;}
 .lh-nm{line-height:1.50;}
 .lh-sm{line-height:1.40;}
 .lh-xs{line-height:1.30;}
-.lh-2xs{line-height:1.00;}
-.lh-3xs{line-height:.80;}
+.lh-2xs{line-height:1.20;}
+.lh-3xs{line-height:1.00;}
+.lh-4xs{line-height:.80;}
 
 .op-100{opacity:1!important;} .op-0{opacity:0!important;}
 .op-10{opacity:.1!important;} .op-20{opacity:.2!important;} .op-30{opacity:.3!important;}

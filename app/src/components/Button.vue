@@ -1,6 +1,20 @@
 <template>
 
-  <button v-if="type" :type="type" class="btn btn-action" :class="classer">
+  <a v-if="type == 'Social Google'" :href="href" class="btn btn-action" :class="classer">
+    <div class="img-social">
+      <img src="/assets/img/icon/google.png" alt="Image Icon" />
+    </div>
+    <span>{{text}}</span>
+  </a>
+
+  <a v-else-if="type == 'Social Facebook'" :href="href" class="btn btn-action" :class="classer">
+    <div class="img-social">
+      <img src="/assets/img/icon/facebook.png" alt="Image Icon" />
+    </div>
+    <span>{{text}}</span>
+  </a>
+
+  <button v-else-if="type" :type="type" class="btn btn-action" :class="classer">
     <img v-if="iconPrepend" 
       class="img-icon mr-1" :src="'/assets/img/icon/'+iconPrepend" alt="Image Icon" 
     />

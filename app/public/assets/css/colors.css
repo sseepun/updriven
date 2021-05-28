@@ -25,9 +25,17 @@ nav.leftnav .submenu:hover > a.load-more{color:#166c74;}
 .btn.btn-color-01:active{box-shadow:inset 0 0 0 100rem rgba(0,0,0,.05);}
 .btn.btn-color-01:hover::before, .btn.btn-color-01:active::before{opacity:0;}
 
-.btn.btn-color-02, .btn.btn-color-01:focus{color:#0d0e0d; background:#b3c3cb;}
+.btn.btn-color-02, .btn.btn-color-02:focus{color:#0d0e0d; background:#b3c3cb;}
 .btn.btn-color-02:hover{box-shadow:inset 0 0 0 100rem rgba(0,0,0,.05);}
 .btn.btn-color-02:active{box-shadow:inset 0 0 0 100rem rgba(0,0,0,.10);}
+
+.btn.btn-color-03, .btn.btn-color-03:focus{color:#ffffff; background:#156c74;}
+.btn.btn-color-03:hover{box-shadow:inset 0 0 0 100rem rgba(0,0,0,.05);}
+.btn.btn-color-03:active{box-shadow:inset 0 0 0 100rem rgba(0,0,0,.10);}
+
+.btn.btn-color-04, .btn.btn-color-04:focus{color:#666665; background:#f3f4f5;}
+.btn.btn-color-04:hover{box-shadow:inset 0 0 0 100rem rgba(0,0,0,.05);}
+.btn.btn-color-04:active{box-shadow:inset 0 0 0 100rem rgba(0,0,0,.10);}
 
 
 /* Input */
@@ -47,6 +55,10 @@ input[type=file]:focus, select:focus, textarea:focus{border-color:#166c74!import
 ::placeholder{color:#777777!important;}
 :-ms-input-placeholder{color:#777777!important;}
 ::-ms-input-placeholder{color:#777777!important;}
+
+/* Labels */
+.form-group > label{color:#666666;}
+.form-group > label.focused{color:#166c74;}
 
 
 /* Popup Conent */
@@ -80,6 +92,15 @@ input[type=file]:focus, select:focus, textarea:focus{border-color:#166c74!import
 .ss-img .hover-container{background:rgba(22,108,116,.5);}
 
 
+/* Special Separation */
+.ss-sep > *{color:#666666;}
+.ss-sep > *::before, .ss-sep > *::after{background:#e2e2e2;}
+
+
+/* Auth 01 */
+.auth-01 .auth-container{background:#ffffff;}
+
+
 /* Colors */
 .color-white, .h-color-white:hover{color:#ffffff!important;}
 .color-black, .h-color-black:hover{color:#000000!important;}
@@ -101,4 +122,3 @@ input[type=file]:focus, select:focus, textarea:focus{border-color:#166c74!import
 .bcolor-gray{border-color:#666666!important;}
 .bcolor-fgray{border-color:#f4f4f4!important;}
 .bcolor-01{border-color:#166c74!important;}
-

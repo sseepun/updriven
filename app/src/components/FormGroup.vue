@@ -1,7 +1,7 @@
 <template>
 
   <div v-if="type === 'textarea'" class="form-group" :class="classer">
-    <label v-if="label" class="p color-gray" :class="{ 'focused': isFocused }">
+    <label v-if="label" class="p" :class="{ 'focused': isFocused }">
       {{label}} <div v-if="errorText" class="error">{{errorText}}</div>
     </label>
     <div :class="wrapperClass">
@@ -22,7 +22,7 @@
   </div>
 
   <div v-else-if="type === 'select'" class="form-group" :class="classer">
-    <label v-if="label" class="p color-gray" :class="{ 'focused': isFocused }">
+    <label v-if="label" class="p" :class="{ 'focused': isFocused }">
       {{label}} <div v-if="errorText" class="error">{{errorText}}</div>
     </label>
     <div :class="wrapperClass">
@@ -50,7 +50,7 @@
   </div>
 
   <div v-else-if="type == 'plain'" class="form-group" :class="classer">
-    <label v-if="label" class="p color-gray">
+    <label v-if="label" class="p">
       {{label}} <div v-if="errorText" class="error">{{errorText}}</div>
     </label>
     <div :class="wrapperClass">
@@ -61,7 +61,7 @@
   </div>
 
   <div v-else class="form-group" :class="classer">
-    <label v-if="label" class="p color-gray" :class="{ 'focused': isFocused }">
+    <label v-if="label" class="p" :class="{ 'focused': isFocused }">
       {{label}} <div v-if="errorText" class="error">{{errorText}}</div>
     </label>
     <div :class="wrapperClass">
@@ -102,10 +102,14 @@ export default {
     options: { type: Array, default: [] },
     wrapperClass: { type: String, default: '' },
     icon: { type: String, default: '' },
-    isFocused: { type: Boolean, default: false },
     selectOptions: { type: Array, default: [] },
     selectInput: { type: Boolean, default: false},
     rows: { type: Number, default: 5}
+  },
+  data() {
+    return {
+      isFocused: false
+    }
   },
   methods: {
     handleInput() {
