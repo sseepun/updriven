@@ -18,13 +18,13 @@
               <div class="menu-container">
                 <a class="menu color-gray h-color-01" href="#">
                   <div class="icon">
-                    <img src="assets/img/icon/bell-02.png" alt="Image Icon" />
+                    <img src="/assets/img/icon/bell-02.png" alt="Image Icon" />
                   </div>
                   <div class="text">Turn on notifications for this post</div>
                 </a>
                 <a class="menu color-gray h-color-01" href="#">
                   <div class="icon">
-                    <img src="assets/img/icon/embed.png" alt="Image Icon" />
+                    <img src="/assets/img/icon/embed.png" alt="Image Icon" />
                   </div>
                   <div class="text">Embed</div>
                 </a>
@@ -32,25 +32,25 @@
               <div class="menu-container">
                 <a class="menu color-gray h-color-01" href="#">
                   <div class="icon">
-                    <img src="assets/img/icon/drag.png" alt="Image Icon" />
+                    <img src="/assets/img/icon/drag.png" alt="Image Icon" />
                   </div>
                   <div class="text">Hide Post</div>
                 </a>
                 <a class="menu color-gray h-color-01" href="#">
                   <div class="icon">
-                    <img src="assets/img/icon/clock.png" alt="Image Icon" />
+                    <img src="/assets/img/icon/clock.png" alt="Image Icon" />
                   </div>
                   <div class="text">Snooze Derrick Sheril for 30 days</div>
                 </a>
                 <a class="menu color-gray h-color-01" href="#">
                   <div class="icon">
-                    <img src="assets/img/icon/unfollow.png" alt="Image Icon" />
+                    <img src="/assets/img/icon/unfollow.png" alt="Image Icon" />
                   </div>
                   <div class="text">Unfollow Derrick Sheril</div>
                 </a>
                 <a class="menu color-gray h-color-01" href="#">
                   <div class="icon">
-                    <img src="assets/img/icon/report.png" alt="Image Icon" />
+                    <img src="/assets/img/icon/report.png" alt="Image Icon" />
                   </div>
                   <div class="text">Find suport or report post</div>
                 </a>
@@ -92,7 +92,7 @@
           :class="{ 'active': selfPost.actions.followed  }" 
           @click="selfPost.actions.followed = !selfPost.actions.followed"
         >
-          <img src="assets/img/icon/ribbon.png" alt="Image Icon">
+          <img src="/assets/img/icon/ribbon.png" alt="Image Icon">
         </a>
       </div>
 

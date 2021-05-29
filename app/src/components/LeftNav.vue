@@ -55,7 +55,7 @@ export default {
     return {
       menu: [
         {
-          status: false,
+          status: true,
           title: 'Careers', link: 'javascript:',
           icon: '/assets/img/profile/03.jpg',
           children: [
@@ -65,7 +65,7 @@ export default {
               icon: '/assets/img/profile/04.jpg' 
             },
             { 
-              clickType: 'emit',
+              clickType: 'emit', status: true,
               title: 'Programmer', link: 'javascript:',
               icon: '/assets/img/profile/05.jpg' 
             },
@@ -150,6 +150,12 @@ export default {
         }
       ]
     }
+  },
+  mounted() {
+    this.$emit('on-click', {
+      clickType: 'emit', title: 'Programmer', link: 'javascript:', 
+      icon: '/assets/img/profile/05.jpg', status: true
+    });
   },
   methods: {
     onClick(tab) {

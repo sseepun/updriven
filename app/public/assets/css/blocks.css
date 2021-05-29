@@ -78,7 +78,7 @@
 }
 @media screen and (max-width:575.98px){
     .auth-01 .auth-container{max-width:25rem;}
-    .auth-01 .auth-container .auth-wrapper{padding:1.25rem .25rem;}
+    .auth-01 .auth-container .auth-wrapper{padding:1.25rem 1rem;}
 }
 
 
@@ -170,7 +170,8 @@
 
 
 /* Post */
-.post{width:100%; background:#ffffff; overflow:hidden;}
+.post{width:100%; background:#ffffff;}
+.post .ss-img{border-radius:.25em .25rem 0 0; overflow:hidden;}
 .post > .text-container{position:relative; width:100%; padding:1rem;}
 .post .title-container{width:100%; display:flex; align-items:flex-start;}
 .post .title-container > .title{width:calc(100% - 1.75rem);}

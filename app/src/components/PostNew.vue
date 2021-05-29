@@ -40,7 +40,7 @@
                     @click="isActivePopup = !isActivePopup"
                   >
                     <div class="icon">
-                      <img src="assets/img/icon/close.png" alt="Image Icon" />
+                      <img src="/assets/img/icon/close.png" alt="Image Icon" />
                     </div>
                   </a>
                 </div>
