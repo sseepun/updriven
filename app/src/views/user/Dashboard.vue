@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <div class="middle-container" data-aos="fade-up" data-aos-delay="0">
+    <div class="middle-container">
       <PostNew 
         :user="user" 
         @on-post="(post) => createPost(post)" 

@@ -9,9 +9,9 @@
       </div>
     </div>
 
-    <Banner :user="user" data-aos="fade-up" data-aos-delay="0" />
+    <Banner :user="user" />
     
-    <div class="right-container" data-aos="fade-up" data-aos-delay="300">
+    <div class="right-container" data-aos="fade-up" data-aos-delay="150">
       <div class="wrapper" data-simplebar>
         <div class="p-3 bshadow">
           <SectionInfo :user="user" />
@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div class="middle-container" data-aos="fade-up" data-aos-delay="150">
+    <div class="middle-container">
       <PostNew 
         :user="user" 
         @on-post="(post) => createPost(post)" 
