@@ -6,12 +6,12 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/auth/SignIn.vue')
+    component: () => import('../views/auth/SignUp.vue')
   },
   {
-    path: '/auth/signin',
-    name: 'AuthSignInPage',
-    component: () => import('../views/auth/SignIn.vue')
+    path: '/auth/signup',
+    name: 'AuthSignUpPage',
+    component: () => import('../views/auth/SignUp.vue')
   },
   
   // User Pages

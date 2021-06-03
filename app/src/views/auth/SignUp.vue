@@ -6,8 +6,8 @@
         <div class="wrapper">
           <div class="hide-mobile">
             <h2 class="fw-500 color-white lh-2xs" data-aos="fade-up" data-aos-delay="300">
-              Discover The Leading <br>
-              Career Exploration
+              Find the Path to <br>
+              Your Dream Job
             </h2>
             <div class="btns mt-4" data-aos="fade-up" data-aos-delay="450">
               <Button href="#" classer="btn-color-02 btn-sm btn-mw fw-600" text="LEARN MORE" />
@@ -25,7 +25,7 @@
             <img src="/assets/img/logo.png" alt="Image Logo" />
           </div>
           <h4 class="fw-600 text-center pt-4 mt-6">
-            Sign In
+            Sign Up
           </h4>
           <form action="/user/dashboard" method="GET">
             <div class="grids">
@@ -105,7 +105,7 @@ import FormGroup from '../../components/FormGroup';
 import CheckBoxSmall from '../../components/CheckBoxSmall';
 
 export default {
-  name: 'AuthSignInPage',
+  name: 'AuthSignUpPage',
   components: {
     Button,
     FormGroup,
