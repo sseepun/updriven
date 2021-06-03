@@ -12,7 +12,7 @@ nav.topnav .right-container{
 
 nav.topnav .logo{display:block; padding:.5rem 0;}
 nav.topnav .logo:hover{opacity:.75;}
-nav.topnav .logo img{display:block; height:2.5rem; width:auto;}
+nav.topnav .logo img{display:block; height:2.125rem; width:auto;}
 nav.topnav .search-container{width:30rem; padding:0 1rem 0 0;}
 nav.topnav .option-container{display:flex; align-items:center;}
 
@@ -41,6 +41,19 @@ nav.topnav .option-profile .chev > img{
     filter:grayscale(100%); transition:transform .25s;
 }
 nav.topnav .option-profile.active .chev > img{transform:rotate(180deg);}
+
+nav.topnav .dropdown{
+    display:block; position:absolute; top:calc(100% + .5rem); right:0;
+    background:#ffffff; padding:.375rem 0; pointer-events:none;
+    opacity:0; transition:top .25s, opacity .25s;
+}
+nav.topnav .dropdown.active{top:100%; opacity:1; pointer-events:auto;}
+nav.topnav .dropdown .submenu > a{
+    display:block; white-space:nowrap; min-width:9rem; padding:.375rem 1rem;
+    font-size:.9375rem; font-weight:500; color:#666666;
+    transition:color .25s, background .25s;
+}
+nav.topnav .dropdown .submenu:hover > a{color:#166c74; background:#f4f4f4;}
 
 nav.topnav + .topnav-spacer{display:block; width:100%; height:3.5rem;}
 

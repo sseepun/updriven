@@ -1,10 +1,10 @@
 <template>
-  <h6 class="fw-600 color-01">Live</h6>
+  <h6 class="fw-600 color-01">You may be interested</h6>
   <div class="grids">
     <div v-for="(card, i) in showDataset" :key="i" class="grid sm-100">
       <SpecialCard02 
-        :link="card.link" :image="card.image" 
-        :title="card.title" :user="card.user" 
+        type="tutorial" :link="card.link" :image="card.image" 
+        :title="card.title" :user="card.user" :tag="card.tag" 
       />
     </div>
     <div v-if="datasetLimit < dataset.length" class="grid sm-100 mt-2">
@@ -22,7 +22,7 @@
 import SpecialCard02 from './SpecialCard02'
 
 export default {
-  name: 'SectionLive',
+  name: 'SectionInterested',
   components: {
     SpecialCard02
   },
@@ -40,7 +40,8 @@ export default {
       this.dataset.push({
         link: '#',
         image: `/assets/img/content/0${i%3+4}.jpg`,
-        title: 'VR Mind Control Is HERE! And It Works!',
+        title: 'Computer System',
+        tag: '#Engineer',
         user: {
           id: 1,
           firstname: 'Emilia',

@@ -2,9 +2,9 @@
   <nav class="topnav">
     <div class="wrapper">
       <div class="left-container">
-        <a class="logo" href="#">
+        <router-link to="/user/dashboard" class="logo">
           <img src="/assets/img/logo.png" alt="App Logo" />
-        </a>
+        </router-link>
       </div>
       <div class="right-container">
         <div class="search-container">
@@ -41,6 +41,18 @@
                 <img src="/assets/img/icon/chev-down.png" alt="Chev Icon" />
               </div>
             </a>
+            <div class="dropdown bshadow" :class="{ 'active': isActiveProfile }">
+              <div class="submenu">
+                <router-link to="/user/profile">
+                  My Profile
+                </router-link>
+              </div>
+              <div class="submenu">
+                <router-link to="/">
+                  Sign Out
+                </router-link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

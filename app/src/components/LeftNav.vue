@@ -47,8 +47,7 @@
 import Avatar from './Avatar.vue'
 export default {
   name: 'LeftNav',
-  
-    Avatarprops: {
+  props: {
     user: { type: Object, default: {} }
   },
   data() {

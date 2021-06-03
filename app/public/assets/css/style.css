@@ -31,7 +31,8 @@ h2, .h2{font-size:3rem;}
 h4, .h4{font-size:1.75rem;}
 h5, .h5{font-size:1.5rem;}
 h6, .h6{font-size:1.25rem;}
-p, .p{font-size:1rem;} p.sm, .p.sm{font-size:.9375rem;} p.xs, .p.xs{font-size:.875rem;}
+p, .p{font-size:1rem;} p.lg, .p.lg{font-size:1.125rem;}
+p.sm, .p.sm{font-size:.9375rem;} p.xs, .p.xs{font-size:.875rem;}
 p.xxs, .p.xxs{font-size:.8125rem;} p.xxxs, .p.xxxs{font-size:.75rem;}
 @media screen and (max-width:1299.98px){
     h2, .h2{font-size:2.75rem;}
@@ -46,6 +47,7 @@ p.xxs, .p.xxs{font-size:.8125rem;} p.xxxs, .p.xxxs{font-size:.75rem;}
     h4, .h4{font-size:1.5625rem;}
     h5, .h5{font-size:1.375rem;}
     h6, .h6{font-size:1.1875rem;}
+    p.lg, .p.lg{font-size:1.0625rem;}
 }
 @media screen and (max-width:767.98px){
     h2, .h2{font-size:2rem;}
@@ -58,6 +60,7 @@ p.xxs, .p.xxs{font-size:.8125rem;} p.xxxs, .p.xxxs{font-size:.75rem;}
     h4, .h4{font-size:1.375rem;}
     h5, .h5{font-size:1.25rem;}
     h6, .h6{font-size:1.0625rem;}
+    p.lg, .p.lg{font-size:1rem;}
     p, .p{font-size:.9375rem;}
 }
 
@@ -141,6 +144,7 @@ select{padding:.5625rem .875rem .4375rem .875rem;}
     border-radius:50%; overflow:hidden;
 }
 .avatar.lg{width:2.75rem; height:2.75rem;}
+.avatar.xxl{width:8rem; height:8rem;}
 .avatar > .img-bg{
     position:absolute; top:0; bottom:0; left:0; right:0; background-size:cover;
     background-position:center;
@@ -305,6 +309,9 @@ select{padding:.5625rem .875rem .4375rem .875rem;}
 .bshadow{border-radius:.25rem; box-shadow:0px 4px 8px 4px rgb(0 0 0 / 5%);}
 .no-bradius{border-radius:0!important;}
 .bradius-1{border-radius:.25rem!important;}
+.bradius-2{border-radius:.5rem!important;}
+.bradius-3{border-radius:.75rem!important;}
+.bradius-4{border-radius:1rem!important;}
 
 .ovf-hidden{overflow:hidden!important;}
 .ovf-visible{overflow:visible!important;}
