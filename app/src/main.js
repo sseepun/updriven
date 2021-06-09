@@ -1,8 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import store from './store'
 
 const app = createApp(App)
+
 
 import Avatar from './components/Avatar'
 import Button from './components/Button'
@@ -17,4 +19,6 @@ app.component('SpecialCard01', SpecialCard01)
 app.component('SpecialCard02', SpecialCard02)
 app.component('PostSingle', PostSingle)
 
-app.use(router).mount('#app')
+
+store.dispatch('checkSignin')
+app.use(store).use(router).mount('#app')

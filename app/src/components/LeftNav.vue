@@ -44,7 +44,8 @@
 </template>
 
 <script>
-import Avatar from './Avatar.vue'
+import { categoryService } from '../services'
+
 export default {
   name: 'LeftNav',
   props: {
@@ -154,6 +155,9 @@ export default {
     this.$emit('on-click', {
       clickType: 'emit', title: 'Programmer', link: 'javascript:', 
       icon: '/assets/img/profile/05.jpg', status: true
+    });
+    categoryService._list().then(d => {
+      console.log(d)
     });
   },
   methods: {
