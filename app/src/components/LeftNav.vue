@@ -9,33 +9,38 @@
           Home
         </a>
       </div>
-      <div 
-        v-for="(tab, i) in menu" :key="i" 
-        class="menu" :class="{ 
-          'has-children': tab.children && tab.children.length,
-          'active': tab.status 
-        }"
-      >
-        <a :href="tab.link" @click="onClick(tab)">
-          {{tab.title}} 
-          <div v-if="tab.children && tab.children.length" class="chev">
-            <img src="/assets/img/icon/chev-down-02.png" alt="Image Icon" />
-          </div>
-        </a>
+      <div v-if="loading">
+        Loading...
+      </div>
+      <div v-else>
         <div 
-          v-if="tab.children && tab.children.length" 
-          class="submenu-container" v-show="tab.status" 
+          v-for="(tab, i) in menu" :key="i" 
+          class="menu" :class="{ 
+            'has-children': tab.children && tab.children.length,
+            'active': tab.status 
+          }"
         >
+          <a :href="tab.link" @click="onClick(tab)">
+            {{tab.title}} 
+            <div v-if="tab.children && tab.children.length" class="chev">
+              <img src="/assets/img/icon/chev-down-02.png" alt="Image Icon" />
+            </div>
+          </a>
           <div 
-            v-for="(subtab, j) in tab.children" :key="j" 
-            class="submenu" :class="{ 'w-full': !subtab.type || subtab.type != 'avatar' }"
+            v-if="tab.children && tab.children.length" 
+            class="submenu-container" v-show="tab.status" 
           >
-            <a v-if="subtab.type == 'avatar'" :href="subtab.link" @click="onClick(subtab)">
-              <Avatar :avatar="subtab.title" />
-            </a>
-            <a v-else :href="subtab.link" @click="onClick(subtab)">
-              {{subtab.title}}
-            </a>
+            <div 
+              v-for="(subtab, j) in tab.children" :key="j" 
+              class="submenu" :class="{ 'w-full': !subtab.type || subtab.type != 'avatar' }"
+            >
+              <a v-if="subtab.type == 'avatar'" :href="subtab.link" @click="onClick(subtab)">
+                <Avatar :avatar="subtab.title" />
+              </a>
+              <a v-else :href="subtab.link" @click="onClick(subtab)">
+                {{subtab.title}}
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -53,6 +58,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       menu: [
         {
           status: true,
@@ -157,7 +163,14 @@ export default {
       icon: '/assets/img/profile/05.jpg', status: true
     });
     categoryService._list().then(d => {
-      console.log(d)
+      this.menu = d.map(k => {
+        return {
+          status: false,
+          title: k.post_category_name, link: 'javascript:',
+          icon: '/assets/img/profile/03.jpg',
+        };
+      });
+      this.loading = false;
     });
   },
   methods: {
