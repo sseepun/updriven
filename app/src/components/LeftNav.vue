@@ -64,68 +64,7 @@ export default {
           status: true,
           title: 'Careers', link: 'javascript:',
           icon: '/assets/img/profile/03.jpg',
-          children: [
-            { 
-              clickType: 'emit',
-              title: 'Teacher', link: 'javascript:',
-              icon: '/assets/img/profile/04.jpg' 
-            },
-            { 
-              clickType: 'emit', status: true,
-              title: 'Programmer', link: 'javascript:',
-              icon: '/assets/img/profile/05.jpg' 
-            },
-            { 
-              clickType: 'emit',
-              title: 'Engineer', link: 'javascript:',
-              icon: '/assets/img/profile/06.jpg' 
-            },
-            { 
-              clickType: 'emit',
-              title: 'Scientist', link: 'javascript:',
-              icon: '/assets/img/profile/07.jpg' 
-            },
-            { 
-              clickType: 'emit',
-              title: 'Doctor', link: 'javascript:',
-              icon: '/assets/img/profile/08.jpg' 
-            },
-            { 
-              clickType: 'emit',
-              title: 'Nurse', link: 'javascript:',
-              icon: '/assets/img/profile/09.jpg' 
-            },
-            { 
-              clickType: 'emit',
-              title: 'Firefighters', link: 'javascript:',
-              icon: '/assets/img/profile/10.jpg' 
-            },
-            { 
-              clickType: 'emit',
-              title: 'Architect', link: 'javascript:',
-              icon: '/assets/img/profile/11.jpg' 
-            },
-            { 
-              clickType: 'emit',
-              title: 'Lawyers', link: 'javascript:',
-              icon: '/assets/img/profile/12.jpg' 
-            },
-            { 
-              clickType: 'emit',
-              title: 'IT Manager', link: 'javascript:',
-              icon: '/assets/img/profile/05.jpg' 
-            },
-            { 
-              clickType: 'emit',
-              title: 'Financial Manager', link: 'javascript:',
-              icon: '/assets/img/profile/06.jpg' 
-            },
-            { 
-              clickType: 'emit',
-              title: 'Chef', link: 'javascript:',
-              icon: '/assets/img/profile/07.jpg' 
-            }
-          ]
+          children: []
         },
         {
           status: false,
@@ -163,11 +102,11 @@ export default {
       icon: '/assets/img/profile/05.jpg', status: true
     });
     categoryService._list().then(d => {
-      this.menu = d.map(k => {
+      this.menu[0].children = d.map(k => {
         return {
-          status: false,
+          clickType: 'emit',
           title: k.post_category_name, link: 'javascript:',
-          icon: '/assets/img/profile/03.jpg',
+          icon: '/assets/img/profile/04.jpg'
         };
       });
       this.loading = false;
