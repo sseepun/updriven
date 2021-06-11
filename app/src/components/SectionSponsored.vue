@@ -17,6 +17,7 @@ export default {
   },
   data() {
     return {
+      user: this.$store.getters.user,
       dataset: []
     }
   },

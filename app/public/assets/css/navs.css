@@ -104,3 +104,31 @@ nav.leftnav .submenu > a.load-more{
     font-size:.75rem; font-weight:600; text-decoration:underline;
 }
 nav.leftnav .submenu .avatar{margin:0 1rem 0 0;}
+
+nav.leftnav .chat-scroll{
+    width:100%; padding:0; overflow-x:hidden; overflow-y:auto;
+    height:calc(100vh - 14.5rem); max-height:calc(100vh - 14.5rem);
+}
+nav.leftnav .chat-user{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:.75rem 1rem; cursor:pointer; transition:background .25s;
+}
+nav.leftnav .chat-user > .text-container{width:calc(100% - 6rem);}
+nav.leftnav .chat-user > .option-container{width:2.5rem; text-align:right;}
+nav.leftnav .chat-user .option-icon{position:relative;}
+nav.leftnav .chat-user .option-icon > a{
+    display:flex; align-items:center; width:1rem; height:1rem; margin:0 0 0 auto;
+}
+nav.leftnav .chat-user .option-icon > a img{
+    display:block; width:100%; height:auto; filter:grayscale(100%);
+    transition:filter .25s;
+}
+nav.leftnav .chat-user .option-icon:hover > a img,
+nav.leftnav .chat-user .option-icon.active > a img{filter:grayscale(0);}
+nav.leftnav .chat-user .time{font-size:.6875rem; transition:color .25s;}
+nav.leftnav .chat-user .name, nav.leftnav .chat-user .chat-last{
+    display:block; display:-webkit-box; text-overflow:ellipsis; overflow:hidden;
+    -webkit-box-orient:vertical; -webkit-line-clamp:1; transition:color .25s;
+}
+nav.leftnav .chat-user .chat-last{-webkit-line-clamp:2; min-height:1.8125rem;}
+nav.leftnav .chat-user .popup-options{right:-1rem;}

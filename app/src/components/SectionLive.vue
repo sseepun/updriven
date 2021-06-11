@@ -1,19 +1,21 @@
 <template>
-  <h6 class="fw-600 color-01">Live</h6>
-  <div class="grids">
-    <div v-for="(card, i) in showDataset" :key="i" class="grid sm-100">
-      <SpecialCard02 
-        :link="card.link" :image="card.image" 
-        :title="card.title" :user="card.user" 
-      />
-    </div>
-    <div v-if="datasetLimit < dataset.length" class="grid sm-100 mt-2">
-      <a
-        class="p xxs fw-600 color-gray h-color-01" href="javascript:" 
-        @click="datasetLimit += 3"
-      >
-        <u>Load More</u>
-      </a>
+  <div v-if="user">
+    <h6 class="fw-600 color-01">Live</h6>
+    <div class="grids">
+      <div v-for="(card, i) in showDataset" :key="i" class="grid sm-100">
+        <SpecialCard02 
+          :link="card.link" :image="card.image" 
+          :title="card.title" :user="card.user" 
+        />
+      </div>
+      <div v-if="datasetLimit < dataset.length" class="grid sm-100 mt-2">
+        <a
+          class="p xxs fw-600 color-gray h-color-01" href="javascript:" 
+          @click="datasetLimit += 3"
+        >
+          <u>Load More</u>
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -26,11 +28,9 @@ export default {
   components: {
     SpecialCard02
   },
-  props: {
-    user: { type: Object, default: {} }
-  },
   data() {
     return {
+      user: this.$store.getters.user,
       dataset: [],
       datasetLimit: 3
     }

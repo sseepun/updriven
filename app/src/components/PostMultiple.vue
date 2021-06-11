@@ -1,28 +1,28 @@
 <template>
-  <div v-if="title" :key="title" class="post-header pt-1 pb-1 mt-6">
-    <Avatar v-if="icon" :avatar="icon" classer="lg" />
-    <div class="text-container">
-      <h6 class="h4 fw-500">
-        {{title}}
-      </h6>
+  <div v-if="user">
+    <div v-if="title" :key="title" class="post-header pt-1 pb-1 mt-6">
+      <Avatar v-if="icon" :avatar="icon" classer="lg" />
+      <div class="text-container">
+        <h6 class="h4 fw-500">
+          {{title}}
+        </h6>
+      </div>
     </div>
-  </div>
-  <div class="grids" :key="title">
-    <div v-for="post in posts" :key="post.id" class="grid sm-100">
-      <PostSingle :user="user" :post="post" />
+    <div class="grids" :key="title">
+      <div v-for="post in posts" :key="post.id" class="grid sm-100">
+        <PostSingle :post="post" />
+      </div>
     </div>
+    <div ref="lazyLoadPosts">Loading...</div>
   </div>
-  <div ref="lazyLoadPosts"></div>
 </template>
 
 <script>
 export default {
   name: 'PostMultiple',
-  props: {
-    user: { type: Object, default: {} }
-  },
   data() {
     return {
+      user: this.$store.getters.user,
       title: null,
       icon: null,
       posts: []

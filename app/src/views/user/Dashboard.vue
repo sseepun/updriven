@@ -1,11 +1,11 @@
 <template>
-  <TopNav :user="user" />
+  <TopNav />
 
   <div class="app-container">
 
     <div class="left-container">
       <div class="wrapper" data-simplebar>
-        <LeftNav :user="user" @on-click="(tab) => onClickTab(tab)" />
+        <LeftNav @on-click="(tab) => onClickTab(tab)" />
       </div>
     </div>
     
@@ -21,11 +21,8 @@
     </div>
 
     <div class="middle-container">
-      <PostNew 
-        :user="user" 
-        @on-post="(post) => createPost(post)" 
-      />
-      <PostMultiple :user="user" ref="posts" />
+      <PostNew @on-post="(post) => createPost(post)" />
+      <PostMultiple ref="posts" />
     </div>
 
   </div>
@@ -48,17 +45,6 @@ export default {
     PostMultiple,
     SectionSponsored,
     SectionLive
-  },
-  data() {
-    return {
-      user: {
-        id: 1,
-        firstname: 'Emilia',
-        lastname: 'Bubu',
-        avatar: '/assets/img/profile/01.jpg',
-        background: '/assets/img/bg/01.jpg'
-      }
-    }
   },
   mounted() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });

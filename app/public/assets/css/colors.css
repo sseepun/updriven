@@ -13,6 +13,10 @@ nav.leftnav .submenu > a{color:#0d0e0d;}
 nav.leftnav .submenu > a.load-more{color:#666665;}
 nav.leftnav .submenu:hover > a, nav.leftnav .submenu.active > a,
 nav.leftnav .submenu:hover > a.load-more{color:#166c74;}
+nav.leftnav .chat-user.active{background:#166c74;}
+nav.leftnav .chat-user.active .name, 
+nav.leftnav .chat-user.active .chat-last,
+nav.leftnav .chat-user.active .time{color:#ffffff;}
 
 
 /* Buttons */

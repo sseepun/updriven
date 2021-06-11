@@ -16,7 +16,7 @@ const routes = [
   
   // User Pages
   {
-    path: '/user/dashboard',
+    path: '/user/dashboard/:username?',
     name: 'UserDashboardPage',
     component: () => import('../views/user/Dashboard.vue')
   },
@@ -24,6 +24,11 @@ const routes = [
     path: '/user/profile',
     name: 'UserProfilePage',
     component: () => import('../views/user/Profile.vue')
+  },
+  {
+    path: '/user/chat',
+    name: 'UserChatPage',
+    component: () => import('../views/user/Chat.vue')
   },
 
 ]

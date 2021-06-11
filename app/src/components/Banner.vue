@@ -1,5 +1,5 @@
 <template>
-  <div class="banner-container bshadow ovf-hidden">
+  <div v-if="user" class="banner-container bshadow ovf-hidden">
     <div class="img-bg" :style="'background-image:url(\''+user.background+'\');'"></div>
     <div class="content-container">
       <div class="top-container">
@@ -38,8 +38,10 @@
 <script>
 export default {
   name: 'Banner',
-  props: {
-    user: { type: Object, default: {} }
+  data() {
+    return {
+      user: this.$store.getters.user
+    }
   }
 }
 </script>

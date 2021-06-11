@@ -1,49 +1,46 @@
 <template>
-  <nav class="leftnav">
+  <nav v-if="user" class="leftnav">
     <div class="menu-container">
       <div class="menu menu-tab active mb-6">
-        <a href="#">
+        <router-link to="/user/dashboard">
           <div class="icon">
             <img src="/assets/img/icon/home-white.png" alt="Image Icon" />
           </div>
           Home
+        </router-link>
+      </div>
+
+      <div 
+        v-for="(tab, i) in menu" :key="i" 
+        class="menu" :class="{ 
+          'has-children': tab.children && tab.children.length,
+          'active': tab.status 
+        }"
+      >
+        <a :href="tab.link" @click="onClick(tab)">
+          {{tab.title}} 
+          <div v-if="tab.children && tab.children.length" class="chev">
+            <img src="/assets/img/icon/chev-down-02.png" alt="Image Icon" />
+          </div>
         </a>
-      </div>
-      <div v-if="loading">
-        Loading...
-      </div>
-      <div v-else>
         <div 
-          v-for="(tab, i) in menu" :key="i" 
-          class="menu" :class="{ 
-            'has-children': tab.children && tab.children.length,
-            'active': tab.status 
-          }"
+          v-if="tab.children && tab.children.length" 
+          class="submenu-container" v-show="tab.status" 
         >
-          <a :href="tab.link" @click="onClick(tab)">
-            {{tab.title}} 
-            <div v-if="tab.children && tab.children.length" class="chev">
-              <img src="/assets/img/icon/chev-down-02.png" alt="Image Icon" />
-            </div>
-          </a>
           <div 
-            v-if="tab.children && tab.children.length" 
-            class="submenu-container" v-show="tab.status" 
+            v-for="(subtab, j) in tab.children" :key="j" class="submenu" 
+            :class="{ 'w-full': !subtab.type || subtab.type != 'avatar' }"
           >
-            <div 
-              v-for="(subtab, j) in tab.children" :key="j" 
-              class="submenu" :class="{ 'w-full': !subtab.type || subtab.type != 'avatar' }"
-            >
-              <a v-if="subtab.type == 'avatar'" :href="subtab.link" @click="onClick(subtab)">
-                <Avatar :avatar="subtab.title" />
-              </a>
-              <a v-else :href="subtab.link" @click="onClick(subtab)">
-                {{subtab.title}}
-              </a>
-            </div>
+            <a v-if="subtab.type == 'avatar'" :href="subtab.link" @click="onClick(subtab)">
+              <Avatar :avatar="subtab.title" />
+            </a>
+            <a v-else :href="subtab.link" @click="onClick(subtab)">
+              {{subtab.title}}
+            </a>
           </div>
         </div>
       </div>
+      
     </div>
   </nav>
 </template>
@@ -53,12 +50,9 @@ import { categoryService } from '../services'
 
 export default {
   name: 'LeftNav',
-  props: {
-    user: { type: Object, default: {} }
-  },
   data() {
     return {
-      loading: true,
+      user: this.$store.getters.user,
       menu: [
         {
           status: true,
@@ -97,10 +91,6 @@ export default {
     }
   },
   mounted() {
-    this.$emit('on-click', {
-      clickType: 'emit', title: 'Programmer', link: 'javascript:', 
-      icon: '/assets/img/profile/05.jpg', status: true
-    });
     categoryService._list().then(d => {
       this.menu[0].children = d.map(k => {
         return {
@@ -109,7 +99,10 @@ export default {
           icon: '/assets/img/profile/04.jpg'
         };
       });
-      this.loading = false;
+      if(this.menu[0].children.length){
+        this.menu[0].children[0].status = true;
+        this.$emit('on-click', this.menu[0].children[0]);
+      }
     });
   },
   methods: {

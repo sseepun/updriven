@@ -1,5 +1,5 @@
 <template>
-  <div class="new-post bshadow" @click="isActivePopup = !isActivePopup">
+  <div v-if="user" class="new-post bshadow" @click="isActivePopup = !isActivePopup">
     <Avatar :avatar="user.avatar" />
     <FormGroup
       type="text" placeholder="What's your topic today?" wrapperClass="fgray"
@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <div class="popup-container" :class="{ 'active': isActivePopup }">
+  <div v-if="user" class="popup-container" :class="{ 'active': isActivePopup }">
     <div class="wrapper">
       <div class="close-filter" @click="isActivePopup = !isActivePopup"></div>
       <div class="popup-content">
@@ -136,11 +136,9 @@
 <script>
 export default {
   name: 'NewPost',
-  props: {
-    user: { type: Object, default: {} }
-  },
   data() {
     return {
+      user: this.$store.getters.user,
       isActivePopup: false,
       tabActiveIndex: 0,
       dataPost: {

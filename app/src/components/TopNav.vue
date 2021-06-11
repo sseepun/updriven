@@ -1,5 +1,5 @@
 <template>
-  <nav class="topnav">
+  <nav v-if="user" class="topnav">
     <div class="wrapper">
       <div class="left-container">
         <router-link to="/user/dashboard" class="logo">
@@ -22,9 +22,9 @@
             </a>
           </div>
           <div class="option" :class="{ 'active': isActiveMsg }">
-            <a class="icon" href="javascript:" @click="isActiveMsg = !isActiveMsg">
+            <router-link to="/user/chat" class="icon" @click="isActiveMsg = !isActiveMsg">
               <img src="/assets/img/icon/message.png" alt="Message Icon" />
-            </a>
+            </router-link>
           </div>
           <div class="option" :class="{ 'active': isActiveAdd }">
             <a class="icon" href="javascript:" @click="isActiveAdd = !isActiveAdd">
@@ -58,17 +58,15 @@
       </div>
     </div>
   </nav>
-  <div class="topnav-spacer"></div>
+  <div v-if="user" class="topnav-spacer"></div>
 </template>
 
 <script>
 export default {
   name: 'TopNav',
-  props: {
-    user: { type: Object, default: {} }
-  },
   data() {
     return {
+      user: this.$store.getters.user,
       isActiveNoti: false,
       isActiveMsg: false,
       isActiveAdd: false,

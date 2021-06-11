@@ -1,5 +1,5 @@
 <template>
-  <div class="post bshadow">
+  <div v-if="user" class="post bshadow">
     <div v-if="selfPost.image" class="ss-img horizontal no-hover">
       <div class="img-bg" :style="'background-image:url(\''+selfPost.image+'\');'"></div>
     </div>
@@ -161,11 +161,11 @@ import moment from 'moment';
 export default {
   name: 'PostSingle',
   props: {
-    user: { type: Object, default: {} },
     post: { type: Object, default: {} }
   },
   data() {
     return {
+      user: this.$store.getters.user,
       selfPost: this.post,
       isActivePopup: false,
       commentLimit: 1,
