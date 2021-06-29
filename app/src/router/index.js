@@ -6,12 +6,22 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/auth/SignUp.vue')
+    component: () => import('../views/auth/SignIn.vue')
+  },
+  {
+    path: '/auth/signin',
+    name: 'AuthSignInPage',
+    component: () => import('../views/auth/SignIn.vue')
   },
   {
     path: '/auth/signup',
     name: 'AuthSignUpPage',
     component: () => import('../views/auth/SignUp.vue')
+  },
+  {
+    path: '/auth/forget-password',
+    name: 'AuthForgetPasswordPage',
+    component: () => import('../views/auth/ForgetPassword.vue')
   },
   
   // User Pages
