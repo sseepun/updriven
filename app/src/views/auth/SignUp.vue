@@ -9,9 +9,9 @@
               Find the Path to <br>
               Your Dream Job
             </h2>
-            <!-- <div class="btns mt-4" data-aos="fade-up" data-aos-delay="450">
+            <div class="btns mt-4" data-aos="fade-up" data-aos-delay="450">
               <Button href="#" classer="btn-color-02 btn-sm btn-mw fw-600" text="LEARN MORE" />
-            </div> -->
+            </div>
           </div>
           <div class="hero-container" data-aos="fade-left" data-aos-delay="600">
             <img class="hero" src="/assets/img/hero/01.png" alt="Image Hero" />

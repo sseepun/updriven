@@ -62,7 +62,14 @@
 
   <div v-else class="form-group" :class="classer">
     <label v-if="label" class="p" :class="{ 'focused': isFocused }">
-      {{label}} <div v-if="errorText" class="error">{{errorText}}</div>
+      {{label}} 
+      <div v-if="errorText" class="error">{{errorText}}</div> 
+      <div v-if="sublabel && !sublabelLink">{{sublabel}}</div>
+      <div v-else-if="sublabel && sublabelLink">
+        <router-link :to="sublabelLink" class="color-01 h-color-black fw-300">
+          {{sublabel}}
+        </router-link>
+      </div> 
     </label>
     <div :class="wrapperClass">
       <input
@@ -104,7 +111,9 @@ export default {
     icon: { type: String, default: '' },
     selectOptions: { type: Array, default: [] },
     selectInput: { type: Boolean, default: false},
-    rows: { type: Number, default: 5}
+    rows: { type: Number, default: 5},
+    sublabel: { type: String, default: '' },
+    sublabelLink: { type: String, default: '' },
   },
   data() {
     return {

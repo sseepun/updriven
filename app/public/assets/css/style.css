@@ -115,6 +115,7 @@ select{padding:.5625rem .875rem .4375rem .875rem;}
 .form-group.label-sm > label{
     display:block; font-size:.8125rem; font-weight:500; margin-bottom:.3125rem;
 }
+.form-group.label-sm > label{display:flex; justify-content:space-between;}
 
 /* Input Wrapper */
 .form-group .prepend, .form-group .append{position:relative; width:100%;}

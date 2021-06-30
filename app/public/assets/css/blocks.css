@@ -83,50 +83,44 @@
     position:absolute; top:0; bottom:0; left:0; right:0; pointer-events:none;
     display:flex; justify-content:center; align-items:flex-end;
 }
+.auth-01 .bg-container .hero-container.bottom-right{justify-content:flex-end;}
 .auth-01 .bg-container img.hero{
-    display:block; width:auto; max-width:60%; height:auto; max-height:60vh;
+    display:block; width:auto; max-width:62%; height:auto; max-height:62vh;
 }
+.auth-01 .bg-container img.hero.hero-lg{max-width:88%; max-height:78vh;}
 .auth-01 .auth-container{
-    position:relative; width:45%; height:100%; display:flex; align-items:center;
-    border-radius:.25rem;
+    position:relative; width:45%; height:100%; min-height:100vh;
+    display:flex; align-items:center; border-radius:.25rem;
 }
 .auth-01 .auth-container .auth-wrapper{
     width:100%; max-width:28rem; padding:4rem 1rem; margin:0 auto;
 }
 .auth-01 .auth-wrapper .logo img{display:block; height:2.25rem; width:auto; margin:0 auto;}
-
-.auth-01 .bg-container.bg-signin .logo{width:8rem;}
-.auth-01 .bg-container.bg-signin .logo img{display:block; width:100%; height:auto;}
-
-.auth-01.bg-left .bg-container{left:0; right:unset; width:50%;}
-.auth-01.bg-left .auth-container{margin-left:auto; width:50%;}
-.auth-01.wrapper-box .auth-container{min-height:100vh;}
-.auth-01.wrapper-box .auth-container .auth-wrapper{
-    box-shadow:0px 4px 8px 4px rgb(0 0 0 / 5%); padding:1.5rem 2rem 2.5rem 2rem;
-}
-
 @media screen and (max-width:1199.98px){
     .auth-01 .bg-container{width:50%;}
     .auth-01 .bg-container > .wrapper{padding:3.5rem 7%;}
     .auth-01 .auth-container{width:50%;}
     .auth-01 .auth-container .auth-wrapper{max-width:25rem; padding:3.5rem 1rem;}
+    .auth-01 .bg-container img.hero{max-width:70%; max-height:70vh;}
+    .auth-01 .bg-container img.hero.hero-lg{max-width:90%; max-height:84vh;}
 }
 @media screen and (max-width:991.98px){
     .auth-01 .hide-mobile{display:none!important;}
-    .auth-01 .bg-container, .auth-01.bg-left .bg-container{width:100%;}
+    .auth-01 .bg-container{width:100%;}
     .auth-01 .bg-container > .wrapper{padding:3.5rem 7%;}
     .auth-01 .bg-container .hero-container{justify-content:flex-end; right:1rem;}
-    .auth-01 .auth-container, .auth-01.wrapper-box .auth-container{
-        width:calc(100% - 2rem); max-width:27rem; margin:3rem auto;
+    .auth-01 .bg-container .hero-container.bottom-right{right:0;}
+    .auth-01 .auth-container{
+        width:calc(100% - 2rem); max-width:27rem; min-height:unset; margin:3rem auto;
     }
-    .auth-01.wrapper-box .auth-container{margin:0 auto; padding:3rem 0;}
-    .auth-01.wrapper-box .auth-container .auth-wrapper,
     .auth-01 .auth-container .auth-wrapper{padding:2rem 1rem;}
     .auth-01 .auth-wrapper .logo img{height:2rem;}
 }
+@media screen and (max-width:767.98px){
+    .auth-01 .bg-container img.hero.hero-lg{max-width:94%; max-height:90vh;}
+}
 @media screen and (max-width:575.98px){
     .auth-01 .auth-container{max-width:25rem;}
-    .auth-01.wrapper-box .auth-container .auth-wrapper,
     .auth-01 .auth-container .auth-wrapper{padding:1.25rem 1rem;}
 }
 

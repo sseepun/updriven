@@ -109,9 +109,6 @@ input[type=file]:focus, select:focus, textarea:focus{border-color:#166c74!import
 .auth-01 .auth-container{background:#ffffff;}
 .auth-01 .bg-container{background:#156c74;}
 .auth-01 .bg-container.bg-signin{background:transparent;}
-.auth-01.wrapper-box{background:#f4f4f4;}
-.auth-01.wrapper-box .auth-container{background:transparent;}
-.auth-01.wrapper-box .auth-container .auth-wrapper{background:#ffffff;}
 
 
 /* Colors */

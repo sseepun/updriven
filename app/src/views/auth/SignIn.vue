@@ -1,27 +1,30 @@
 <template>
-  <section class="auth-01 bg-left wrapper-box">
+  <section class="auth-01">
     <div class="wrapper">
 
-      <div class="bg-container bg-signin">
+      <div class="bg-container">
         <div class="wrapper">
           <div class="hide-mobile">
-            <div class="logo" data-aos="fade-up" data-aos-delay="150">
-              <img src="/assets/img/logo.png" alt="Image Logo" />
-            </div>
-            <h4 class="fw-600 lh-2xs mt-3" data-aos="fade-up" data-aos-delay="300">
+            <h2 class="fw-500 color-white lh-2xs" data-aos="fade-up" data-aos-delay="300">
               Discover The Leading <br>
               Career Exploration
-            </h4>
+            </h2>
+            <div class="btns mt-4" data-aos="fade-up" data-aos-delay="450">
+              <Button href="#" classer="btn-color-02 btn-sm btn-mw fw-600" text="LEARN MORE" />
+            </div>
           </div>
-          <div class="hero-container" data-aos="fade-left" data-aos-delay="600">
-            <img class="hero" src="/assets/img/hero/01.png" alt="Image Hero" />
+          <div class="hero-container bottom-right" data-aos="fade-left" data-aos-delay="600">
+            <img class="hero hero-lg" src="/assets/img/hero/02.png" alt="Image Hero" />
           </div>
         </div>
       </div>
 
       <div class="auth-container" data-aos="fade-up" data-aos-delay="0">
         <div class="auth-wrapper">
-          <h4 class="fw-600 mb-4">
+          <div class="logo">
+            <img src="/assets/img/logo.png" alt="Image Logo" />
+          </div>
+          <h4 class="fw-600 text-center pt-4 mt-6">
             Sign In
           </h4>
           <form action="/user/dashboard" method="GET">
@@ -36,32 +39,37 @@
                 <FormGroup 
                   type="password" label="Password" :required="true" 
                   classer="label-sm" wrapperClass="fgray" 
+                  sublabel="Forgot password?" sublabelLink="/auth/forget-password" 
                 />
               </div>
               <div class="grid sm-100">
                 <Button 
                   type="submit" text="SIGN IN" 
-                  classer="d-block btn-color-03 w-full mt-3" 
+                  classer="d-block btn-color-03 w-full mt-2" 
                 />
-              </div>
-              <div class="grid sm-100">
-                <div class="text-center mt-2">
-                  <router-link to="/auth/forget-password" class="d-block p xs color-01 h-color-black">
-                    Forgot Password?
-                  </router-link>
-                </div>
               </div>
             </div>
           </form>
-          <div class="ss-sep line pt-2 pb-1 mt-4">
-            <p class="xs fw-400"></p>
+          <div class="ss-sep pt-2 mt-6">
+            <p class="xs fw-400">Or</p>
           </div>
           <div class="grids mt-4">
             <div class="grid sm-100">
               <Button 
-                text="CREATE NEW ACCOUNT" href="/auth/signup" 
-                classer="d-block btn-color-05 w-full" 
+                type="Social Google" text="Continue with Google" 
+                classer="d-block btn-color-04 w-full" href="/user/dashboard" 
               />
+            </div>
+            <div class="grid sm-100">
+              <Button 
+                type="Social Facebook" text="Continue with Facebook" 
+                classer="d-block btn-color-04 w-full" href="/user/dashboard" 
+              />
+            </div>
+            <div class="grid sm-100">
+              <router-link to="/auth/signup" class="p xs color-01 h-color-black">
+                Not a member? Sign up now
+              </router-link>
             </div>
           </div>
         </div>
