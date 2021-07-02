@@ -70,6 +70,16 @@ exports.getPosts = async (req, res) => {
     }
 }
 
+exports.getCategory = async (req, res) => {
+    try {
+        const category = await Category.find({})
+        res.status(200).send(category)
+    }
+    catch (err) {
+        return res.status(500).send({message: err})
+    }
+}
+
 exports.getSentiments = async (req, res) => {
     try {
         let sentiment_on;

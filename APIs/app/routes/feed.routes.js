@@ -24,7 +24,12 @@ module.exports = app => {
     router.post('/sentiment',
         auth.isLoggedIn,
         feedController.getSentiments
-    )
+    ),
+
+    router.get('/category',
+        auth.isLoggedIn,
+        feedController.getCategory
+    ),
 
     app.use('/apis/feed', router);
 }
