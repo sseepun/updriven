@@ -1,0 +1,1033 @@
+{
+	"info": {
+		"_postman_id": "a1b3715d-db51-4896-8c0c-e5e6de2d4c0e",
+		"name": "UpDriven APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Auth",
+			"item": [
+				{
+					"name": "1.1. Sign up",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"password\", pm.variables.replaceIn(\"{{$randomPassword}}\"));",
+									"pm.environment.set(\"email\", pm.variables.replaceIn(\"{{$randomExampleEmail}}\"));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"    pm.environment.set(\"verify_email\", responseJson.token);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								},
+								{
+									"key": "firstname",
+									"value": "{{firstname}}",
+									"type": "text"
+								},
+								{
+									"key": "lastname",
+									"value": "{{lastname}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}apis/auth/signup",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.2 verify email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"  pm.expect(responseJson.message).to.eql(\"User is activated\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}apis/auth/verify/:token",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"auth",
+								"verify",
+								":token"
+							],
+							"variable": [
+								{
+									"key": "token",
+									"value": "{{verify_email}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.2. Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"    pm.expect(responseJson.status).to.eql(true);",
+									"  pm.expect(responseJson.email).to.eql(pm.environment.get(\"email\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "{{email}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}apis/auth/login",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.3 Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"  pm.expect(responseJson.message).to.eql(\"Logged out\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}apis/auth/logout",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. User",
+			"item": [
+				{
+					"name": "4.1 Get post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"    pm.environment.set(\"post_next\", responseJson.next);",
+									"    pm.environment.set(\"post_previous\", responseJson.previous);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "next",
+									"value": "{{post_next}}",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "previous",
+									"value": "{{post_previous}}",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}apis/user/post",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"user",
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.2 Add organization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"  pm.expect(responseJson.message).to.eql(\"Add organization successful\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "organization",
+									"value": "{{organizationName}}",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "Company",
+									"type": "text"
+								},
+								{
+									"key": "start_year",
+									"value": "2018",
+									"type": "text"
+								},
+								{
+									"key": "end_year",
+									"value": "2021",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}apis/user/add_organization",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"user",
+								"add_organization"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.3 Edit info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"  pm.expect(responseJson.message).to.eql(\"User info saved\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prefix",
+									"value": "{{prefix}}",
+									"type": "text"
+								},
+								{
+									"key": "firstname",
+									"value": "{{firstname}}",
+									"type": "text"
+								},
+								{
+									"key": "lastname",
+									"value": "{{lastname}}",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "{{phone}}",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "{{address}}",
+									"type": "text"
+								},
+								{
+									"key": "province",
+									"value": "{{province}}",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "M",
+									"type": "text"
+								},
+								{
+									"key": "state_id",
+									"value": "{{state_id}}",
+									"type": "text"
+								},
+								{
+									"key": "country_id",
+									"value": "{{country_id}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}apis/user/edit_info",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"user",
+								"edit_info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.4 User status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"    pm.expect(responseJson.status).to.eql(true);",
+									"  pm.expect(responseJson.email).to.eql(pm.environment.get(\"email\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}apis/auth/status",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"auth",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. Post",
+			"item": [
+				{
+					"name": "3.1 Create post",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"    pm.environment.set(\"post_id\", responseJson.id);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "subject",
+									"value": "{{$randomWords}}",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "{{$randomPhrase}}",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "media",
+									"type": "file",
+									"src": "/Users/nattakritj/Documents/Screen Shot 2021-07-02 at 20.40.16.png"
+								},
+								{
+									"key": "media",
+									"type": "file",
+									"src": "/Users/nattakritj/Documents/Screen Recording 2021-07-02 at 20.40.31.mov"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}apis/post/create/",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"post",
+								"create",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.3 Comment on post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"    pm.expect(responseJson.comment).is.not.undefined;",
+									"    pm.environment.set(\"comment_id\", responseJson.comment._id);",
+									"    pm.environment.set(\"comment_depth\", 2);",
+									"    pm.variables.get(\"variable_key\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "post_id",
+									"value": "{{post_id}}",
+									"type": "text"
+								},
+								{
+									"key": "comment",
+									"value": "{{$randomPhrase}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}apis/post/comment",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"post",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.4 Comment on comment (reply)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"    pm.expect(responseJson.comment).is.not.undefined;",
+									"    pm.variables.get(\"variable_key\");",
+									"    pm.environment.set(\"comment_id\", responseJson.comment._id);",
+									"    pm.environment.set(\"comment_depth\", parseInt(pm.variables.get(\"comment_depth\")) + 1);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "post_id",
+									"value": "{{post_id}}",
+									"type": "text"
+								},
+								{
+									"key": "comment",
+									"value": "{{$randomPhrase}}",
+									"type": "text"
+								},
+								{
+									"key": "parent_comment",
+									"value": "{{comment_id}}",
+									"type": "text"
+								},
+								{
+									"key": "depth",
+									"value": "{{comment_depth}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}apis/post/comment",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"post",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.5 sentiment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"  pm.expect(responseJson.message).to.eql(\"give sentiment on post successfully\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "post_id",
+									"value": "{{post_id}}",
+									"type": "text"
+								},
+								{
+									"key": "comment_id",
+									"value": "{{comment_id}}",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "sentiment_type",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}apis/post/sentiment",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"post",
+								"sentiment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.6 share post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"    pm.environment.set(\"share_id\", responseJson.id);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "post_id",
+									"value": "60df1b1aec5cae51780191fc",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}apis/post/share",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"post",
+								"share"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.2 Delete post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"  pm.expect(responseJson.message).to.eql(\"Your post has been deleted\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "post_id",
+									"value": "{{post_id}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}apis/post/delete",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"post",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. Feed",
+			"item": [
+				{
+					"name": "4.1 Get comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"    pm.expect(responseJson.count).is.not.undefined;",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "post_id",
+									"value": "{{post_id}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}apis/feed/comment",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"feed",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.1 Get post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"    pm.expect(responseJson.results).is.not.undefined;",
+									"    pm.environment.set(\"post_next\", responseJson.next);",
+									"    pm.environment.set(\"post_previous\", responseJson.previous);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "next",
+									"value": "{{post_next}}",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "previous",
+									"value": "{{post_previous}}",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}apis/feed/post",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"feed",
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.2 Get sentiments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status return 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const responseJson = pm.response.json();",
+									"",
+									"pm.test(\"Response return as expect\", () => {",
+									"    pm.expect(responseJson.results).is.not.undefined;",
+									"    pm.environment.set(\"sentiment_next\", responseJson.next);",
+									"    pm.environment.set(\"sentiment_previous\", responseJson.previous);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "post_id",
+									"value": "{{post_id}}",
+									"type": "text"
+								},
+								{
+									"key": "comment_id",
+									"value": "{{comment_id}}",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "sentiment_type",
+									"value": "5",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "next",
+									"value": "{{sentiment_next}}",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "previous",
+									"value": "{{sentiment_previous}}",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}apis/feed/sentiment",
+							"host": [
+								"{{url}}apis"
+							],
+							"path": [
+								"feed",
+								"sentiment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
