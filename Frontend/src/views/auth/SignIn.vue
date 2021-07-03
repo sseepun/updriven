@@ -66,7 +66,7 @@
             <div class="grid sm-100">
               <Button 
                 type="Social Facebook" text="Continue with Facebook" 
-                classer="d-block btn-color-04 w-full" href="/user/dashboard" 
+                classer="d-block btn-color-04 w-full" @click.prevent="signinFacebook"
               />
             </div>
             <div class="grid sm-100">
@@ -100,7 +100,9 @@ export default {
     return {
       user: {
         authen: '',
-        password: ''
+        password: '',
+        isValidated: false,
+        text_notification: ''
       }
     }
   },
@@ -110,7 +112,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      signin: 'authentication/signin'
+      signin: 'authentication/signin',
+      signFacebook: 'authentication/signFacebook'
     }),
 
     handleSubmit(e) {
@@ -125,8 +128,22 @@ export default {
           this.$router.push({ 
             name: 'UserDashboardPage'
           });
+        }).catch( err => {
+          if (err.response.status == 401) {
+            this.text_notification = 'username or password is incorrect'
+          }
         })
       }
+      this.isValidated = true;
+    },
+    signinFacebook() {
+      this.signFacebook().then( () => {
+          /*this.$router.push({ 
+            name: 'UserDashboardPage'
+          });*/
+        }).catch( err => {
+          
+        })
     }
   },
 }

@@ -6,7 +6,7 @@ import axios from 'axios'
 
 const app = createApp(App)
 axios.defaults.baseURL = (process.env.VUE_APP_API_URL + '/apis')
-// axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 
 import Avatar from './components/Avatar'
 import Button from './components/Button'

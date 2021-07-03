@@ -24,6 +24,25 @@ export function authHeaderFormData() {
   }
 }
   
+export function checkCookie() {
+  var UPDRIVEN2020session =  Cookie.get('UPDRIVEN2020session');
+  var UPDRIVEN2020sessionsig = Cookie.get('UPDRIVEN2020session.sig');
+  var UPDRIVEN_2020_session = Cookie.get('UPDRIVEN_2020_session');
+  var UPDRIVEN_2020_sessionsig = Cookie.get('UPDRIVEN_2020_session.sig');
+  console.log(Cookie.get())
+  console.log('cookie', UPDRIVEN2020session, UPDRIVEN2020sessionsig, UPDRIVEN_2020_session, UPDRIVEN_2020_sessionsig);
+  if (
+    UPDRIVEN2020session &&
+    UPDRIVEN2020sessionsig &&
+    UPDRIVEN_2020_session &&
+    UPDRIVEN_2020_sessionsig
+  ) {
+    return true
+  } else {
+    return false
+  }
+}
+
 export function setCookieBeforeAuth() {
   Cookie.set('UPDRIVEN_2020_session', 'eyJwYXNzcG9ydCI6eyJ1c2VyIjoiaGVoZUBoZS5oZWEifX0=')
   Cookie.set('UPDRIVEN_2020_session.sig', 'pkuqH8ASv8xHzxS47RgTdN0pDzw')

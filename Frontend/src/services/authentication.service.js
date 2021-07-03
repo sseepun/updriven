@@ -3,7 +3,8 @@ import Cookie from 'js-cookie';
 const axios = require('axios');
 
 export const authenService = {
-    signin
+    signin,
+    signFacebook
 }
 
 function signin(authen, password) {
@@ -20,6 +21,25 @@ function signin(authen, password) {
           withCredentials: true,
         })
         .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+}
+
+function signFacebook() {
+    setCookieBeforeAuth();
+    console.log('service')
+
+    return new Promise((resolve, reject) => {
+        axios({
+          method: 'GET',
+          url: `auth/facebook`
+        })
+        .then(res => {
+
           resolve(res.data);
         })
         .catch(err => {

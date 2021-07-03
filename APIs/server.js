@@ -18,9 +18,9 @@ app.use(cookieSession({
 }))
 
 const corsOptions = {
-    origin: /localhost:8080$/, // น้ำตาจะไหล ลืมใส่ regex
+    origin: [/localhost:8080$/, /facebook.com$/], // น้ำตาจะไหล ลืมใส่ regex
     credentials: true,
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+    // optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
   }
 
 app.use(cors( corsOptions )); // remove corsOptions to allow all origins
