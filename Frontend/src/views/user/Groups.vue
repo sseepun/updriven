@@ -64,7 +64,9 @@
           </div>
           <div class="grid sm-25 mt-2">
             <a class="ss-img square bradius-1" href="#">
-              <div class="img-bg" style="background-image:url('\\assets\\img\\profile\\01.jpg');"></div>
+              <div class="img-bg" style="background-color:#f8f9fa">
+                <p class="x4s">CREATE A GROUP</p>
+              </div>
             </a>
           </div>
         </div>
@@ -81,35 +83,36 @@
           </div>       
         </div>
       </div>
-      <div class="list-interested">
-        <h6 class="title fw-600 mt-1">You may be interested</h6>
-        <div style="width:100%; max-width:900px;">
-          <div class="gallery-grids">
-            <div class="grid all-100">
-              <div v-for="(Interest, i) in Interest" :key="i" class="ss-card ss-card-03 bshadow mt-3">
-                <div class="img-container">
-                  <a class="ss-img adaptive" href="#">
-                    <div class="img-bg" :style="'background-image:url(\''+Interest.img+'\');'"></div>
-                  </a>
-                </div>
-                <div class="text-container">
-                  <a class="title h6 fw-600 color-dark h-color-01" href="#">
-                      {{Interest.Title}}
-                  </a>
-                  <p class="desc fw-400 color-gray sm" style="flex-grow: 1;">
-                      {{Interest.type}} group {{Interest.member}} members
-                  </p>
-                  <div class="options">
-                    <div class="d-flex ai-center jc-space-between">
-                      <div class="btns mt-0">
-                        <a class="btn btn-action btn-md btn-color-01" href="#">
-                          <span>JOIN</span>
-                        </a>
-                      </div>
-                      <p class="fw-400 color-gray ws-nowrap sm">
-                          {{Interest.post}} posts a week
-                      </p>
+      <div class="list-interested mt-6">
+        <form action="/" method="GET">
+          <FormGroup placeholder="Search Groups" wrapperClass="append" icon="search.png"/>
+        </form>
+        <h6 class="title fw-600 mt-3">You may be interested</h6>
+        <div class="grids">
+          <div class="grid all-100">
+            <div v-for="(Interest, i) in Interest" :key="i" class="ss-card ss-card-03 bshadow mt-3">
+              <div class="img-container">
+                <a class="ss-img adaptive" href="#">
+                  <div class="img-bg" :style="'background-image:url(\''+Interest.img+'\');'"></div>
+                </a>
+              </div>
+              <div class="text-container">
+                <a class="title h6 fw-600 color-dark h-color-01" href="#">
+                    {{Interest.Title}}
+                </a>
+                <p class="desc fw-400 color-gray sm" style="flex-grow: 1;">
+                    {{Interest.type}} group {{Interest.member}} members
+                </p>
+                <div class="options">
+                  <div class="d-flex ai-center jc-space-between">
+                    <div class="btns mt-0">
+                      <a class="btn btn-action btn-md btn-color-01" href="#">
+                        <span>JOIN</span>
+                      </a>
                     </div>
+                    <p class="fw-400 color-gray ws-nowrap sm">
+                        {{Interest.post}} posts a week
+                    </p>
                   </div>
                 </div>
               </div>
