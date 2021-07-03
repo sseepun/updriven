@@ -157,6 +157,7 @@
 
 <script>
 import moment from 'moment';
+import {mapGetters, mapActions, mapMutations} from "vuex"
 
 export default {
   name: 'PostSingle',
@@ -165,7 +166,7 @@ export default {
   },
   data() {
     return {
-      user: this.$store.getters.user,
+      // user: this.$store.getters.user,
       selfPost: this.post,
       isActivePopup: false,
       commentLimit: 1,
@@ -178,7 +179,10 @@ export default {
       return that.selfPost.comments.filter(function(d, i){
         return that.selfPost.comments.length - i - 1 < that.commentLimit;
       });
-    }
+    },
+    ...mapGetters({
+      user: 'authentication/user',
+    })
   },
   methods: {
     formatNumber(value, digits=2) {

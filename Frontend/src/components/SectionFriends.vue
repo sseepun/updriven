@@ -24,13 +24,20 @@
 </template>
 
 <script>
+import {mapGetters, mapActions, mapMutations} from "vuex"
+
 export default {
   name: 'SectionFriends',
   data() {
     return {
-      user: this.$store.getters.user,
+      // user: this.$store.getters.user,
       friends: []
     }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'authentication/user',
+    })
   },
   mounted() {
     this.loadData(9);

@@ -9,6 +9,7 @@
 
 <script>
 import SpecialCard01 from './SpecialCard01'
+import {mapGetters, mapActions, mapState} from "vuex"
 
 export default {
   name: 'SectionSponsored',
@@ -17,9 +18,14 @@ export default {
   },
   data() {
     return {
-      user: this.$store.getters.user,
+      // user: this.$store.getters.user,
       dataset: []
     }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'authentication/user',
+    })
   },
   mounted() {
     for(let i=0; i<3; i++){

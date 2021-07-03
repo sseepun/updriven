@@ -36,12 +36,19 @@
 </template>
 
 <script>
+import {mapGetters, mapActions, mapMutations} from "vuex"
+
 export default {
   name: 'Banner',
   data() {
     return {
-      user: this.$store.getters.user
+      // user: this.user
     }
-  }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'authentication/user',
+    })
+  },
 }
 </script>

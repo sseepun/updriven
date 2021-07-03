@@ -22,6 +22,7 @@
 
 <script>
 import SpecialCard02 from './SpecialCard02'
+import {mapGetters, mapActions, mapMutations} from "vuex"
 
 export default {
   name: 'SectionInterested',
@@ -30,7 +31,7 @@ export default {
   },
   data() {
     return {
-      user: this.$store.getters.user,
+      // user: this.$store.getters.user,
       dataset: [],
       datasetLimit: 3
     }
@@ -57,7 +58,10 @@ export default {
       return that.dataset.filter(function(d, i){
         return i < that.datasetLimit;
       });
-    }
+    },
+    ...mapGetters({
+      user: 'authentication/user',
+    })
   }
 }
 </script>

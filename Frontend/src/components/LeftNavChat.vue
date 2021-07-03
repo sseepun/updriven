@@ -93,15 +93,22 @@
 </template>
 
 <script>
+import {mapGetters, mapActions, mapMutations} from "vuex"
+
 export default {
   name: 'LeftNavChat',
   data() {
     return {
-      user: this.$store.getters.user,
+      // user: this.$store.getters.user,
       selectedChatUser: 0,
       chatUsers: [],
       filteredChatUsers: []
     }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'authentication/user',
+    })
   },
   mounted() {
     for(let i=0; i<20; i++){

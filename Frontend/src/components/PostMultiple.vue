@@ -18,15 +18,22 @@
 </template>
 
 <script>
+import {mapGetters, mapActions, mapMutations} from "vuex"
+
 export default {
   name: 'PostMultiple',
   data() {
     return {
-      user: this.$store.getters.user,
+      // user: this.$store.getters.user,
       title: null,
       icon: null,
       posts: []
     }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'authentication/user',
+    })
   },
   methods: {
     loadPosts() {

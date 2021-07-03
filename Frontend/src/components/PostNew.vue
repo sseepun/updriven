@@ -134,11 +134,13 @@
 </template>
 
 <script>
+import {mapGetters, mapActions, mapMutations} from "vuex"
+
 export default {
   name: 'NewPost',
   data() {
     return {
-      user: this.$store.getters.user,
+      // user: this.$store.getters.user,
       isActivePopup: false,
       tabActiveIndex: 0,
       dataPost: {
@@ -147,6 +149,11 @@ export default {
         image: '/assets/img/post/01.jpg'
       }
     }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'authentication/user',
+    })
   },
   methods: {
     onSubmitPost() {

@@ -27,12 +27,14 @@
           <h4 class="fw-600 text-center pt-4 mt-6">
             Sign In
           </h4>
-          <form action="/user/dashboard" method="GET">
+          <!-- <form action="/user/dashboard" method="GET"> -->
+          <form @submit="handleSubmit">
             <div class="grids">
               <div class="grid sm-100">
                 <FormGroup 
                   type="text" label="Username or Email Address" :required="true" 
                   classer="label-sm" wrapperClass="fgray" 
+                  :value="user.authen" @input="user.authen = $event" 
                 />
               </div>
               <div class="grid sm-100">
@@ -40,6 +42,7 @@
                   type="password" label="Password" :required="true" 
                   classer="label-sm" wrapperClass="fgray" 
                   sublabel="Forgot password?" sublabelLink="/auth/forget-password" 
+                  :value="user.password" @input="user.password = $event" 
                 />
               </div>
               <div class="grid sm-100">
@@ -83,6 +86,8 @@
 import Button from '../../components/Button';
 import FormGroup from '../../components/FormGroup';
 import CheckBoxSmall from '../../components/CheckBoxSmall';
+import {mapGetters, mapActions, mapState} from "vuex"
+import { authenService } from '../../services'
 
 export default {
   name: 'AuthSignInPage',
@@ -91,8 +96,38 @@ export default {
     FormGroup,
     CheckBoxSmall
   },
+  data() {
+    return {
+      user: {
+        authen: '',
+        password: ''
+      }
+    }
+  },
   created() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
-  }
+  
+  },
+  methods: {
+    ...mapActions({
+      signin: 'authentication/signin'
+    }),
+
+    handleSubmit(e) {
+      e.preventDefault()
+
+      // Check condition invalid
+      if (true) {
+        this.signin({
+          authen: this.user.authen,
+          password: this.user.password
+        }).then( () => {
+          this.$router.push({ 
+            name: 'UserDashboardPage'
+          });
+        })
+      }
+    }
+  },
 }
 </script>

@@ -47,12 +47,13 @@
 
 <script>
 import { categoryService } from '../services'
+import {mapGetters, mapActions, mapMutations} from "vuex"
 
 export default {
   name: 'LeftNav',
   data() {
     return {
-      user: this.$store.getters.user,
+      // user: this.$store.getters.user,
       menu: [
         {
           status: true,
@@ -89,6 +90,11 @@ export default {
         }
       ]
     }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'authentication/user',
+    })
   },
   mounted() {
     categoryService._list().then(d => {

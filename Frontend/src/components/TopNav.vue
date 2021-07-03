@@ -62,16 +62,23 @@
 </template>
 
 <script>
+import {mapGetters, mapActions, mapState} from "vuex"
+
 export default {
   name: 'TopNav',
   data() {
     return {
-      user: this.$store.getters.user,
+      // user: this.$store.getters.user,
       isActiveNoti: false,
       isActiveMsg: false,
       isActiveAdd: false,
       isActiveProfile: false
     }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'authentication/user',
+    })
   }
 }
 </script>

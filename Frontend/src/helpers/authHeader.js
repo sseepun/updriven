@@ -1,3 +1,4 @@
+import Cookie from 'js-cookie';
 
 export function authHeader() {
   let member = JSON.parse(localStorage.getItem(`${process.env.VUE_APP_API_URL}_MEMBER`));
@@ -23,3 +24,7 @@ export function authHeaderFormData() {
   }
 }
   
+export function setCookieBeforeAuth() {
+  Cookie.set('UPDRIVEN_2020_session', 'eyJwYXNzcG9ydCI6eyJ1c2VyIjoiaGVoZUBoZS5oZWEifX0=')
+  Cookie.set('UPDRIVEN_2020_session.sig', 'pkuqH8ASv8xHzxS47RgTdN0pDzw')
+}

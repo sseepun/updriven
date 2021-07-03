@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import {mapGetters, mapActions, mapMutations} from "vuex"
+
 export default {
   name: 'SectionInfo',
   props: {
@@ -56,6 +58,7 @@ export default {
     return {
       user: this.$store.getters.user
     }
-  }
+  },
+  
 }
 </script>

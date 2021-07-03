@@ -20,13 +20,20 @@
 </template>
 
 <script>
+import {mapGetters, mapActions, mapMutations} from "vuex"
+
 export default {
   name: 'SectionPhotos',
   data() {
     return {
-      user: this.$store.getters.user,
+      // user: this.$store.getters.user,
       photos: []
     }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'authentication/user',
+    })
   },
   mounted() {
     this.loadData(9);

@@ -40,12 +40,6 @@ const routes = [
     name: 'UserChatPage',
     component: () => import('../views/user/Chat.vue')
   },
-  
-  {
-    path: '/user/groups',
-    name: 'UserGroupsPage',
-    component: () => import('../views/user/Groups.vue')
-  },
 
 ]
 
@@ -53,5 +47,9 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+// router.beforeEach((to, from, next) => {
+  
+// });
 
 export default router
