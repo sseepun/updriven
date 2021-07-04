@@ -168,7 +168,6 @@ export const authentication = {
     signout(state) {
       state.user = null;
       localStorage.removeItem(`${process.env.VUE_APP_API_URL}_USER`);
-      router.push('/auth/signin');
     },
     updateAlert(state, alert) {
       state.alert = alert;

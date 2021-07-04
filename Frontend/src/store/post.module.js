@@ -1,6 +1,6 @@
 import { checkCookie } from '../helpers/authHeader';
 
-export const feed = {
+export const post = {
     namespaced: true,
     state: {
 
@@ -9,7 +9,7 @@ export const feed = {
 
     },
     actions: {
-
+        
     },
     mutations: {
         

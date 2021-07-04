@@ -2,12 +2,14 @@
 import { createStore } from 'vuex'
 
 import { authentication } from './authentication.module';
-import { feed } from './feed.module';
+import { post } from './post.module';
+import { category } from './category.module';
 
 const store = createStore({
   modules: {
     authentication,
-    feed
+    post,
+    category
   }
 })
 

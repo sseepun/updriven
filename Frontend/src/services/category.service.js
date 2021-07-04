@@ -6,7 +6,8 @@ export const categoryService = {
   create,
   read,
   update,
-  _delete
+  _delete,
+  test_list
 };
 
 
@@ -15,6 +16,23 @@ function _list() {
     axios({
       method: 'GET',
       url: `${process.env.VUE_APP_API_URL}getPostCategory.php`,
+      headers: authHeader()
+    })
+    .then(res => {
+      resolve(res.data);
+    })
+    .catch(err => {
+      reject(err);
+    });
+  });
+}
+
+// test get list Category 
+function test_list() {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'GET',
+      url: `feed/category`,
       headers: authHeader()
     })
     .then(res => {

@@ -2,7 +2,7 @@ import { setCookieBeforeAuth } from '../helpers/authHeader';
 import Cookie from 'js-cookie';
 const axios = require('axios');
 
-export const feed = {
+export const post = {
     createPost
 }
 

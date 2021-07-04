@@ -31,18 +31,13 @@ function signin(authen, password) {
     });
 }
 
-function signFacebook(authen, password) {
+function signFacebook() {
     setCookieBeforeAuth(); 
 
     return new Promise((resolve, reject) => {
         axios({
-          method: 'POST',
-          url: `auth/login`,
-          data: {
-            username: authen,
-            password: password
-          },
-          withCredentials: true,
+          method: 'GET',
+          url: `auth/facebook`
         })
         .then(res => {
           resolve(res.data);
@@ -53,18 +48,13 @@ function signFacebook(authen, password) {
     });
 }
 
-function signGoogle(authen, password) {
+function signGoogle() {
     setCookieBeforeAuth(); 
 
     return new Promise((resolve, reject) => {
         axios({
-          method: 'POST',
-          url: `auth/login`,
-          data: {
-            username: authen,
-            password: password
-          },
-          withCredentials: true,
+          method: 'GET',
+          url: `auth/google`
         })
         .then(res => {
           resolve(res.data);
