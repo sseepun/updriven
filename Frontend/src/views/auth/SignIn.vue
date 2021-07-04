@@ -60,7 +60,7 @@
             <div class="grid sm-100">
               <Button 
                 type="Social Google" text="Continue with Google" 
-                classer="d-block btn-color-04 w-full" href="/user/dashboard" 
+                classer="d-block btn-color-04 w-full"  @click.prevent="signinGoogle" href="/user/dashboard" 
               />
             </div>
             <div class="grid sm-100">
@@ -113,7 +113,8 @@ export default {
   methods: {
     ...mapActions({
       signin: 'authentication/signin',
-      signFacebook: 'authentication/signFacebook'
+      signFacebook: 'authentication/signFacebook',
+      signGoogle: 'authentication/signGoogle',
     }),
 
     handleSubmit(e) {
@@ -138,6 +139,15 @@ export default {
     },
     signinFacebook() {
       this.signFacebook().then( () => {
+          /*this.$router.push({ 
+            name: 'UserDashboardPage'
+          });*/
+        }).catch( err => {
+          
+        })
+    },
+    signinGoogle() {
+      this.signGoogle().then( () => {
           /*this.$router.push({ 
             name: 'UserDashboardPage'
           });*/

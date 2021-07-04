@@ -27,30 +27,35 @@
           <h4 class="fw-600 text-center pt-4 mt-6">
             Sign Up
           </h4>
-          <form action="/user/dashboard" method="GET">
+          <form @submit="handleRegister">
             <div class="grids">
               <div class="grid sm-50">
                 <FormGroup 
                   type="text" label="First Name" :required="true" 
                   classer="label-sm" wrapperClass="fgray" 
+                  :value="dataset.firstname" @input="dataset.firstname = $event" 
                 />
               </div>
               <div class="grid sm-50">
                 <FormGroup 
                   type="text" label="Last Name" :required="true" 
                   classer="label-sm" wrapperClass="fgray" 
+                  :value="dataset.lastname" @input="dataset.lastname = $event" 
                 />
               </div>
               <div class="grid sm-100">
                 <FormGroup 
                   type="email" label="Email" :required="true" 
                   classer="label-sm" wrapperClass="fgray" 
+                  :value="dataset.email" @input="dataset.email = $event" 
+                  
                 />
               </div>
               <div class="grid sm-100">
                 <FormGroup 
                   type="password" label="Password" :required="true" 
                   classer="label-sm" wrapperClass="fgray" 
+                  :value="dataset.password" @input="dataset.password = $event" 
                 />
               </div>
               <div class="grid sm-100">
@@ -66,6 +71,7 @@
                 <Button 
                   type="submit" text="CREATE ACCOUNT" 
                   classer="d-block btn-color-03 w-full" 
+                
                 />
               </div>
             </div>
@@ -103,6 +109,9 @@
 import Button from '../../components/Button';
 import FormGroup from '../../components/FormGroup';
 import CheckBoxSmall from '../../components/CheckBoxSmall';
+import RegisUser from '../../models/regis_user.js';
+import { mapState, mapGetters, mapActions } from 'vuex'
+
 
 export default {
   name: 'AuthSignUpPage',
@@ -113,6 +122,46 @@ export default {
   },
   created() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
+  },
+  data() {
+    return {
+      dataset: {
+        firstname: '',
+        lastname: '',
+        email: '',
+        password: '',
+      }
+    }
+  },
+  methods:{
+    ...mapActions({
+      register: 'authentication/register',
+      
+    }),
+    handleRegister(e) {
+        e.preventDefault()
+        let regisUser = new RegisUser(
+          this.dataset.password,
+          this.dataset.email,
+          this.dataset.firstname,
+          this.dataset.lastname
+        )
+        if (this.dataset.firstname && this.dataset.email && this.dataset.lastname && this.dataset.password) {
+          this.register(regisUser).then(
+            () => {
+              console.log("success in handle")
+              this.$router.push('/');
+            },
+            error => {
+              this.message =
+                (error.response && error.response.data) ||
+                error.message ||
+                error.toString();
+            }
+          );
+        }
+        this.isValidated = true;
+    }
   }
 }
 </script>

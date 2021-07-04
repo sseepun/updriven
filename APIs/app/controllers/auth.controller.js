@@ -29,7 +29,7 @@ exports.signup = async (req, res) => {
         user.user_detail = user_detail._id
         await user.save()
         let token = jwt.sign({id: user.id}, "secret", {
-            expiresIn: process.env.VERIFY_EMAIL_TOKENLIFE
+            expiresIn: 86400//process.env.VERIFY_EMAIL_TOKENLIFE
         });
         res.status(200).send({token: token});
     }
