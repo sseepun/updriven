@@ -48,7 +48,7 @@
                 </router-link>
               </div>
               <div class="submenu">
-                <router-link to="/">
+                <router-link to="/" @click="signOut">
                   Sign Out
                 </router-link>
               </div>
@@ -79,6 +79,14 @@ export default {
     ...mapGetters({
       user: 'authentication/user',
     })
+  },
+  methods: {
+    ...mapActions({
+      signout: 'authentication/signout'
+    }),
+    signOut() {
+      this.signout()
+    }
   }
 }
 </script>

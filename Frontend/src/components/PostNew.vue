@@ -53,11 +53,7 @@
                       <FormGroup 
                         type="select" value="" placeholder="Choose category" :required="true" 
                         classer="w-full" 
-                        :options="[
-                          { value: 1, text: 'Category 1' },
-                          { value: 2, text: 'Category 2' },
-                          { value: 3, text: 'Category 3' }
-                        ]" 
+                        :options="_list" 
                       />
                     </div>
                   </div>
@@ -150,12 +146,19 @@ export default {
       }
     }
   },
+  created() {
+    this.get_list()
+  },
   computed: {
     ...mapGetters({
       user: 'authentication/user',
+      _list: 'category/_list',
     })
   },
   methods: {
+    ...mapActions({
+      get_list: 'category/get_list'
+    }),
     onSubmitPost() {
       this.$emit('on-post', {
         id: Math.round(Math.random() * 10**7),

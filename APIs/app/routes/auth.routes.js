@@ -28,13 +28,13 @@ module.exports = app => {
     );
 
     router.post('/login', 
-    passport.authenticate('local', { failureRedirect: '/failed' }),
+    passport.authenticate('local', { failureRedirect: '/apis/auth/failed' }),
     function(req, res) {
         res.redirect('/apis/auth/status')
     });
 
     router.get("/failed", (req, res) => {
-        res.send("Failed")
+        res.status(401).send({message: 'login fail'})
     })
 
     router.get('/google',
@@ -49,7 +49,7 @@ module.exports = app => {
 
     router.get('/google/callback',
         passport.authenticate('google', {
-            failureRedirect: '/failed', }),
+            failureRedirect: '/apis/auth/failed', }),
         function (req, res) {
             res.redirect('/apis/auth/status')
         }
@@ -57,7 +57,7 @@ module.exports = app => {
 
     router.get('/facebook/callback',
         passport.authenticate('facebook',
-            { failureRedirect: '/failed' }),
+            { failureRedirect: '/apis/auth/failed' }),
         function (req, res) {
             res.redirect('/apis/auth/status');
             }
