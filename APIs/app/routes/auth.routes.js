@@ -17,6 +17,10 @@ module.exports = app => {
         authController.signup
     );
 
+    router.get("/success/:token",
+        authController.checkLogIn
+    );
+
     router.get(
         "/verify/:token",
         authController.verifyEmail
@@ -25,6 +29,11 @@ module.exports = app => {
     router.get("/status",
         auth.isLoggedIn,
         authController.logInStatus
+    );
+
+    router.get("/external_status",
+        auth.isLoggedIn,
+        authController.logInExternalStatus
     );
 
     router.post('/login', 
@@ -51,7 +60,7 @@ module.exports = app => {
         passport.authenticate('google', {
             failureRedirect: '/apis/auth/failed', }),
         function (req, res) {
-            res.redirect('/apis/auth/status')
+            res.redirect('/apis/auth/external_status')
         }
     );
 
@@ -59,7 +68,7 @@ module.exports = app => {
         passport.authenticate('facebook',
             { failureRedirect: '/apis/auth/failed' }),
         function (req, res) {
-            res.redirect('/apis/auth/status');
+            res.redirect('/apis/auth/external_status');
             }
         );
 

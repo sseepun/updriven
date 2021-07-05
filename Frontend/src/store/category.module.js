@@ -7,7 +7,17 @@ export const category = {
         _list: []
     },
     getters: {
-        _list: state => state._list,   
+        _list: state => state._list,
+        option_ilst(state) {
+            var option = []
+            state._list.forEach(category => {
+                option.push({
+                    value: category.category_name,
+                    text: category.category_name
+                })
+            })
+            return option
+        },
         is_list: state => state._list.length? true: false,
     },
     actions: {

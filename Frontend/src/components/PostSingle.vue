@@ -4,7 +4,6 @@
       <div class="img-bg" :style="'background-image:url(\''+selfPost.image+'\');'"></div>
     </div>
     <div class="text-container">
-
       <div class="title-container">
         <h6 class="title fw-600">
           {{selfPost.title}}
@@ -70,7 +69,7 @@
       <div class="toolbar mt-3">
         <div class="post-icon color-gray mr-4">
           <img class="mr-2" src="/assets/img/icon/message.png" alt="Image Icon" />
-          {{selfPost.comments.length}}
+          {{selfPost.counts.comments}}
         </div>
         <a 
           class="post-icon color-gray mr-4" href="javascript:" 

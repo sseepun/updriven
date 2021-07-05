@@ -46,14 +46,14 @@ exports.posts = async (req, res) => {
             query: {
                 user: user._id
             },
-            limit: 10,
+            limit: 5,
             next: req.body.next,
             previous: req.body.previous,
             paginatedField: 'Orderable'
         })
         await Post.populate(post_list,
             [
-                {path: 'results.user', model: 'User', select: 'user_detail', populate: 'user_detail'},
+                {path: 'results.user', model: 'User', select: 'user_detail', populate: {path: 'user_detail', select:['firstname', 'lastname']}},
                 {path: 'results.category', model: 'Category', select: 'category_name'}
             ])
         res.status(200).send(post_list)

@@ -1,6 +1,6 @@
 const db = require("../models");
 const sanitize = require('mongo-sanitize');
-const User = require("../models/user/user.model");
+const User = db.user;
 const Post = db.post;
 const Category = db.category;
 const Comment = db.comment;
@@ -9,10 +9,12 @@ const Share = db.share;
 
 exports.createPost = async (req, res) => {
     try {
+        console.log(req.files)
         const post = new Post({
             user: req.userId,
             subject: req.body.subject,
             content: req.body.content,
+            visible_to: req.body.visible_to,
             status: true,
         });
         await post.save();
@@ -89,6 +91,9 @@ exports.commentPost = async (req, res) => {
         }
         const comment = new Comment(data);
         await comment.save()
+        const post = await Post.findById(req.body.post_id)
+        post.comment_count += 1;
+        await post.save()
         res.status(200).send({comment: comment})
 
     }

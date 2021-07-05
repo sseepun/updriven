@@ -48,7 +48,7 @@ exports.getComments = async (req, res) => {
 exports.getPosts = async (req, res) => {
     try {
         const post_list = await Post.paginate({
-            limit: 1000,
+            limit: 5,
             next: req.body.next,
             previous: req.body.previous,
             paginatedField: 'Orderable'

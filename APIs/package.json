@@ -12,8 +12,9 @@
   "author": "HexGen Dev Team",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
+    "@sendgrid/mail": "^7.4.5",
     "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
@@ -23,6 +24,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "fs": "^0.0.1-security",
+    "handlebars": "^4.7.7",
     "http": "^0.0.1-security",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
@@ -40,6 +42,7 @@
     "passport-google-oauth2": "^0.2.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
+    "path": "^0.12.7",
     "socket.io": "^4.1.2"
   }
 }
