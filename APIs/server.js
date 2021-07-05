@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
 const bodyParser = require("body-parser");
+const migrations = require("./app/migrations/migrations");
 const cors = require("cors");
 require('./app/passport/passport');
 require('dotenv').config()
@@ -18,7 +19,7 @@ app.use(cookieSession({
 }))
 
 const corsOptions = {
-    origin: [/localhost:8080$/, /facebook.com$/], // น้ำตาจะไหล ลืมใส่ regex
+    origin: [/localhost:8080$/], // น้ำตาจะไหล ลืมใส่ regex
     credentials: true,
     // optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
   }
@@ -47,10 +48,12 @@ app.listen(port, () => console.log("server running on port " + port))
 // connect to database
 db.mongoose.connect(process.env.DB, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true
 })
 .then(() => {
     console.log("Successfully connect to MongoDB.");
+    migrations.initial();
 })
 .catch(err => {
     console.error("Connection error", err);

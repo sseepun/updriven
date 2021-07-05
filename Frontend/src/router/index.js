@@ -1,5 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from '../store/index.js';
 
+function requireAuth (to, from, next) {
+  if ( store.getters['auth/isAuthenticated'] ) {
+    const LS_ROUTE_KEY = localStorage.getItem('LS_ROUTE_KEY')
+    if (LS_ROUTE_KEY != null) {
+      localStorage.removeItem('LS_ROUTE_KEY')
+      next(LS_ROUTE_KEY)
+    } else {
+      next()
+    }
+    
+  } else {
+    localStorage.setItem('LS_ROUTE_KEY', to.fullPath);
+    next('/');
+  }  
+}
 const routes = [
 
   // Auth Pages
@@ -19,11 +35,21 @@ const routes = [
     component: () => import('../views/auth/SignUp.vue')
   },
   {
+    path: '/auth/success/:id',
+    name: 'AuthSuccess',
+    component: () => import('../components/AuthSuccess.vue')
+  },
+  {
     path: '/auth/forget-password',
     name: 'AuthForgetPasswordPage',
     component: () => import('../views/auth/ForgetPassword.vue')
   },
-  
+  {
+    path: '/auth/verify-token-register/:token?',//  path: '/auth/verify-token-register/:token?',
+    name: 'AuthVerifyTokenRegisterPage',
+    component: () => import('../views/auth/verifyTokenRegister.vue')
+  },
+
   // User Pages
   {
     path: '/user/dashboard/:username?',
@@ -47,6 +73,7 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
 
 // router.beforeEach((to, from, next) => {
   

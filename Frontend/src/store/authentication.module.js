@@ -20,27 +20,6 @@ export const authentication = {
   },
   // Asynchronous 
   actions: {
-    checkSignin({ dispatch, commit }) {
-    //   var that = this;
-    //   if(that.state.user && that.state.user.refresh_token){
-    //     authenService.refreshToken(that.state.user.refresh_token)
-    //       .then(res => {
-    //         if(res.response_status=='Success'){
-    //           let user = that.state.user;
-    //           user.access_token = res.result.access_token;
-    //           user.refresh_token = res.result.refresh_token;
-    //           commit('signinSuccess', user);
-    //         }else{
-    //           dispatch('signout');
-    //         }
-    //       })
-    //       .catch(err => {
-    //         dispatch('signout');
-    //       });
-    //   }else{
-    //     commit('signout');
-    //   }
-    },
     async signin({ dispatch, commit }, { authen, password }) {
       // authenService.signin(authen, password)
       //   .then(res => {
@@ -67,7 +46,9 @@ export const authentication = {
               res.user_detail[0].firstname,
               res.user_detail[0].lastname,
               '/assets/img/profile/01.jpg',
-              '/assets/img/bg/01.jpg')
+              '/assets/img/bg/01.jpg'
+            )
+
             commit('signinSuccess', resUser);
             commit('updateAlert', { type: 'Success', message: 'Signed in successfully.' });
             resolve(res)
@@ -83,77 +64,80 @@ export const authentication = {
         })
       })
     },
-    async signFacebook({ commit }) {
-      return await new Promise((resolve, reject) => {        
-        authenService.signFacebook().then(
-          res => {
-            console.log(res)
-            /*var resUser = new User(
-              res._id, 
-              res.user_detail[0].firstname, 
-              res.user_detail[0].lastname, 
-              '/assets/img/profile/01.jpg', 
-              '/assets/img/bg/01.jpg')
-            commit('signinSuccess', resUser);            
-            resolve(res)*/
-            resolve(res)
-          },
-          error => {
-            reject(error)
-          }
-        )
-     })
-     /*await authenService.signFacebook().then( res => {
-        localStorage.setItem('user', JSON.stringify(res))
-        console.log('res', res);
-      }).catch( err => {
-        return Promise.reject(err)
-      })*/
-    },
-    async signGoogle({ commit }) {
-      return await new Promise((resolve, reject) => {        
-        authenService.signGoogle().then(
-          res => {
-            console.log(res)
-            /*var resUser = new User(
-              res._id, 
-              res.user_detail[0].firstname, 
-              res.user_detail[0].lastname, 
-              '/assets/img/profile/01.jpg', 
-              '/assets/img/bg/01.jpg')
-            commit('signinSuccess', resUser);            
-            resolve(res)*/
-            resolve(res)
-          },
-          error => {
-            reject(error)
-          }
-        )
-      })
-     /*await authenService.signFacebook().then( res => {
-        localStorage.setItem('user', JSON.stringify(res))
-        console.log('res', res);
-      }).catch( err => {
-        return Promise.reject(err)
-      })*/
-    },
     signout({ dispatch, commit }) {
-      commit('signout');
-      commit('updateAlert', { type: 'Success', message: 'Signed out successfully.' });
+      return new Promise((resolve, reject) => {    
+        authenService.logout().then(
+          response => {
+            commit('signout');
+            commit('updateAlert', { type: 'Success', message: 'Signed out successfully.' });
+            resolve(response)
+          }).catch(err => {
+            console.log(err)
+            reject(err)
+          })
+        });
     },
     register({ commit }, regisuser) {
-      return authenService.register(regisuser).then(
+      return new Promise((resolve, reject) => {   
+      authenService.register(regisuser).then(
         response => {
           commit('updateAlert', { type: 'Success', message: 'Signed up successfully.' });
-          return Promise.resolve(response.data);
+          resolve(response)
         },
         error => {
-          commit('updateAlert', { type: 'Warning', message: error.response.data.message });
           console.log(error.response.data.message)
-          return Promise.reject(error);
+          commit('updateAlert', { type: 'Warning', message: error.response.data.message });
+          reject(error)
         }
-      );
+      ).catch(err => {
+        commit('updateAlert', { type: 'Danger', message: 'System error.' });
+      })
+    })
     },
+    verifyEmailRegister({ commit }, token) {
+      return new Promise((resolve, reject) => {   
+      authenService.verifyEmailRegister(token).then(
+        response => {
+          console.log("verify email success")
+          commit('updateAlert', { type: 'Success', message: 'Verify email successfully.' });
+          resolve(response.data)
+        },
+        error => {
+          console.log(error.response.data.message)
+          commit('updateAlert', { type: 'Warning', message: error.response.data.message });
+          reject(error)
+        }
+      ).catch(err => {
+        commit('updateAlert', { type: 'Danger', message: 'System error.' });
+      })
+    })
+    },
+    checkAuth({ commit }, id) {      
+      return new Promise((resolve, reject) => {    
+        authenService.verify(id).then(
+          response => {
+            var resUser = new User(
+              response._id,
+              response.user_detail[0].firstname,
+              response.user_detail[0].lastname,
+              '/assets/img/profile/01.jpg',
+              '/assets/img/bg/01.jpg'
+            )
+            commit('signinSuccess', resUser);
+            commit('updateAlert', { type: 'Success', message: 'Signed in successfully.' });
+            resolve(response)
+          },
+          error => {
+            commit('signinFailed');
+            commit('updateAlert', { type: 'Warning', message: error.response.data.message });
+            reject(error)
+          }).catch(err => {
+            commit('signinFailed');
+            commit('updateAlert', { type: 'Danger', message: 'System error.' });
+          })
+        });
+    },
+    
   },
   // Synchronous
   mutations: {

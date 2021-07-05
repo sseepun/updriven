@@ -60,13 +60,13 @@
             <div class="grid sm-100">
               <Button 
                 type="Social Google" text="Continue with Google" 
-                classer="d-block btn-color-04 w-full"  @click.prevent="signinGoogle" href="/user/dashboard" 
+                classer="d-block btn-color-04 w-full"  @click.prevent="onClickGoogle" href="/user/dashboard" 
               />
             </div>
             <div class="grid sm-100">
               <Button 
                 type="Social Facebook" text="Continue with Facebook" 
-                classer="d-block btn-color-04 w-full" @click.prevent="signinFacebook"
+                classer="d-block btn-color-04 w-full" @click.prevent="onClickFacebook" href="/user/dashboard"
               />
             </div>
             <div class="grid sm-100">
@@ -108,7 +108,6 @@ export default {
   },
   created() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
-  
   },
   methods: {
     ...mapActions({
@@ -137,23 +136,11 @@ export default {
       }
       this.isValidated = true;
     },
-    signinFacebook() {
-      this.signFacebook().then( () => {
-          /*this.$router.push({ 
-            name: 'UserDashboardPage'
-          });*/
-        }).catch( err => {
-          
-        })
+    onClickFacebook() {
+      window.location = `${process.env.VUE_APP_API_URL}/apis/auth/facebook`
     },
-    signinGoogle() {
-      this.signGoogle().then( () => {
-          /*this.$router.push({ 
-            name: 'UserDashboardPage'
-          });*/
-        }).catch( err => {
-          
-        })
+    onClickGoogle() {
+      window.location = `${process.env.VUE_APP_API_URL}/apis/auth/google`
     }
   },
 }

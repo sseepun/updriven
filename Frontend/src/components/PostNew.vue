@@ -53,7 +53,7 @@
                       <FormGroup 
                         type="select" value="" placeholder="Choose category" :required="true" 
                         classer="w-full" 
-                        :options="_list" 
+                        :options="option_ilst" 
                       />
                     </div>
                   </div>
@@ -152,7 +152,7 @@ export default {
   computed: {
     ...mapGetters({
       user: 'authentication/user',
-      _list: 'category/_list',
+      option_ilst: 'category/option_ilst',
     })
   },
   methods: {

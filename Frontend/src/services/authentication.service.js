@@ -6,7 +6,10 @@ export const authenService = {
     signin,
     signFacebook,
     signGoogle,
-    register
+    register,
+    verify,
+    verifyEmailRegister,
+    logout
 }
 
 function signin(authen, password) {
@@ -40,9 +43,11 @@ function signFacebook() {
           url: `auth/facebook`
         })
         .then(res => {
+          console.log('response: ',res)
           resolve(res.data);
         })
         .catch(err => {
+          console.log('error: ',err)
           reject(err);
         });
     });
@@ -80,11 +85,56 @@ function register(user) {
         withCredentials: true,
       })
       .then(res => {
-        console.log("success in service")
         resolve(res.data);
       })
       .catch(err => {
         reject(err);
       });
   });
+}
+
+function verify(id) {
+    return new Promise((resolve, reject) => {
+        axios({
+          method: 'GET',
+          url: `/auth/success/${id}`
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+}
+
+function logout() {
+    return new Promise((resolve, reject) => {
+        axios({
+          method: 'GET',
+          url: `/auth/logout`
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+}
+
+function verifyEmailRegister(token) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'GET',
+      url: `auth/verify/${token}`
+    })
+    .then(res => {
+      console.log(res.data)
+      resolve(res.data);
+    })
+    .catch(err => {
+      reject(err);
+    });
+});
 }

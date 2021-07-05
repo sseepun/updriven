@@ -20,6 +20,8 @@ const Post = mongoose.model(
         content:  String,
         media: Array,
         sentiment_count: { type: Number, default: 0 },
+        comment_count: { type: Number, default: 0 },
+        visible_to: { type: Number },
         status:  Boolean,
         share: [{
             type: mongoose.Schema.Types.ObjectId,

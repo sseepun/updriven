@@ -33,7 +33,7 @@
 
     <div class="middle-container">
       <PostNew @on-post="(post) => createPost(post)" />
-      <PostMultiple ref="posts" />
+      <PostMultiple ref="posts"/>
     </div>
 
   </div>
@@ -43,13 +43,14 @@
 import TopNav from '../../components/TopNav';
 import LeftNav from '../../components/LeftNav';
 import PostNew from '../../components/PostNew';
-import PostMultiple from '../../components/PostMultiple';
+import PostMultiple from '../../components/PostMultiple_Profile';
 import Banner from '../../components/Banner';
 import SectionInfo from '../../components/SectionInfo';
 import SectionPhotos from '../../components/SectionPhotos';
 import SectionFriends from '../../components/SectionFriends';
 import SectionInterested from '../../components/SectionInterested';
 import SectionLive from '../../components/SectionLive';
+import {mapGetters, mapActions, mapState} from "vuex"
 
 export default {
   name: 'UserProfilePage',
@@ -65,6 +66,14 @@ export default {
     SectionInterested,
     SectionLive
   },
+  computed: {
+    ...mapGetters({
+      getPost:'post/getPost'
+    })
+  },
+  created() {
+    this.fetchPost_Owner();
+  },
   mounted() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
   },
@@ -78,7 +87,10 @@ export default {
       }else{
         window.location.href = tab.link;
       }
-    }
+    },
+    ...mapActions({
+      fetchPost_Owner:'post/fetchPost_Owner'
+    })
   }
 }
 </script>

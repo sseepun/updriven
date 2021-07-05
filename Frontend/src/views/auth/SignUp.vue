@@ -148,8 +148,8 @@ export default {
         )
         if (this.dataset.firstname && this.dataset.email && this.dataset.lastname && this.dataset.password) {
           this.register(regisUser).then(
-            () => {
-              console.log("success in handle")
+            response => {
+              // this.$router.push('/auth/vefify-token-register/'+response.token) //for test
               this.$router.push('/');
             },
             error => {

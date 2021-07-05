@@ -1,0 +1,23 @@
+[
+    { "category_name": "Accountants", "keyword": ["Accountants", "Account"], "is_featured": true, "status": true },
+    { "category_name": "Actors", "keyword": ["Actors"], "is_featured": true, "status": true },
+    { "category_name": "Airline Pilot", "keyword": ["Airline", "Pilot", "Capitan"], "is_featured": true, "status": true },
+    { "category_name": "Architects", "keyword": ["Architects"], "is_featured": true, "status": true },
+    { "category_name": "Chef", "keyword": ["Chef", "cook"], "is_featured": true, "status": true },
+    { "category_name": "Computer Programmer", "keyword": ["Computer", "Programmer", "Developer"], "is_featured": true, "status": true },
+    { "category_name": "Creative Writer", "keyword": ["Creative", "Writer"], "is_featured": true, "status": true },
+    { "category_name": "Dentist", "keyword": ["Dentist", "tooth"], "is_featured": true, "status": true },
+    { "category_name": "Engineer", "keyword": ["Engineer"], "is_featured": true, "status": true },
+    { "category_name": "Electrician", "keyword": ["Electrician", "Electronic"], "is_featured": true, "status": true },
+    { "category_name": "Farmer", "keyword": ["Farmer"], "is_featured": true, "status": true },
+    { "category_name": "Fire Fighter", "keyword": ["Fire Fighter"], "is_featured": true, "status": true },
+    { "category_name": "Graphic Designer", "keyword": ["Graphic Designer", "3D"], "is_featured": true, "status": true },
+    { "category_name": "Historian", "keyword": ["Historian"], "is_featured": true, "status": true },
+    { "category_name": "Lawyers", "keyword": ["Lawyers"], "is_featured": true, "status": true },
+    { "category_name": "Military Officer", "keyword": ["Military Officer", "Wars"], "is_featured": true, "status": true },
+    { "category_name": "Musicians", "keyword": ["Musicians", "K-Pop"], "is_featured": true, "status": true },
+    { "category_name": "Nurse", "keyword": ["Nurse"], "is_featured": true, "status": true },
+    { "category_name": "Pharmacists", "keyword": ["Pharmacists", "Drug"], "is_featured": true, "status": true },
+    { "category_name": "Police Officer", "keyword": ["Police Officer" , "NYPD"], "is_featured": true, "status": true }
+  ]
+  

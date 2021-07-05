@@ -5,7 +5,7 @@ const Category = mongoose.model(
     "Category",
     new mongoose.Schema({
         category_name : String,
-        keyword : [],
+        keyword : [{ type: String }],
         is_featured : Boolean,
         status : Boolean,
     }, { timestamps: true }).plugin(sanitizerPlugin)
