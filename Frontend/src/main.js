@@ -24,3 +24,27 @@ app.component('PostSingle', PostSingle)
 // store.dispatch('checkSignin')
 app.use(store)
 app.use(store).use(router).mount('#app')
+
+axios.interceptors.response.use(
+    
+    response => {
+        return response
+    },
+    err => {        
+        
+        if(!err.response){
+            return Promise.reject(err)
+        }
+        else if (err.response.status === 401 && err.response.data.message === 'Exprired Token'){
+            store.dispatch('authentication/signout')
+            router.push('/')
+        }
+        
+        else if (err.response.status === 401 && err.response.data.message === 'Not logged in') {
+                store.dispatch('authentication/signout')
+                router.push('/')
+        }
+
+        return Promise.reject(err)
+    }
+)
