@@ -36,6 +36,7 @@ function test_list() {
       headers: authHeader()
     })
     .then(res => {
+      console.log('cat_list',res.data)
       resolve(res.data);
     })
     .catch(err => {

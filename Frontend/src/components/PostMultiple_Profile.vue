@@ -38,24 +38,121 @@ export default {
       user: 'authentication/user',
       getPost: 'post/getPost',
       getStatusPost: 'post/getStatusPost',
-      getLoading: 'post/getLoading'
+      isLoading: 'post/isLoading'
     })
   },
   methods: {
     loadPosts() {
-
+      // for(let i=0; i<4; i++){
+      //   this.posts.push({
+      //     id: this.posts.length+1,
+      //     image: `/assets/img/post/0${Math.round(Math.random()*2+1)}.jpg`,
+      //     title: 'The Top 5 Programming Languages in 2021 to get a job',
+      //     desc: `
+      //       Want to get a developer job in 2021? Some languages are better than others.
+      //       <br><br>
+      //       Here's a top 5 (we actually talk about 9 languages total) --- 
+      //       based on real year-end data, not just opinion or generic advice.
+      //     `,
+      //     createdAt: new Date(),
+      //     user: {
+      //       id: 1,
+      //       firstname: 'Emilia',
+      //       lastname: 'Bubu',
+      //       avatar: '/assets/img/profile/01.jpg'
+      //     },
+      //     counts: {
+      //       likes: 1235
+      //     },
+      //     actions: {
+      //       shared: false,
+      //       liked: true,
+      //       followed: true,
+      //     },
+      //     comments: [
+      //       {
+      //         comment: 'Can mobile\'s notification Led light be controlled by python?',
+      //         createdAt: new Date(),
+      //         user: {
+      //           id: 1,
+      //           firstname: 'Emilia',
+      //           lastname: 'Bubu',
+      //           avatar: '/assets/img/profile/01.jpg'
+      //         },
+      //         counts: {
+      //           likes: 5
+      //         },
+      //         actions: {
+      //           liked: true
+      //         }
+      //       },
+      //       {
+      //         comment: 'Can mobile\'s notification Led light be controlled by python?',
+      //         createdAt: new Date(),
+      //         user: {
+      //           id: 1,
+      //           firstname: 'Emilia',
+      //           lastname: 'Bubu',
+      //           avatar: '/assets/img/profile/01.jpg'
+      //         },
+      //         counts: {
+      //           likes: 5
+      //         },
+      //         actions: {
+      //           liked: true
+      //         }
+      //       },
+      //       {
+      //         comment: 'Can mobile\'s notification Led light be controlled by python?',
+      //         createdAt: new Date(),
+      //         user: {
+      //           id: 1,
+      //           firstname: 'Emilia',
+      //           lastname: 'Bubu',
+      //           avatar: '/assets/img/profile/01.jpg'
+      //         },
+      //         counts: {
+      //           likes: 5
+      //         },
+      //         actions: {
+      //           liked: true
+      //         }
+      //       },
+      //       {
+      //         comment: 'Can mobile\'s notification Led light be controlled by python?',
+      //         createdAt: new Date(),
+      //         user: {
+      //           id: 1,
+      //           firstname: 'Emilia',
+      //           lastname: 'Bubu',
+      //           avatar: '/assets/img/profile/01.jpg'
+      //         },
+      //         counts: {
+      //           likes: 5
+      //         },
+      //         actions: {
+      //           liked: true
+      //         }
+      //       }
+      //     ]
+      //   });
+      // }
     },
     onScroll() {
       var lazyLoadPosts = this.$refs['lazyLoadPosts'];
       if(lazyLoadPosts){
         var top = lazyLoadPosts.getBoundingClientRect().top;
         var innerHeight = window.innerHeight;
-        if(top - innerHeight < 0){                 
+
+        if(top - innerHeight < 0){   
+
           if(this.getStatusPost.hasNext == true) {
-            if ( this.getLoading == false) {
+            
+            if ( this.isLoading == false) {
               this.fetchPost_Owner()
             }
             this.contentLoading = "Loading..."
+
           } else if (this.getStatusPost.hasNext == false) {
             this.contentLoading = "ending up..."
           }

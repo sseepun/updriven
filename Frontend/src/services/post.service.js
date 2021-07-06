@@ -4,7 +4,8 @@ const axios = require('axios');
 
 export const postService = {
     createPost,
-    fetchPost_Owner
+    fetchPost_Owner,
+    fetchComment
 }
 
 function createPost(postDetail) {
@@ -16,9 +17,11 @@ function createPost(postDetail) {
           withCredentials: true,
         })
         .then(res => {
+          console.log('res', res)
           resolve(res.data);
         })
         .catch(err => {
+          console.log('err', err)
           reject(err);
         });
     });
@@ -44,14 +47,13 @@ function fetchPost_Owner(next_previous) {
   })
 }
 
-function fetchComment() {
+function fetchComment(postID) {
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
       url: `feed/comment`,
       data: {
-        next: (next_previous.hasNext == true? next_previous.nextID: ''),
-        // previous: (next_previous.hasPrevious? '': '')
+        post_id: postID,
       },
       withCredentials: true,
     })
