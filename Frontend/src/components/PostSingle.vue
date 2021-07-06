@@ -116,17 +116,17 @@
                   <span v-if="c.counts.likes">
                     {{c.counts.likes}}
                   </span>
-                </a> 
+                </a>
               </p>
             </div>
           </div>
         </div>
       </div>
-      <div v-if="selfPost.comments.length > 3" class="mt-3">
+      <div v-if="selfPost.counts.comments > 3" class="mt-3">
         <a 
-          v-if="commentLimit < selfPost.comments.length - 1"  
+          v-if="commentLimit < selfPost.counts.comments - 1"  
           class="p sm fw-400 color-gray h-color-01" href="javascript:" 
-          @click="commentLimit = commentLimit + 3"
+          @click="callComment()"
         >
           <u>View more comments</u>
         </a>
@@ -184,6 +184,9 @@ export default {
     })
   },
   methods: {
+    ...mapActions({
+      fetchComment: 'post/fetchComment',
+    }),
     formatNumber(value, digits=2) {
       let val = (value/1).toFixed(digits);
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -223,6 +226,10 @@ export default {
       });
       this.comment = '';
       this.commentLimit += 1;
+    },
+    callComment() {
+      console.log('called comment this post');
+      this.fetchComment('test ID')
     }
   }
 }
