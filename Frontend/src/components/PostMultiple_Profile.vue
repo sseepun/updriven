@@ -43,9 +43,7 @@ export default {
   },
   methods: {
     loadPosts() {
-      
-      console.log(this.posts)
-      console.log(this.getPost)
+
     },
     onScroll() {
       var lazyLoadPosts = this.$refs['lazyLoadPosts'];
