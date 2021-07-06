@@ -47,3 +47,13 @@ export function changeStructurePost(posts) {
 
     return temp_array;
 }
+
+export class _create {
+    constructor(subject = '', content = '', category = '', media = null, visible_to = '1') {
+      this.subject = subject;
+      this.content = content;
+      this.category = category;
+      this.media = media;
+      this.visible_to = visible_to;
+    }
+}
