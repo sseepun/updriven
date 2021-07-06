@@ -8,6 +8,7 @@ isLoggedIn = (req, res, next) => {
             if (err) {
                 return res.status(500).send({message: err});
             }
+            console.log(user);
             req.user = user
             req.userId = user._id;
             next();

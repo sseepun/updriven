@@ -7,7 +7,7 @@
           <img src="/assets/img/icon/education.png" alt="Image Icon" />
         </div>
         <p class="xs fw-500 color-gray">
-          Study <span class="color-dark">Columbia University</span>
+          Study <span class="color-dark">{{user.organization}}</span>
         </p>
       </div>
       <div class="info">
@@ -15,7 +15,7 @@
           <img src="/assets/img/icon/pin.png" alt="Image Icon" />
         </div>
         <p class="xs fw-500 color-gray">
-          Lives in <span class="color-dark">Broadway, New York</span>
+          Lives in <span class="color-dark">{{user.province}}, {{user.state_id}}</span>
         </p>
       </div>
       <div class="info">
@@ -52,12 +52,17 @@ import {mapGetters, mapActions, mapMutations} from "vuex"
 export default {
   name: 'SectionInfo',
   props: {
-    user: { type: Object, default: {} }
+    //user: { type: Object, default: {} }
   },
   date() {
     return {
-      user: this.$store.getters.user
+     // user: this.$store.getters.user
     }
+  },
+   computed: {
+    ...mapGetters({
+      user: 'authentication/user',
+    })
   },
   
 }

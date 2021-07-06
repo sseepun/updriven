@@ -31,15 +31,9 @@ axios.interceptors.response.use(
         return response
     },
     err => {        
-        
         if(!err.response){
             return Promise.reject(err)
         }
-        else if (err.response.status === 401 && err.response.data.message === 'Exprired Token'){
-            store.dispatch('authentication/signout')
-            router.push('/')
-        }
-        
         else if (err.response.status === 401 && err.response.data.message === 'Not logged in') {
                 store.dispatch('authentication/signout')
                 router.push('/')

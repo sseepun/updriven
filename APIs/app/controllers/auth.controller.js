@@ -38,7 +38,7 @@ exports.signup = async (req, res) => {
         const user = new User({
             email: req.body.email,
             password: bcrypt.hashSync(req.body.password, 8),
-            status: true,
+            status: false,
         });
     
         const user_detail = new User_detail({
@@ -56,19 +56,19 @@ exports.signup = async (req, res) => {
         });
 
         // create email with verify link : /auth/verifyRegister/:token
-        // const email_html = fs.readFileSync(path.join(__dirname, '../assets/fromEmail/register/index.html'), 'utf8')
-        // let template =  handlebars.compile(email_html)
-        // let replacements = { verifyLink: process.env.EMAIL_DOMAIN + 'auth/verify-token-register/' + token };
-        // let complete_html = template(replacements);
-        // const msg = {
-        //     to: user.email,
-        //     from: process.env.EMAIL_FROM,
-        //     subject: "Email verification at UpDriven",
-        //     html: complete_html
-        //   }
-        // const response = await sgMail.send(msg)
-        // console.log(response[0].statusCode)
-        // console.log(response[0].headers)
+        const email_html = fs.readFileSync(path.join(__dirname, '../assets/fromEmail/register/index.html'), 'utf8')
+        let template =  handlebars.compile(email_html)
+        let replacements = { verifyLink: process.env.EMAIL_DOMAIN + 'auth/verify-token-register/' + token };
+        let complete_html = template(replacements);
+        const msg = {
+            to: user.email,
+            from: process.env.EMAIL_FROM,
+            subject: "Email verification at UpDriven",
+            html: complete_html
+          }
+        const response = await sgMail.send(msg)
+        console.log(response[0].statusCode)
+        console.log(response[0].headers)
 
         res.status(200).send({token: token});
     }

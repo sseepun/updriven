@@ -12,7 +12,6 @@ exports.getComments = async (req, res) => {
             let value;
             for (const thread in threads) {
                 value = threads[thread];
-
                 if (thread.toString() === comment.parent_comment.toString()) {
                     value.children[comment._id] = comment;
                     return;

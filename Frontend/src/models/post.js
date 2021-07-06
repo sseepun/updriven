@@ -48,12 +48,22 @@ export function changeStructurePost(posts) {
     return temp_array;
 }
 
+export function changeStructureComment(comments) {
+    console.log(typeof comments)
+    console.log(comments['60e2f560be3a9179b60520b3'])
+    let temp_array = []
+    for(let i = 0; i < comments.length; i++){
+        console.log(i)
+    }
+}
+
 export class _create {
-    constructor(subject = '', content = '', category = '', media = null, visible_to = '1') {
+    constructor(subject = '', content = '', category = '', PVmedia = [], fileMedia = [], visible_to = '1') {
       this.subject = subject;
       this.content = content;
       this.category = category;
-      this.media = media;
+      this.PVmedia = PVmedia;
+      this.fileMedia = fileMedia;
       this.visible_to = visible_to;
     }
 }

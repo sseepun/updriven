@@ -17,11 +17,9 @@ function createPost(postDetail) {
           withCredentials: true,
         })
         .then(res => {
-          console.log('res', res)
           resolve(res.data);
         })
         .catch(err => {
-          console.log('err', err)
           reject(err);
         });
     });
@@ -58,7 +56,7 @@ function fetchComment(postID) {
       withCredentials: true,
     })
     .then(res => {
-      resolve(res.data);
+      resolve(res);
     })
     .catch(err => {
       reject(err);
