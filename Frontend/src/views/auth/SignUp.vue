@@ -102,11 +102,11 @@
             </div>
           </div>
           
-          <div v-if="step == 1">
-            <div class="logo" data-aos="fade-up" data-aos-delay="0">
+          <div v-if="step == 1" data-aos="fade-up" data-aos-delay="0">
+            <div class="logo">
               <img src="/assets/img/logo.png" alt="Image Logo" />
             </div>
-            <h4 class="fw-600 text-center pt-4 mt-6">
+            <h4 class="fw-600 text-center pt-4 mt-4">
               Sign Up Successful
             </h4>
             <p class="lg text-center mt-2">

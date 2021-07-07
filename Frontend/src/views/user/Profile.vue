@@ -11,7 +11,7 @@
 
     <Banner />
     
-    <div class="right-container" data-aos="fade-up" data-aos-delay="150">
+    <div ref="rightContainer" class="right-container" data-aos="fade-up" data-aos-delay="150">
       <div class="wrapper" data-simplebar>
         <div class="p-3 bshadow">
           <SectionInfo />
@@ -31,9 +31,9 @@
       </div>
     </div>
 
-    <div class="middle-container">
+    <div ref="middleContainer" class="middle-container">
       <PostNew @on-post="(post) => createPost(post)" />
-      <PostMultiple ref="posts"/>
+      <PostMultiple ref="posts" />
     </div>
 
   </div>
@@ -76,6 +76,7 @@ export default {
   },
   mounted() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
+    this.$refs.middleContainer.style.minHeight = (this.$refs.rightContainer.clientHeight*2.5)+'px';
   },
   methods: {
     createPost(post) {
