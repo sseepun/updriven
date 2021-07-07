@@ -55,12 +55,14 @@ export const post = {
                 formData.append("visible_to", state._create.visible_to);
                 postService.createPost(formData)
                 .then( res => {
+                    const post = changeStructurePost([res.post]);
+                    commit('fetchCreated', post)
                     commit('clear_create')
                     commit('authentication/updateAlert', { type: 'Success', message: 'Post created successfully.' }, { root: true })
                     resolve(res)
                 })
                 .catch( err => {
-                    commit('authentication/updateAlert', { type: 'Warning', message: error.response.data.message }, { root: true })
+                    commit('authentication/updateAlert', { type: 'Warning', message: err.response.data.message }, { root: true })
                     reject(err)
                 })
             })
@@ -70,11 +72,11 @@ export const post = {
         /**
          * Delete post
          */
-         delete({ dispatch }, id) {
+         delete({ commit }, id) {
             return new Promise((resolve, reject) => {
                 postService.deletePost(id)
                 .then( res => {
-                    //await dispatch('fetchPost_Owner')
+                    commit('clearDeleted', id)
                     commit('authentication/updateAlert', { type: 'Success', message: 'Post deleted successfully.' }, { root: true })
                     resolve(res)
                 })
@@ -123,6 +125,19 @@ export const post = {
 
         clear_create(state) {
             state._create = new _create();
+        },
+        clearDeleted(state, id) {
+            var i = 0;
+            while (i < state.Post.length) {
+                if (state.Post[i].id == id) {
+                    state.Post.splice(i, 1);
+                } else {
+                    ++i;
+                }
+            }
+        },
+        fetchCreated(state, newPost) {
+            state.Post = newPost.concat(state.Post)
         }
     }
 }
