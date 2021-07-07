@@ -27,8 +27,7 @@
           <h4 class="fw-600 text-center pt-4 mt-6">
             Sign In
           </h4>
-          <!-- <form action="/user/dashboard" method="GET"> -->
-          <form @submit="handleSubmit">
+          <form @submit.prevent="handleSubmit">
             <div class="grids">
               <div class="grid sm-100">
                 <FormGroup 
@@ -80,6 +79,7 @@
 
     </div>
   </section>
+  <AlertPopup :alert="alert" />
 </template>
 
 <script>
@@ -98,11 +98,11 @@ export default {
   },
   data() {
     return {
+      alert: {},
       user: {
         authen: '',
         password: '',
-        isValidated: false,
-        text_notification: ''
+        isValidated: false
       }
     }
   },
@@ -117,30 +117,27 @@ export default {
     }),
 
     handleSubmit(e) {
-      e.preventDefault()
-
-      // Check condition invalid
       if (true) {
         this.signin({
           authen: this.user.authen,
           password: this.user.password
         }).then( () => {
+          this.alert = { type: 'Info', message: 'Sign in successfully' };
           this.$router.push({ 
             name: 'UserDashboardPage'
           });
         }).catch( err => {
-          if (err.response.status == 401) {
-            this.text_notification = 'username or password is incorrect'
-          }
-        })
+          this.alert = { type: 'Warning', message: 'Username or password is incorrect' };
+          this.user.password = '';
+        });
       }
       this.isValidated = true;
     },
     onClickFacebook() {
-      window.location = `${process.env.VUE_APP_API_URL}/apis/auth/facebook`
+      window.location = `${process.env.VUE_APP_API_URL}/apis/auth/facebook`;
     },
     onClickGoogle() {
-      window.location = `${process.env.VUE_APP_API_URL}/apis/auth/google`
+      window.location = `${process.env.VUE_APP_API_URL}/apis/auth/google`;
     }
   },
 }

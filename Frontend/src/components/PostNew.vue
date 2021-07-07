@@ -55,7 +55,7 @@
                         placeholder="Choose category" 
                         :required="true" 
                         classer="w-full" 
-                        :options="option_ilst"
+                        :options="optionList"
                         :value="createDetail.category"                         
                         @input="createDetail.category = $event" 
                       />
@@ -166,7 +166,7 @@ export default {
   computed: {
     ...mapGetters({
       user: 'authentication/user',
-      option_ilst: 'category/option_ilst',
+      optionList: 'category/option_ilst',
       createDetail: 'post/_create'
     })
   },

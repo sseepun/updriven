@@ -19,90 +19,107 @@
         </div>
       </div>
 
-      <div class="auth-container" data-aos="fade-up" data-aos-delay="0">
+      <div class="auth-container">
         <div class="auth-wrapper">
-          <div class="logo">
-            <img src="/assets/img/logo.png" alt="Image Logo" />
-          </div>
-          <h4 class="fw-600 text-center pt-4 mt-6">
-            Sign Up
-          </h4>
-          <form @submit="handleRegister">
-            <div class="grids">
-              <div class="grid sm-50">
-                <FormGroup 
-                  type="text" label="First Name" :required="true" 
-                  classer="label-sm" wrapperClass="fgray" 
-                  :value="dataset.firstname" @input="dataset.firstname = $event" 
-                />
-              </div>
-              <div class="grid sm-50">
-                <FormGroup 
-                  type="text" label="Last Name" :required="true" 
-                  classer="label-sm" wrapperClass="fgray" 
-                  :value="dataset.lastname" @input="dataset.lastname = $event" 
-                />
-              </div>
-              <div class="grid sm-100">
-                <FormGroup 
-                  type="email" label="Email" :required="true" 
-                  classer="label-sm" wrapperClass="fgray" 
-                  :value="dataset.email" @input="dataset.email = $event" 
+
+          <div v-if="step == 0" data-aos="fade-up" data-aos-delay="0">
+            <div class="logo">
+              <img src="/assets/img/logo.png" alt="Image Logo" />
+            </div>
+            <h4 class="fw-600 text-center pt-4 mt-6">
+              Sign Up
+            </h4>
+            <form @submit.prevent="handleRegister">
+              <div class="grids">
+                <div class="grid sm-50">
+                  <FormGroup 
+                    type="text" label="First Name" :required="true" 
+                    classer="label-sm" wrapperClass="fgray" 
+                    :value="dataset.firstname" @input="dataset.firstname = $event" 
+                  />
+                </div>
+                <div class="grid sm-50">
+                  <FormGroup 
+                    type="text" label="Last Name" :required="true" 
+                    classer="label-sm" wrapperClass="fgray" 
+                    :value="dataset.lastname" @input="dataset.lastname = $event" 
+                  />
+                </div>
+                <div class="grid sm-100">
+                  <FormGroup 
+                    type="email" label="Email" :required="true" 
+                    classer="label-sm" wrapperClass="fgray" 
+                    :value="dataset.email" @input="dataset.email = $event" 
+                    
+                  />
+                </div>
+                <div class="grid sm-100">
+                  <FormGroup 
+                    type="password" label="Password" :required="true" 
+                    classer="label-sm" wrapperClass="fgray" 
+                    :value="dataset.password" @input="dataset.password = $event" 
+                  />
+                </div>
+                <div class="grid sm-100">
+                  <CheckBoxSmall
+                    text="Creating an account means you’re okay with our 
+                      <a class='color-01 h-color-black' href='#'>Terms of Service</a>, 
+                      <a class='color-01 h-color-black' href='#'>Privacy Policy</a>, and our default 
+                      <a class='color-01 h-color-black' href='#'>Notification Settings</a>."
+                    :required="true"
+                  />
+                </div>
+                <div class="grid sm-100">
+                  <Button 
+                    type="submit" text="CREATE ACCOUNT" 
+                    classer="d-block btn-color-03 w-full" 
                   
-                />
+                  />
+                </div>
               </div>
+            </form>
+            <div class="ss-sep pt-2 mt-6">
+              <p class="xs fw-400">Or</p>
+            </div>
+            <div class="grids mt-4">
               <div class="grid sm-100">
-                <FormGroup 
-                  type="password" label="Password" :required="true" 
-                  classer="label-sm" wrapperClass="fgray" 
-                  :value="dataset.password" @input="dataset.password = $event" 
-                />
-              </div>
-              <div class="grid sm-100">
-                <CheckBoxSmall
-                  text="Creating an account means you’re okay with our 
-                    <a class='color-01 h-color-black' href='#'>Terms of Service</a>, 
-                    <a class='color-01 h-color-black' href='#'>Privacy Policy</a>, and our default 
-                    <a class='color-01 h-color-black' href='#'>Notification Settings</a>."
-                  :required="true"
+                <Button 
+                  type="Social Google" text="Continue with Google" 
+                  classer="d-block btn-color-04 w-full" href="/user/dashboard" 
                 />
               </div>
               <div class="grid sm-100">
                 <Button 
-                  type="submit" text="CREATE ACCOUNT" 
-                  classer="d-block btn-color-03 w-full" 
-                
+                  type="Social Facebook" text="Continue with Facebook" 
+                  classer="d-block btn-color-04 w-full" href="/user/dashboard" 
                 />
               </div>
-            </div>
-          </form>
-          <div class="ss-sep pt-2 mt-6">
-            <p class="xs fw-400">Or</p>
-          </div>
-          <div class="grids mt-4">
-            <div class="grid sm-100">
-              <Button 
-                type="Social Google" text="Continue with Google" 
-                classer="d-block btn-color-04 w-full" href="/user/dashboard" 
-              />
-            </div>
-            <div class="grid sm-100">
-              <Button 
-                type="Social Facebook" text="Continue with Facebook" 
-                classer="d-block btn-color-04 w-full" href="/user/dashboard" 
-              />
-            </div>
-            <div class="grid sm-100">
-              <router-link to="/auth/signin" class="p xs color-01 h-color-black">
-                Already a member? Sign in
-              </router-link>
+              <div class="grid sm-100">
+                <router-link to="/auth/signin" class="p xs color-01 h-color-black">
+                  Already a member? Sign in
+                </router-link>
+              </div>
             </div>
           </div>
+          
+          <div v-if="step == 1">
+            <div class="logo" data-aos="fade-up" data-aos-delay="0">
+              <img src="/assets/img/logo.png" alt="Image Logo" />
+            </div>
+            <h4 class="fw-600 text-center pt-4 mt-6">
+              Sign Up Successful
+            </h4>
+            <p class="lg text-center mt-2">
+              Please check your email and follow our verification process. Thank you!
+            </p>
+          </div>
+
         </div>
       </div>
 
     </div>
   </section>
+  <AlertPopup :alert="alert" />
 </template>
 
 <script>
@@ -125,6 +142,8 @@ export default {
   },
   data() {
     return {
+      step: 0,
+      alert: {},
       dataset: {
         firstname: '',
         lastname: '',
@@ -139,7 +158,6 @@ export default {
       
     }),
     handleRegister(e) {
-        e.preventDefault()
         let regisUser = new RegisUser(
           this.dataset.password,
           this.dataset.email,
@@ -149,14 +167,15 @@ export default {
         if (this.dataset.firstname && this.dataset.email && this.dataset.lastname && this.dataset.password) {
           this.register(regisUser).then(
             response => {
-              // this.$router.push('/auth/vefify-token-register/'+response.token) //for test
-              this.$router.push('/');
+              this.step = 1;
+              // this.$router.push('/');
             },
             error => {
               this.message =
                 (error.response && error.response.data) ||
                 error.message ||
                 error.toString();
+              this.alert = { type: 'Warning', message: this.message };
             }
           );
         }

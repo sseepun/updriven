@@ -1,4 +1,27 @@
 
+/* Alert Popup */
+.alert-popup{
+    position:fixed; top:1rem; right:-1rem; opacity:0; z-index:100;
+    pointer-events:none; transition:right .6s, opacity .6s;
+}
+.alert-popup.active{right:1rem; opacity:.95;}
+.alert-popup > .wrapper{
+    position:relative; display:flex; align-items:flex-start; width:16rem; padding:1rem;
+    border-radius:.25rem; color:#ffffff; background:transparent;
+    transition:background .25s;
+}
+.alert-popup.info > .wrapper{background:#009efb;}
+.alert-popup.success > .wrapper{background:#55ce63;}
+.alert-popup.warning > .wrapper{background:#ffbc34;}
+.alert-popup.danger > .wrapper{background:#f62d51;}
+.alert-popup .icon{display:block; width:1.75rem; margin:0 .75rem 0 0;}
+.alert-popup .icon img{display:block; width:100%; height:auto;}
+.alert-popup .text-container{width:100%;}
+.alert-popup .icon + .text-container{width:calc(100% - 2.25rem);}
+.alert-popup h6{font-size:1.0625rem; font-weight:400;}
+.alert-popup p{font-size:.9375rem; font-weight:300; margin:.125rem 0 0 0;}
+
+
 /* App Container */
 .app-container{
     width:100%; max-width:1400px; position:relative; padding:0 1rem; margin:1rem auto 0 auto;

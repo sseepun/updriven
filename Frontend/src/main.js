@@ -8,12 +8,14 @@ const app = createApp(App)
 axios.defaults.baseURL = (process.env.VUE_APP_API_URL + '/apis')
 axios.defaults.withCredentials = true;
 
+import AlertPopup from './components/AlertPopup'
 import Avatar from './components/Avatar'
 import Button from './components/Button'
 import FormGroup from './components/FormGroup'
 import SpecialCard01 from './components/SpecialCard01'
 import SpecialCard02 from './components/SpecialCard02'
 import PostSingle from './components/PostSingle'
+app.component('AlertPopup', AlertPopup)
 app.component('Avatar', Avatar)
 app.component('Button', Button)
 app.component('FormGroup', FormGroup)

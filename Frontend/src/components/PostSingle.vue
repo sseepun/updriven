@@ -1,8 +1,10 @@
 <template>
   <div v-if="user" class="post bshadow">
+
     <div v-if="selfPost.image.length != 0" class="ss-img horizontal no-hover">
       <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\'); background-size: 100%;'"></div>
     </div>
+
     <div class="text-container">
       <div class="title-container">
         <h6 class="title fw-600">
@@ -15,13 +17,13 @@
           <div class="popup-options bshadow" :class="{ 'active': isActivePopup }">
             <div class="wrapper">
               <div class="menu-container">
-                <a class="menu color-gray h-color-01" href="#">
+                <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/bell-02.png" alt="Image Icon" />
                   </div>
                   <div class="text">Turn on notifications for this post</div>
                 </a>
-                <a class="menu color-gray h-color-01" href="#">
+                <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/embed.png" alt="Image Icon" />
                   </div>
@@ -29,25 +31,25 @@
                 </a>
               </div>
               <div class="menu-container">
-                <a class="menu color-gray h-color-01" href="#">
+                <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/drag.png" alt="Image Icon" />
                   </div>
                   <div class="text">Hide Post</div>
                 </a>
-                <a class="menu color-gray h-color-01" href="#">
+                <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/clock.png" alt="Image Icon" />
                   </div>
                   <div class="text">Snooze Derrick Sheril for 30 days</div>
                 </a>
-                <a class="menu color-gray h-color-01" href="#">
+                <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/unfollow.png" alt="Image Icon" />
                   </div>
                   <div class="text">Unfollow Derrick Sheril</div>
                 </a>
-                <a class="menu color-gray h-color-01" href="#">
+                <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/report.png" alt="Image Icon" />
                   </div>
@@ -55,7 +57,7 @@
                 </a>
               </div>
               <div class="menu-container" v-if="selfPost.user.id == user.id">
-                <a class="menu color-gray h-color-01" href="#" @click="onClickDelete">
+                <a class="menu color-gray h-color-01" href="javascript:" @click="onClickDelete">
                   <div class="icon">
                     <img src="/assets/img/icon/close.png" alt="Image Icon" />
                   </div>
