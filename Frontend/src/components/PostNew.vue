@@ -45,12 +45,6 @@
                   </a>
                 </div>
               </div>
-              create: {{createDetail}}
-              <div v-if="createDetail.media">
-                <div v-for="media in createDetail.media">
-                  {{media.name}}
-                </div>
-              </div>
               
               <div :class="tabActiveIndex == 0 ? 'd-block': 'd-none'">
                 <form action="/" method="GET" @submit.prevent="onSubmitPost">
@@ -156,20 +150,14 @@
 </template>
 
 <script>
-import {mapGetters, mapActions, mapMutations} from "vuex"
+import {mapGetters, mapActions} from "vuex"
 
 export default {
   name: 'NewPost',
   data() {
     return {
-      // user: this.$store.getters.user,
       isActivePopup: false,
-      tabActiveIndex: 0,
-      dataPost: {
-        title: '',
-        desc: '',
-        image: '/assets/img/post/01.jpg'
-      }
+      tabActiveIndex: 0
     }
   },
   created() {
@@ -185,38 +173,20 @@ export default {
   methods: {
     ...mapActions({
       get_list: 'category/get_list',
-      createPost: 'post/create'
+      createPost: 'post/create',      
+      fetchPost_Owner:'post/fetchPost_Owner'
     }),
     onSubmitPost() {
       this.createPost().then(
         () => {
           this.isActivePopup = false;
         },
-        error => {
-          console.log(error)
+        error => {          
+          console.log('error')
+          console.log('status: ',error)
+          console.log('message: ',error.data.message)
         }
       )
-      /*this.$emit('on-post', {
-        id: Math.round(Math.random() * 10**7),
-        title: this.dataPost.title,
-        desc: this.dataPost.desc,
-        image: this.dataPost.image,
-        createdAt: new Date(),
-        user: this.user,
-        counts: {
-          likes: 0
-        },
-        actions: {
-          shared: false,
-          liked: false,
-          followed: false,
-        },
-        comments: []
-      });
-      this.dataPost.title = '';
-      this.dataPost.desc = '';
-      this.isActivePopup = false;
-      return true;*/
     },
     onPhotoSelected(event) {      
       this.createDetail.PVmedia = event.target.files

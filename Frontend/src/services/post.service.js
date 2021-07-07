@@ -5,7 +5,8 @@ const axios = require('axios');
 export const postService = {
     createPost,
     fetchPost_Owner,
-    fetchComment
+    fetchComment,
+    deletePost
 }
 
 function createPost(postDetail) {
@@ -14,6 +15,25 @@ function createPost(postDetail) {
           method: 'POST',
           url: `post/create`,
           data: postDetail,
+          withCredentials: true,
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+}
+
+function deletePost(id) {
+    return new Promise((resolve, reject) => {
+        axios({
+          method: 'POST',
+          url: `post/delete`,
+          data: {
+            post_id: id
+          },
           withCredentials: true,
         })
         .then(res => {

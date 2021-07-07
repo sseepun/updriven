@@ -44,8 +44,8 @@ export const post = {
         /**
          * Create post
          */
-        create({ state, commit }) {
-            return new Promise((resolve, reject) => {
+         async create({ state, commit, dispatch }) {
+            var promise = await new Promise((resolve, reject) => {
                 var formData = new FormData();
                 formData.append("subject", state._create.subject);
                 formData.append("content", state._create.content);
@@ -56,9 +56,30 @@ export const post = {
                 postService.createPost(formData)
                 .then( res => {
                     commit('clear_create')
+                    commit('authentication/updateAlert', { type: 'Success', message: 'Post created successfully.' }, { root: true })
                     resolve(res)
                 })
                 .catch( err => {
+                    commit('authentication/updateAlert', { type: 'Warning', message: error.response.data.message }, { root: true })
+                    reject(err)
+                })
+            })
+            //await dispatch('fetchPost_Owner')
+            return await promise
+        },
+        /**
+         * Delete post
+         */
+         delete({ dispatch }, id) {
+            return new Promise((resolve, reject) => {
+                postService.deletePost(id)
+                .then( res => {
+                    //await dispatch('fetchPost_Owner')
+                    commit('authentication/updateAlert', { type: 'Success', message: 'Post deleted successfully.' }, { root: true })
+                    resolve(res)
+                })
+                .catch( err => {
+                    commit('authentication/updateAlert', { type: 'Warning', message: error.response.data.message }, { root: true })
                     reject(err)
                 })
             })

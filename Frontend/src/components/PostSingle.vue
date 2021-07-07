@@ -54,6 +54,14 @@
                   <div class="text">Find suport or report post</div>
                 </a>
               </div>
+              <div class="menu-container" v-if="selfPost.user.id == user.id">
+                <a class="menu color-gray h-color-01" href="#" @click="onClickDelete">
+                  <div class="icon">
+                    <img src="/assets/img/icon/close.png" alt="Image Icon" />
+                  </div>
+                  <div class="text">Delete</div>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -165,7 +173,6 @@ export default {
   },
   data() {
     return {
-      // user: this.$store.getters.user,
       selfPost: this.post,
       isActivePopup: false,
       commentLimit: 1,
@@ -186,6 +193,7 @@ export default {
   methods: {
     ...mapActions({
       fetchComment: 'post/fetchComment',
+      delete: 'post/delete',
     }),
     formatNumber(value, digits=2) {
       let val = (value/1).toFixed(digits);
@@ -230,6 +238,9 @@ export default {
     callComment() {
       const that = this
       this.fetchComment(that.selfPost.id)
+    },
+    onClickDelete() {
+      this.delete(this.selfPost.id)
     }
   }
 }
