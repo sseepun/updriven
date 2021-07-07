@@ -116,6 +116,7 @@ input[type=file]:focus, select:focus, textarea:focus{border-color:#166c74!import
 .color-black, .h-color-black:hover{color:#000000!important;}
 .color-dark, .h-color-dark:hover{color:#212121!important;}
 .color-gray, .h-color-gray:hover{color:#666666!important;}
+.color-mgray, .h-color-mgray:hover{color:#cccccc!important;}
 .color-fgray, .h-color-fgray:hover{color:#f4f4f4!important;}
 .color-01, .h-color-01:hover{color:#166c74!important;}
 
@@ -123,6 +124,7 @@ input[type=file]:focus, select:focus, textarea:focus{border-color:#166c74!import
 .bg-black{background:#000000!important;}
 .bg-dark{background:#212121!important;}
 .bg-gray{background:#666666!important;}
+.bg-mgray{background:#cccccc!important;}
 .bg-fgray{background:#f4f4f4!important;}
 .bg-01{background:#166c74!important;}
 
@@ -130,5 +132,6 @@ input[type=file]:focus, select:focus, textarea:focus{border-color:#166c74!import
 .bcolor-black{border-color:#000000!important;}
 .bcolor-dark{border-color:#212121!important;}
 .bcolor-gray{border-color:#666666!important;}
+.bcolor-mgray{border-color:#cccccc!important;}
 .bcolor-fgray{border-color:#f4f4f4!important;}
 .bcolor-01{border-color:#166c74!important;}

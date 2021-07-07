@@ -104,10 +104,10 @@ export default {
           icon: '/assets/img/profile/04.jpg'
         };
       });
-      if(this.menu[0].children.length){
-        this.menu[0].children[0].status = true;
-        this.$emit('on-click', this.menu[0].children[0]);
-      }
+      // if(this.menu[0].children.length){
+      //   this.menu[0].children[0].status = true;
+      //   this.$emit('on-click', this.menu[0].children[0]);
+      // }
     });
   },
   methods: {
