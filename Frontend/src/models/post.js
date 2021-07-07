@@ -14,7 +14,7 @@ export class StatusPost {
 export function changeStructurePost(posts) {
     let temp_array = []
     for(let i = 0; i < posts.length; i++){
-        var temp_data = posts[i];
+        const temp_data = posts[i];
 
         temp_array.push({
             id: temp_data['_id'],
@@ -49,12 +49,34 @@ export function changeStructurePost(posts) {
 }
 
 export function changeStructureComment(comments) {
-    console.log(typeof comments)
-    console.log(comments['60e2f560be3a9179b60520b3'])
+    console.log('comment :', comments);
+    console.log('type comment :', typeof comments);
+
     let temp_array = []
     for(let i = 0; i < comments.length; i++){
-        console.log(i)
+        const temp_data = comments[i];
+
+        temp_array.push({
+            id: temp_data['_id'],
+            comment: temp_data['comment'],
+            createdAt: temp_data['createdAt'],
+            user: {
+                id: temp_data['author']['id'],
+                firstname: 'tata',
+                lastname: 'zakup',
+                avatar: '/assets/img/profile/01.jpg'
+            },
+            counts: {
+                likes: temp_data['sentiment_count']
+            },
+            actions: {
+                liked: true
+            },
+            depth: temp_data['depth']
+        })
     }
+
+    return temp_array;
 }
 
 export class _create {
