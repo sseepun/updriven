@@ -26,7 +26,12 @@ exports.createPost = async (req, res) => {
         const category = await Category.findOne({ category_name: sanitize(req.body.category)} );
         post.category = category;
         await post.save()
-        res.status(200).send({id: post._id});
+        await Post.populate(post,
+            [
+                {path: 'user', model: 'User', select: 'user_detail', populate: {path: 'user_detail', select:['firstname', 'lastname']}}, 
+                {path: 'category', model: 'Category', select: 'category_name'}
+            ])
+        res.status(200).send({post: post});
     }
     catch (err) {
         console.log(err)
