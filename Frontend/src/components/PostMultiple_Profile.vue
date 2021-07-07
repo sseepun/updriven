@@ -13,7 +13,9 @@
         <PostSingle :post="post"/>
       </div>
     </div>
-    <div ref="lazyLoadPosts">{{ contentLoading }}</div>
+    <div class="h5 fw-600 color-mgray text-center pt-6 pb-2 text-center">
+      <div ref="lazyLoadPosts">No more feed found.</div>
+    </div>
   </div>
 
   
@@ -26,8 +28,6 @@ export default {
   name: 'PostMultiple',
   data() {
     return {
-      // user: this.$store.getters.user,
-      contentLoading: 'Loading...',
       title: null,
       icon: null,
       posts: []
@@ -42,102 +42,6 @@ export default {
     })
   },
   methods: {
-    loadPosts() {
-      // for(let i=0; i<4; i++){
-      //   this.posts.push({
-      //     id: this.posts.length+1,
-      //     image: `/assets/img/post/0${Math.round(Math.random()*2+1)}.jpg`,
-      //     title: 'The Top 5 Programming Languages in 2021 to get a job',
-      //     desc: `
-      //       Want to get a developer job in 2021? Some languages are better than others.
-      //       <br><br>
-      //       Here's a top 5 (we actually talk about 9 languages total) --- 
-      //       based on real year-end data, not just opinion or generic advice.
-      //     `,
-      //     createdAt: new Date(),
-      //     user: {
-      //       id: 1,
-      //       firstname: 'Emilia',
-      //       lastname: 'Bubu',
-      //       avatar: '/assets/img/profile/01.jpg'
-      //     },
-      //     counts: {
-      //       likes: 1235
-      //     },
-      //     actions: {
-      //       shared: false,
-      //       liked: true,
-      //       followed: true,
-      //     },
-      //     comments: [
-      //       {
-      //         comment: 'Can mobile\'s notification Led light be controlled by python?',
-      //         createdAt: new Date(),
-      //         user: {
-      //           id: 1,
-      //           firstname: 'Emilia',
-      //           lastname: 'Bubu',
-      //           avatar: '/assets/img/profile/01.jpg'
-      //         },
-      //         counts: {
-      //           likes: 5
-      //         },
-      //         actions: {
-      //           liked: true
-      //         }
-      //       },
-      //       {
-      //         comment: 'Can mobile\'s notification Led light be controlled by python?',
-      //         createdAt: new Date(),
-      //         user: {
-      //           id: 1,
-      //           firstname: 'Emilia',
-      //           lastname: 'Bubu',
-      //           avatar: '/assets/img/profile/01.jpg'
-      //         },
-      //         counts: {
-      //           likes: 5
-      //         },
-      //         actions: {
-      //           liked: true
-      //         }
-      //       },
-      //       {
-      //         comment: 'Can mobile\'s notification Led light be controlled by python?',
-      //         createdAt: new Date(),
-      //         user: {
-      //           id: 1,
-      //           firstname: 'Emilia',
-      //           lastname: 'Bubu',
-      //           avatar: '/assets/img/profile/01.jpg'
-      //         },
-      //         counts: {
-      //           likes: 5
-      //         },
-      //         actions: {
-      //           liked: true
-      //         }
-      //       },
-      //       {
-      //         comment: 'Can mobile\'s notification Led light be controlled by python?',
-      //         createdAt: new Date(),
-      //         user: {
-      //           id: 1,
-      //           firstname: 'Emilia',
-      //           lastname: 'Bubu',
-      //           avatar: '/assets/img/profile/01.jpg'
-      //         },
-      //         counts: {
-      //           likes: 5
-      //         },
-      //         actions: {
-      //           liked: true
-      //         }
-      //       }
-      //     ]
-      //   });
-      // }
-    },
     onScroll() {
       var lazyLoadPosts = this.$refs['lazyLoadPosts'];
       if(lazyLoadPosts){
@@ -151,10 +55,10 @@ export default {
             if ( this.isLoading == false) {
               this.fetchPost_Owner()
             }
-            this.contentLoading = "Loading..."
+            lazyLoadPosts.innerHTML = 'Loading...';
 
           } else if (this.getStatusPost.hasNext == false) {
-            this.contentLoading = "ending up..."
+            lazyLoadPosts.innerHTML = 'No more feed found.';
           }
         }
       }
@@ -177,7 +81,6 @@ export default {
   mounted() {
     this.$nextTick(function(){
       window.addEventListener('scroll', this.onScroll);
-      // this.loadPosts();
       // this.fetchPost_Owner();
     });
   },

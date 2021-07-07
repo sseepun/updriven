@@ -44,7 +44,7 @@ export const post = {
         /**
          * Create post
          */
-         async create({ state, commit, dispatch }) {
+        async create({ state, commit, dispatch }) {
             var promise = await new Promise((resolve, reject) => {
                 var formData = new FormData();
                 formData.append("subject", state._create.subject);

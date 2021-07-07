@@ -34,14 +34,13 @@ export function changeStructurePost(posts) {
             },
             actions: {
                 shared: false,
-                liked: true,
-                followed: true,
+                liked: false,
+                followed: false,
             },
             comments: []
         })
 
         // console.log(result)
-
         console.log(temp_array)
     }
 
