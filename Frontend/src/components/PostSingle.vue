@@ -1,7 +1,7 @@
 <template>
   <div v-if="user" class="post bshadow">
-    <div v-if="selfPost.image" class="ss-img horizontal no-hover">
-      <div class="img-bg" :style="'background-image:url(\''+selfPost.image+'\');'"></div>
+    <div v-if="selfPost.image.length != 0" class="ss-img horizontal no-hover">
+      <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\'); background-size: 100%;'"></div>
     </div>
     <div class="text-container">
       <div class="title-container">
@@ -228,8 +228,8 @@ export default {
       this.commentLimit += 1;
     },
     callComment() {
-      console.log('called comment this post');
-      this.fetchComment('test ID')
+      const that = this
+      this.fetchComment(that.selfPost.id)
     }
   }
 }

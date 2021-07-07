@@ -1,5 +1,7 @@
 const express = require('express');
 const passport = require('passport');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cookieSession = require('cookie-session');
 const bodyParser = require("body-parser");
 const migrations = require("./app/migrations/migrations");
@@ -18,6 +20,13 @@ app.use(cookieSession({
     keys: ['key1', 'key2']
 }))
 
+cloudinary.config({ 
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: false
+  });
+
 const corsOptions = {
     origin: [/localhost:8080$/], // น้ำตาจะไหล ลืมใส่ regex
     credentials: true,
@@ -26,7 +35,14 @@ const corsOptions = {
 
 app.use(cors( corsOptions )); // remove corsOptions to allow all origins
 
-app.use(multer({dest:'./uploads/'}).array('media'));
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: 'media'
+    },
+  });
+
+app.use(multer({ storage: storage }).array('media'));
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());

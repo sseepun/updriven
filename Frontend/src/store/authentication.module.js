@@ -46,7 +46,10 @@ export const authentication = {
               res.user_detail[0].firstname,
               res.user_detail[0].lastname,
               '/assets/img/profile/01.jpg',
-              '/assets/img/bg/01.jpg'
+              '/assets/img/bg/01.jpg',
+              res.user_detail[0].state_id,
+              res.user_detail[0].province,
+              res.user_detail[0].organization
             )
 
             commit('signinSuccess', resUser);

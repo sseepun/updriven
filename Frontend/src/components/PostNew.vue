@@ -188,7 +188,14 @@ export default {
       createPost: 'post/create'
     }),
     onSubmitPost() {
-      this.createPost()
+      this.createPost().then(
+        () => {
+          this.isActivePopup = false;
+        },
+        error => {
+          console.log(error)
+        }
+      )
       /*this.$emit('on-post', {
         id: Math.round(Math.random() * 10**7),
         title: this.dataPost.title,
@@ -212,10 +219,10 @@ export default {
       return true;*/
     },
     onPhotoSelected(event) {      
-      this.createDetail.media = event.target.files
+      this.createDetail.PVmedia = event.target.files
     },
     onFileSelected(event) {      
-      this.createDetail.media = event.target.files
+      this.createDetail.fileMedia = event.target.files
     },
     onClickAddfiles(target) {
         document.getElementById(target).click()

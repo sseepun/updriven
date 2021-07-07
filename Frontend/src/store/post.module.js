@@ -1,5 +1,5 @@
 import { checkCookie } from '../helpers/authHeader';
-import { StatusPost, changeStructurePost, _create } from '../models/post';
+import { StatusPost, changeStructurePost, _create, changeStructureComment } from '../models/post';
 import { postService } from '../services';
 
 const initial_StatusPost = new StatusPost('', '', false, false);
@@ -50,10 +50,12 @@ export const post = {
                 formData.append("subject", state._create.subject);
                 formData.append("content", state._create.content);
                 formData.append("category", state._create.category);
-                formData.append("media", state._create.media);
+                state._create.PVmedia.forEach(file => formData.append("media", file));
+                state._create.fileMedia.forEach(file => formData.append("media", file));
                 formData.append("visible_to", state._create.visible_to);
                 postService.createPost(formData)
                 .then( res => {
+                    commit('clear_create')
                     resolve(res)
                 })
                 .catch( err => {
@@ -64,18 +66,26 @@ export const post = {
         /**
          * fetch comment each post if user want to see
          */
-        fetchComment({ commit }, postID) {
+        fetchComment({ state, commit }, postID) {
             return new Promise((resolve, reject) => {
-                console.log(postID)
-                // postService.fetchComment() => {
-
-                // }
+                postService.fetchComment(postID)
+                .then( res => {
+                    // let test = state.Post.findIndex(post => post.id == postID);
+                    console.log(res)
+                    changeStructureComment(res.data.comments)
+                    // state.Post[state.Post.findIndex(post => post.id == postID)].comments
+                    resolve(res)
+                })
+                .catch( err => {
+                    reject(err)
+                })
             })
         }
     },
     mutations: {
         updatePost(state, newPosts) {
-            state.Post = state.Post.concat(newPosts);
+            state.Post = state.Post.concat(newPosts)
+            // state.Post = [...state.Post, ...newPosts];
         },
 
         updateStatusPost(state, newStatus) {
@@ -88,6 +98,10 @@ export const post = {
 
         clearPost(state) {
             state.Post = []
+        },
+
+        clear_create(state) {
+            state._create = new _create();
         }
     }
 }
