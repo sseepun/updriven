@@ -95,8 +95,8 @@ export const post = {
                 .then( res => {
                     // let test = state.Post.findIndex(post => post.id == postID);
                     console.log(res)
-                    changeStructureComment(res.data.comments)
-                    // state.Post[state.Post.findIndex(post => post.id == postID)].comments
+                    const commentPost = changeStructureComment(res.data.comments)
+                    state.Post[state.Post.findIndex(post => post.id == postID)].comments = commentPost
                     resolve(res)
                 })
                 .catch( err => {
