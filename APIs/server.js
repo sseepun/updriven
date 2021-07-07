@@ -27,8 +27,11 @@ cloudinary.config({
     secure: false
   });
 
+const CLIENT_URL_REGEX = new RegExp(process.env.CLIENT_URL)
+const DOMAIN_URL_REGEX = new RegExp(process.env.DOMAIN)
+console.log(CLIENT_URL_REGEX)
 const corsOptions = {
-    origin: [/localhost:8080$/], // น้ำตาจะไหล ลืมใส่ regex
+    origin: [CLIENT_URL_REGEX, DOMAIN_URL_REGEX], // น้ำตาจะไหล ลืมใส่ regex
     credentials: true,
     // optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
   }
