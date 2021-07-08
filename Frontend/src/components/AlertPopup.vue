@@ -22,17 +22,24 @@
 </template>
 
 <script>
+import {mapGetters, mapActions, mapState} from "vuex"
+
 export default {
   name: 'AlertPopup',
-  props: {
+  /*props: {
     alert: { type: Object, default: {} },
-  },
+  },*/
   data() {
     return {
       status: false,
       timeout: null,
       selfAlert: Object.assign({}, this.alert)
     }
+  },
+  created() { 
+    this.status = true;
+    this.selfAlert = Object.assign({}, this.alert);
+    this.fadeOut();
   },
   watch: { 
     alert: function() {
@@ -41,12 +48,21 @@ export default {
       this.fadeOut();
     }
   },
+  computed: {
+    ...mapGetters({
+      alert: 'alert/alert'
+    })
+  },
   methods: {
+    ...mapActions({
+      clearAlert: 'alert/clear'
+    }),
     fadeOut() {
       var that = this;
       if(that.timeout) clearTimeout(that.timeout);
       that.timeout = setTimeout(function(){
-        that.status = false;
+        that.status = false;        
+        that.clearAlert()
       }, 3000);
     }
   }

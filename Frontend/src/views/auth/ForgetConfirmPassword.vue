@@ -57,7 +57,7 @@
 
     </div>
   </section>
-  <AlertPopup :alert="alert" />
+  <AlertPopup/>
 </template>
 
 <script>
@@ -106,7 +106,6 @@ export default {
     }),
     handleSentMail(e) {
         if (this.dataset.password && (this.dataset.password == this.dataset.confirmPassword)) {
-          console.log("password2"+this.dataset.password)
           this.resetPassword({
           token: this.$route.params.token,
           password: this.dataset.password

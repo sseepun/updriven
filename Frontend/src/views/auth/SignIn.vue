@@ -79,7 +79,7 @@
 
     </div>
   </section>
-  <AlertPopup :alert="alert" />
+  <AlertPopup/>
 </template>
 
 <script>
@@ -119,6 +119,7 @@ export default {
       signin: 'authentication/signin',
       signFacebook: 'authentication/signFacebook',
       signGoogle: 'authentication/signGoogle',
+      assignAlert: 'alert/assign'
     }),
 
     handleSubmit(e) {
@@ -127,13 +128,12 @@ export default {
           authen: this.user.authen,
           password: this.user.password
         }).then( () => {
-          //this.alert = { type: 'Info', message: 'Sign in successfully' };
           this.$router.push({ 
             name: 'UserDashboardPage'
           });
+          this.assignAlert({ type: 'Success', message: 'Signed in successfully.' })
         }).catch( err => {
           console.log(err)
-          //this.alert = { type: 'Warning', message: 'Username or password is incorrect' };
           this.user.password = '';
         });
       }

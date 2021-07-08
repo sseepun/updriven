@@ -185,7 +185,6 @@ function forgetPasswordSentEmail(email) {
       url: `auth/forgot/${email}`
     })
     .then(res => {
-      console.log(res.data)
       resolve(res.data);
     })
     .catch(err => {

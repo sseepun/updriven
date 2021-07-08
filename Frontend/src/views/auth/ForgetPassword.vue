@@ -54,7 +54,7 @@
 
     </div>
   </section>
-  <AlertPopup :alert="alert" />
+  <AlertPopup/>
 </template>
 
 <script>
@@ -94,10 +94,7 @@ export default {
         if (this.dataset.email) {
           this.forgetPasswordSentEmail(this.dataset.email).then(
             response => {
-              console.log(response)
-              console.log(this.dataset.email)
-              this.alert = { type: 'Success', message: response.message };
-              
+              this.dataset.email = "";
             },
             error => {
               this.message =
@@ -105,7 +102,6 @@ export default {
                 error.message ||
                 error.toString();
               this.dataset.email = "";
-              this.alert = { type: 'Warning', message: error.response.data.message };
             }
           );
         }

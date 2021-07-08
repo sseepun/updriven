@@ -119,7 +119,7 @@
 
     </div>
   </section>
-  <AlertPopup :alert="alert" />
+  <AlertPopup/>
 </template>
 
 <script>
