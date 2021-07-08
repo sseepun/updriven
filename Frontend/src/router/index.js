@@ -45,6 +45,11 @@ const routes = [
     component: () => import('../views/auth/ForgetPassword.vue')
   },
   {
+    path: '/auth/check-forget-password/:token?',
+    name: 'AuthForgetConfirmPasswordPage',
+    component: () => import('../views/auth/ForgetConfirmPassword.vue')
+  },
+  {
     path: '/auth/verify-token-register/:token?',//  path: '/auth/verify-token-register/:token?',
     name: 'AuthVerifyTokenRegisterPage',
     component: () => import('../views/auth/verifyTokenRegister.vue')

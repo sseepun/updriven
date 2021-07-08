@@ -1,4 +1,3 @@
-
 # UpDriven Project
 
 ## How to set up locally

@@ -25,15 +25,22 @@
             <img src="/assets/img/logo.png" alt="Image Logo" />
           </div>
           <h4 class="fw-600 text-center pt-4 mt-6">
-            Forget Password
+            Reset Password
           </h4>
           <form  @submit.prevent="handleSentMail">
             <div class="grids">
               <div class="grid sm-100">
                 <FormGroup 
-                  type="text" label="Email Address" :required="true" 
+                  type="password" label="New Password" :required="true" 
                   classer="label-sm" wrapperClass="fgray" 
-                  :value="dataset.email" @input="dataset.email = $event" 
+                  :value="dataset.password" @input="dataset.password = $event" 
+                />
+              </div>
+              <div class="grid sm-100">
+                <FormGroup 
+                  type="password" label="Confirm Password" :required="true" 
+                  classer="label-sm" wrapperClass="fgray" 
+                  :value="dataset.confirmPassword" @input="dataset.confirmPassword = $event" 
                 />
               </div>
               <div class="grid sm-100">
@@ -42,11 +49,7 @@
                   classer="d-block btn-color-03 w-full mt-2" 
                 />
               </div>
-              <div class="grid sm-100">
-                <router-link to="/auth/signin" class="p xs color-01 h-color-black">
-                  Already a member? Sign in
-                </router-link>
-              </div>
+              
             </div>
           </form>
         </div>
@@ -74,12 +77,21 @@ export default {
     return {
       step: 0,
       dataset: {
-        email: '',
+        password: '',
+        confirmPassword: '',
       }
     }
   },
   created() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
+    this.checkPassword(this.$route.params.token).then(
+            response => {
+              console.log("check token succesful")
+            },
+            error => {
+              console.log(error)
+            }
+          );
   },
   computed: {
     ...mapGetters({
@@ -88,26 +100,34 @@ export default {
   },
   methods:{
     ...mapActions({
-      forgetPasswordSentEmail: 'authentication/forgetPasswordSentEmail',
+      checkPassword: 'authentication/checkPassword',
+      resetPassword: 'authentication/resetPassword',
+      assign: 'alert/assign',
     }),
     handleSentMail(e) {
-        if (this.dataset.email) {
-          this.forgetPasswordSentEmail(this.dataset.email).then(
+        if (this.dataset.password && (this.dataset.password == this.dataset.confirmPassword)) {
+          console.log("password2"+this.dataset.password)
+          this.resetPassword({
+          token: this.$route.params.token,
+          password: this.dataset.password
+        }).then(
             response => {
-              console.log(response)
-              console.log(this.dataset.email)
-              this.alert = { type: 'Success', message: response.message };
-              
+              this.$router.push('/');
             },
             error => {
+              console.log(error)
               this.message =
                 (error.response && error.response.data) ||
                 error.message ||
                 error.toString();
-              this.dataset.email = "";
-              this.alert = { type: 'Warning', message: error.response.data.message };
+              this.dataset.password = "";
+              this.dataset.confirmPassword = "";
+              
             }
           );
+        }
+        else{
+          this.assign({ type: 'Warning', message: "Your Password Do Not Match." })
         }
         this.isValidated = true;
     },
