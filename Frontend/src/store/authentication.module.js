@@ -106,7 +106,6 @@ export const authentication = {
           resolve(response.data)
         },
         error => {
-          console.log(error.response.data.message)
           commit('updateAlert', { type: 'Warning', message: error.response.data.message });
           reject(error)
         }

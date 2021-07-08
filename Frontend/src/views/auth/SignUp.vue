@@ -167,6 +167,7 @@ export default {
         if (this.dataset.firstname && this.dataset.email && this.dataset.lastname && this.dataset.password) {
           this.register(regisUser).then(
             response => {
+              this.alert = { type: 'Success', message: 'Signed up successfully.' };
               this.step = 1;
               // this.$router.push('/');
             },
@@ -175,7 +176,8 @@ export default {
                 (error.response && error.response.data) ||
                 error.message ||
                 error.toString();
-              this.alert = { type: 'Warning', message: this.message };
+              this.dataset.email = "";
+              this.alert = { type: 'Warning', message: error.response.data.message };
             }
           );
         }

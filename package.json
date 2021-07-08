@@ -2,7 +2,7 @@
   "proxy": "http://localhost:8081",
   "scripts": {
     "install-package": "npm install && cd ./APIs && npm install && cd ../Frontend/app && npm install",
-    "client": "cd Frontend/app && npm run serve",
+    "client": "cd Frontend && npm run serve",
     "server": "cd APIs && nodemon server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },

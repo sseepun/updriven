@@ -31,7 +31,7 @@
             <div class="grids">
               <div class="grid sm-100">
                 <FormGroup 
-                  type="text" label="Username or Email Address" :required="true" 
+                  type="text" label="Email Address" :required="true" 
                   classer="label-sm" wrapperClass="fgray" 
                 />
               </div>
