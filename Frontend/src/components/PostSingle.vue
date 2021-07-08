@@ -1,8 +1,51 @@
 <template>
   <div v-if="user" class="post bshadow">
-    <div v-if="selfPost.image.length != 0" class="ss-img horizontal no-hover">
-      <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\'); background-size: 100%;'"></div>
-    </div>
+
+    <template v-if="selfPost.desc.indexOf('https://www.youtube.com/') > -1">
+      <div class="ss-img video-view no-hover">
+        <iframe 
+          class="img-bg w-full h-full" border="0" 
+          :src="'https://www.youtube.com/embed/'+getYoutubeId(selfPost.desc)"
+        ></iframe>
+      </div>
+    </template>
+    <template v-else-if="selfPost.image.length == 1">
+      <div class="ss-img no-hover">
+        <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\');'"></div>
+      </div>
+    </template>
+    <template v-else-if="selfPost.image.length == 2">
+      <div class="grids" style="--gs:0rem;">
+        <div class="grid sm-50">
+          <div class="ss-img no-hover" style="border-top-right-radius:0;">
+            <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\');'"></div>
+          </div>
+        </div>
+        <div class="grid sm-50">
+          <div class="ss-img no-hover" style="border-top-left-radius:0;">
+            <div class="img-bg" :style="'background-image:url(\''+selfPost.image[1].path+'\');'"></div>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template v-else-if="selfPost.image.length >= 3">
+      <div class="grids" style="--gs:0rem;">
+        <div class="grid sm-75">
+          <div class="ss-img vertical-sm no-hover" style="border-top-right-radius:0;">
+            <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\');'"></div>
+          </div>
+        </div>
+        <div class="grid sm-25">
+          <div class="ss-img adaptive-half no-hover" style="border-top-left-radius:0;">
+            <div class="img-bg" :style="'background-image:url(\''+selfPost.image[1].path+'\');'"></div>
+          </div>
+          <div class="ss-img adaptive-half no-hover" style="border-radius:0;">
+            <div class="img-bg" :style="'background-image:url(\''+selfPost.image[2].path+'\');'"></div>
+          </div>
+        </div>
+      </div>
+    </template>
+
     <div class="text-container">
       <div class="title-container">
         <h6 class="title fw-600">
@@ -15,13 +58,13 @@
           <div class="popup-options bshadow" :class="{ 'active': isActivePopup }">
             <div class="wrapper">
               <div class="menu-container">
-                <a class="menu color-gray h-color-01" href="#">
+                <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/bell-02.png" alt="Image Icon" />
                   </div>
                   <div class="text">Turn on notifications for this post</div>
                 </a>
-                <a class="menu color-gray h-color-01" href="#">
+                <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/embed.png" alt="Image Icon" />
                   </div>
@@ -29,25 +72,25 @@
                 </a>
               </div>
               <div class="menu-container">
-                <a class="menu color-gray h-color-01" href="#">
+                <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/drag.png" alt="Image Icon" />
                   </div>
                   <div class="text">Hide Post</div>
                 </a>
-                <a class="menu color-gray h-color-01" href="#">
+                <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/clock.png" alt="Image Icon" />
                   </div>
                   <div class="text">Snooze Derrick Sheril for 30 days</div>
                 </a>
-                <a class="menu color-gray h-color-01" href="#">
+                <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/unfollow.png" alt="Image Icon" />
                   </div>
                   <div class="text">Unfollow Derrick Sheril</div>
                 </a>
-                <a class="menu color-gray h-color-01" href="#">
+                <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/report.png" alt="Image Icon" />
                   </div>
@@ -55,7 +98,7 @@
                 </a>
               </div>
               <div class="menu-container" v-if="selfPost.user.id == user.id">
-                <a class="menu color-gray h-color-01" href="#" @click="onClickDelete">
+                <a class="menu color-gray h-color-01" href="javascript:" @click="onClickDelete">
                   <div class="icon">
                     <img src="/assets/img/icon/close.png" alt="Image Icon" />
                   </div>
@@ -72,7 +115,11 @@
         <span class="dot"></span>
         {{formatDate(selfPost.createdAt)}}
       </p>
-      <p class="sm fw-300 color-gray lh-xs mt-3" v-html="selfPost.desc"></p>
+      <template v-if="selfPost.desc.indexOf('https://www.youtube.com/') < 0">
+        <p class="sm fw-300 color-gray lh-xs mt-3">
+          {{selfPost.desc}}
+        </p>
+      </template>
       
       <div class="toolbar mt-3">
         <div class="post-icon color-gray mr-4">
@@ -241,6 +288,11 @@ export default {
     },
     onClickDelete() {
       this.delete(this.selfPost.id)
+    },
+
+    getYoutubeId(desc) {
+      var temp = desc.split('?v=');
+      return temp[1];
     }
   }
 }

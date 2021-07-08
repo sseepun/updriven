@@ -24,18 +24,18 @@ export const category = {
         get_list({ commit }) {
             return new Promise((resolve, reject) => {        
                 categoryService.test_list().then(
-                res => {
-                    commit('fetch_list', res);
-                    resolve(res)
-                },
-                error => {
-                  reject(error)
-                }
-              ).catch(err => {
-                reject(err)
-              })
+                    res => {
+                        commit('fetch_list', res);
+                        resolve(res)
+                    },
+                    error => {
+                        reject(error)
+                    }
+                ).catch(err => {
+                    reject(err)
+                })
             })
-          },
+        },
     },
     mutations: {
         fetch_list(state, input) {

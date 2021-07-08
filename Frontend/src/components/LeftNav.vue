@@ -53,7 +53,6 @@ export default {
   name: 'LeftNav',
   data() {
     return {
-      // user: this.$store.getters.user,
       menu: [
         {
           status: true,
@@ -100,15 +99,15 @@ export default {
     categoryService._list().then(d => {
       this.menu[0].children = d.map(k => {
         return {
-          clickType: 'emit',
-          title: k.post_category_name, link: 'javascript:',
+          clickType: 'emit', link: 'javascript:',
+          title: k.category_name, 
           icon: '/assets/img/profile/04.jpg'
         };
       });
-      if(this.menu[0].children.length){
-        this.menu[0].children[0].status = true;
-        this.$emit('on-click', this.menu[0].children[0]);
-      }
+      // if(this.menu[0].children.length){
+      //   this.menu[0].children[0].status = true;
+      //   this.$emit('on-click', this.menu[0].children[0]);
+      // }
     });
   },
   methods: {

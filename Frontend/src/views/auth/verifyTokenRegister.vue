@@ -24,19 +24,15 @@
           <div class="logo">
             <img src="/assets/img/logo.png" alt="Image Logo" />
           </div>
-          <h4 class="fw-600 text-center pt-4 mt-6">
-            Your account is Active now!
+          <h4 class="fw-600 text-center lh-sm pt-4 mt-4">
+            Your account is activated successfully!
           </h4>
-          <h6 class="fw-600 text-center pt-4 mt-6">
-            ยินดีด้วย บัญชีของคุณสามารถใช้งานได้แล้ว
-          </h6>
           <div class="fw-500 text-center mt-6">
-              <router-link to="/auth/signin" class="h7 xs color-01 h-color-black">
-                Go To Sign in
-              </router-link>
+            <router-link to="/auth/signin" class="h7 xs color-01 h-color-black">
+              Go to sign in
+            </router-link>
+          </div>
         </div>
-        </div>
-        
       </div>
 
     </div>
@@ -63,7 +59,6 @@ export default {
   methods:{
     ...mapActions({
       verifyEmailRegister: 'authentication/verifyEmailRegister',
-      
     }),
   },
 }

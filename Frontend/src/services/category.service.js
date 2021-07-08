@@ -15,7 +15,7 @@ function _list() {
   return new Promise((resolve, reject) => {
     axios({
       method: 'GET',
-      url: `${process.env.VUE_APP_API_URL}getPostCategory.php`,
+      url: `feed/category`,
       headers: authHeader()
     })
     .then(res => {

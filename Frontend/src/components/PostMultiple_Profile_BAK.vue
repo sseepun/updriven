@@ -81,7 +81,6 @@ export default {
   mounted() {
     this.$nextTick(function(){
       window.addEventListener('scroll', this.onScroll);
-      // this.fetchPost_Owner();
     });
   },
   beforeUnmount() {
