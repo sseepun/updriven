@@ -67,8 +67,6 @@ exports.signup = async (req, res) => {
             html: complete_html
           }
         const response = await sgMail.send(msg)
-        console.log(response[0].statusCode)
-        console.log(response[0].headers)
 
         res.status(200).send({token: token});
     }
@@ -97,14 +95,14 @@ exports.generateForgotPwdLink = async (req, res) => {
     try {
         const user = await User.findOne({ email: sanitize(req.params.email) })
         if (!user) {
-            return res.status(404).send({message: "User Not found."});
+            return res.status(200).send({ message: "If a matching account was found, an email was sent to " + req.params.email + " to allow you to reset your password" });
         }
         let token = jwt.sign({id: user.id}, process.env.RESET_PASSWORD_SECRET, {
             expiresIn: process.env.RESET_PASSWORD_TOKEN_LIFE
         });
         const email_html = fs.readFileSync(path.join(__dirname, '../assets/fromEmail/register/index.html'), 'utf8')
         let template =  handlebars.compile(email_html)
-        let replacements = { verifyLink: process.env.EMAIL_DOMAIN + 'auth/forget-password/' + token };
+        let replacements = { verifyLink: process.env.EMAIL_DOMAIN + 'auth/check-forget-password/' + token };
         let complete_html = template(replacements);
         const msg = {
             to: user.email,
@@ -113,8 +111,7 @@ exports.generateForgotPwdLink = async (req, res) => {
             html: complete_html
         }
         const response = await sgMail.send(msg)
-        console.log(response[0].statusCode)
-        console.log(response[0].headers)
+				 // res.status(200).send({ message: "If a matching account was found an email was sent to " + req.params.email + " to allow you to reset your password" });
         res.status(200).send({ verifyLink: token });
     }
     catch (err) {
@@ -123,21 +120,20 @@ exports.generateForgotPwdLink = async (req, res) => {
 };
 
 exports.resetPwd = (req, res) => {
+	console.log(req.body);
     if (req.params.token) {
-        jwt.verify(req.params.token, config.resetPasswordSecret, (err, decoded) => {
+        jwt.verify(req.params.token, process.env.RESET_PASSWORD_SECRET, (err, decoded) => {
             if (err) {
-                return res.status(401).send(err);
+                return res.status(401).send({message: "Token expired"});
             }
             req.userId = decoded.id;
-            res.status(200).send({
-                UserId: req.userId
-            });
+            res.status(200).send({ UserId: req.userId });
         });
     }
     else if (req.body.token) {
-        jwt.verify(req.body.token, config.resetPasswordSecret, (err, decoded) => {
+        jwt.verify(req.body.token, process.env.RESET_PASSWORD_SECRET, (err, decoded) => {
             if (err) {
-                return res.status(401).send({ message: "Link expired!" });
+                return res.status(401).send({message: "Token expired"});
             }
             req.userId = decoded.id;
         });
@@ -152,12 +148,12 @@ exports.resetPwd = (req, res) => {
                     if (err) {
                         return res.status(500).send({message: err});
                     }
-                    res.status(200).send({message: "updated"})
+                    res.status(200).send({message: "password เปลี่ยนแล้ว นะจ๊ะ นะจ๊ะ"})
                 });
         });
     }
     else {
-        return res.status(401).send({ message: "Token expired!" })
+        return res.status(401).send({message: "Token expired"})
     }
 };
 

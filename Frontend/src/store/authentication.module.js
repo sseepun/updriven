@@ -21,23 +21,6 @@ export const authentication = {
   // Asynchronous 
   actions: {
     async signin({ dispatch, commit }, { authen, password }) {
-      // authenService.signin(authen, password)
-      //   .then(res => {
-      //     if(res.response_status=='Success'){
-      //       let user = res.user_detail;
-      //       commit('signinSuccess', user);
-      //       commit('updateAlert', { type: 'Success', message: 'Signed in successfully.' });
-      //       if(user.is_admin) router.push('/admin/dashboard');
-      //       else router.push('/bunit/dashboard');
-      //     }else{
-      //       commit('signinFailed');
-      //       commit('updateAlert', { type: 'Warning', message: res.returnMessage });
-      //     }
-      //   })
-      //   .catch(err => {
-      //     commit('signinFailed');
-      //     commit('updateAlert', { type: 'Danger', message: 'System error.' });
-      //   });
       return await new Promise((resolve, reject) => {        
          authenService.signin( authen, password ).then(
           res => {
@@ -53,17 +36,17 @@ export const authentication = {
             )
 
             commit('signinSuccess', resUser);
-            commit('updateAlert', { type: 'Success', message: 'Signed in successfully.' });
+            dispatch('alert/assign', { type: 'Success', message: 'Signed in successfully.' }, { root: true })
             resolve(res)
           },
           error => {
             commit('signinFailed');
-            commit('updateAlert', { type: 'Warning', message: error.response.data.message });
+            dispatch('alert/assign', { type: 'Warning', message: error.response.data.message }, { root: true })
             reject(error)
           }
         ).catch(err => {
           commit('signinFailed');
-          commit('updateAlert', { type: 'Danger', message: 'System error.' });
+          dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
         })
       })
     },
@@ -72,7 +55,7 @@ export const authentication = {
         authenService.logout().then(
           response => {
             commit('signout');
-            commit('updateAlert', { type: 'Success', message: 'Signed out successfully.' });
+            dispatch('alert/assign', { type: 'Success', message: 'Signed out successfully.' }, { root: true })
             resolve(response)
           }).catch(err => {
             console.log(err)
@@ -80,42 +63,98 @@ export const authentication = {
           })
         });
     },
-    register({ commit }, regisuser) {
+    register({ dispatch, commit }, regisuser) {
       return new Promise((resolve, reject) => {   
       authenService.register(regisuser).then(
         response => {
-          commit('updateAlert', { type: 'Success', message: 'Signed up successfully.' });
+          dispatch('alert/assign', { type: 'Success', message: 'Signed up successfully.' }, { root: true })
+          
           resolve(response)
         },
         error => {
           console.log(error.response.data.message)
-          commit('updateAlert', { type: 'Warning', message: error.response.data.message });
+          dispatch('alert/assign', { type: 'Warning', message: error.response.data.message }, { root: true })
+          
           reject(error)
         }
       ).catch(err => {
-        commit('updateAlert', { type: 'Danger', message: 'System error.' });
+        dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+        
       })
     })
     },
-    verifyEmailRegister({ commit }, token) {
+    verifyEmailRegister({ dispatch,commit }, token) {
       return new Promise((resolve, reject) => {   
       authenService.verifyEmailRegister(token).then(
         response => {
           console.log("verify email success")
-          commit('updateAlert', { type: 'Success', message: 'Verify email successfully.' });
+          dispatch('alert/assign', { type: 'Success', message: 'Verify email successfully.' }, { root: true })
+          
           resolve(response.data)
         },
         error => {
-          console.log(error.response.data.message)
-          commit('updateAlert', { type: 'Warning', message: error.response.data.message });
+          dispatch('alert/assign', { type: 'Warning', message: error.response.data.message }, { root: true })
+          
           reject(error)
         }
       ).catch(err => {
-        commit('updateAlert', { type: 'Danger', message: 'System error.' });
+         dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+        
       })
     })
     },
-    checkAuth({ commit }, id) {      
+    forgetPasswordSentEmail({ dispatch,commit }, email) {
+      return new Promise((resolve, reject) => {   
+      authenService.forgetPasswordSentEmail(email).then(
+        response => {
+          console.log("")
+           dispatch('alert/assign', { type: 'Success', message: response.message }, { root: true })
+          
+          resolve(response)
+        },
+        error => {
+           dispatch('alert/assign', { type: 'Warning', message: error.response.data.message }, { root: true })
+          
+          reject(error)
+        }
+      ).catch(err => {
+         dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+        
+      })
+    })
+    },
+    resetPassword({ dispatch,commit },input) {
+      return new Promise((resolve, reject) => {   
+      authenService.resetPassword(input).then(
+        response => {
+          console.log(response.message)
+          dispatch('alert/assign',  { type: 'Success', message: response.message }, { root: true })
+          resolve(response)
+        },
+        error => {
+          dispatch('alert/assign', { type: 'Warning', message: error.response.message }, { root: true })
+          reject(error)
+        }
+      ).catch(err => {
+        dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+      })
+    })
+    },
+    checkPassword({ commit },token) {
+      return new Promise((resolve, reject) => {   
+      authenService.checkTokenResetPassword(token).then(
+        response => {
+          resolve(response)
+        },
+        error => {
+          reject(error)
+        }
+      ).catch(err => {
+        
+      })
+    })
+    },
+    checkAuth({ commit, dispatch }, id) {      
       return new Promise((resolve, reject) => {    
         authenService.verify(id).then(
           response => {
@@ -127,16 +166,16 @@ export const authentication = {
               '/assets/img/bg/01.jpg'
             )
             commit('signinSuccess', resUser);
-            commit('updateAlert', { type: 'Success', message: 'Signed in successfully.' });
+            dispatch('alert/assign', { type: 'Success', message: 'Signed in successfully.' }, { root: true })
             resolve(response)
           },
           error => {
             commit('signinFailed');
-            commit('updateAlert', { type: 'Warning', message: error.response.data.message });
+            dispatch('alert/assign', { type: 'Warning', message: error.response.data.message }, { root: true })
             reject(error)
           }).catch(err => {
             commit('signinFailed');
-            commit('updateAlert', { type: 'Danger', message: 'System error.' });
+            dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
           })
         });
     },

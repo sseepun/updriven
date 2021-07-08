@@ -9,6 +9,9 @@ export const authenService = {
     register,
     verify,
     verifyEmailRegister,
+    forgetPasswordSentEmail,
+    resetPassword,
+    checkTokenResetPassword,
     logout
 }
 
@@ -93,6 +96,43 @@ function register(user) {
   });
 }
 
+function checkTokenResetPassword(token) {
+    return new Promise((resolve, reject) => {
+        axios({
+          method: 'GET',
+          url: `auth/reset/${token}`,
+          withCredentials: true,
+        })
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+}
+
+function resetPassword(input) {
+    return new Promise((resolve, reject) => {
+        axios({
+          method: 'POST',
+          url: `auth/reset/`,
+          data: {
+            token: input.token,
+            password: input.password
+          },
+          withCredentials: true,
+        })
+        .then(res => {
+          
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+}
+
 function verify(id) {
     return new Promise((resolve, reject) => {
         axios({
@@ -128,6 +168,21 @@ function verifyEmailRegister(token) {
     axios({
       method: 'GET',
       url: `auth/verify/${token}`
+    })
+    .then(res => {
+      resolve(res.data);
+    })
+    .catch(err => {
+      reject(err);
+    });
+});
+}
+
+function forgetPasswordSentEmail(email) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'GET',
+      url: `auth/forgot/${email}`
     })
     .then(res => {
       console.log(res.data)

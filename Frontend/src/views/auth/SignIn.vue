@@ -98,7 +98,7 @@ export default {
   },
   data() {
     return {
-      alert: {},
+      //alert: {},
       user: {
         authen: '',
         password: '',
@@ -108,6 +108,11 @@ export default {
   },
   created() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
+  },
+  computed: {
+    ...mapGetters({
+      alert: 'alert/alert'
+    })
   },
   methods: {
     ...mapActions({
@@ -122,12 +127,13 @@ export default {
           authen: this.user.authen,
           password: this.user.password
         }).then( () => {
-          this.alert = { type: 'Info', message: 'Sign in successfully' };
+          //this.alert = { type: 'Info', message: 'Sign in successfully' };
           this.$router.push({ 
             name: 'UserDashboardPage'
           });
         }).catch( err => {
-          this.alert = { type: 'Warning', message: 'Username or password is incorrect' };
+          console.log(err)
+          //this.alert = { type: 'Warning', message: 'Username or password is incorrect' };
           this.user.password = '';
         });
       }

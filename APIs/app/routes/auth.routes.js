@@ -26,6 +26,18 @@ module.exports = app => {
         authController.verifyEmail
     );
 
+		router.get("/forgot/:email",
+      authController.generateForgotPwdLink
+  	);
+
+ 		router.get("/reset/:token",
+      authController.resetPwd
+  	);
+
+  	router.post("/reset",
+      authController.resetPwd
+  	);
+
     router.get("/status",
         auth.isLoggedIn,
         authController.logInStatus

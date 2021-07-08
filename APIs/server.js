@@ -27,7 +27,7 @@ cloudinary.config({
     secure: false
   });
 
-const CLIENT_URL_REGEX = new RegExp(process.env.CLIENT_URL)
+const CLIENT_URL_REGEX = new RegExp(process.env.CLIENT_REGEX)
 const DOMAIN_URL_REGEX = new RegExp(process.env.DOMAIN)
 console.log(CLIENT_URL_REGEX)
 const corsOptions = {

@@ -26,6 +26,7 @@
     </div>
 
   </div>
+  <AlertPopup :alert="alert" />
 </template>
 
 <script>
@@ -35,6 +36,7 @@ import PostNew from '../../components/PostNew';
 import PostMultiple from '../../components/PostMultiple';
 import SectionSponsored from '../../components/SectionSponsored';
 import SectionLive from '../../components/SectionLive';
+import {mapGetters, mapActions, mapState} from "vuex"
 
 export default {
   name: 'UserDashboardPage',
@@ -48,6 +50,11 @@ export default {
   },
   mounted() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
+  },
+  computed: {
+    ...mapGetters({
+      alert: 'alert/alert'
+    })
   },
   methods: {
     createPost(post) {
