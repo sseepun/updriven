@@ -34,7 +34,7 @@ export function changeStructurePost(posts) {
             },
             actions: {
                 shared: false,
-                liked: false,
+                liked: temp_data['is_sentiment'],
                 followed: false,
             },
             comments: []

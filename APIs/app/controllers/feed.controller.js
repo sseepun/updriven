@@ -74,8 +74,6 @@ exports.getComments = async (req, res) => {
             }
             rec(comment, threads)
         }
-
-        console.log('threads :', threads)
         res.status(200).send({
             'count': comments.length,
             'comments': threads
@@ -89,7 +87,7 @@ exports.getComments = async (req, res) => {
 
 exports.getPosts = async (req, res) => {
     try {
-        const post_list = await Post.paginate({
+        let post_list = await Post.paginate({
             limit: 5,
             next: req.body.next,
             previous: req.body.previous,
@@ -97,14 +95,46 @@ exports.getPosts = async (req, res) => {
         })
         await Post.populate(post_list,
             [
-                {path: 'results.user', model: 'User', select: 'user_detail', populate: {path: 'user_detail', select:['firstname', 'lastname']}}, 
-                {path: 'results.category', model: 'Category', select: 'category_name'},
+                {
+                    path: 'results.user', 
+                    model: 'User', 
+                    select: 'user_detail', 
+                    populate: {
+                        path: 'user_detail', 
+                        select:['firstname', 'lastname']
+                    }
+                }, 
+                {
+                    path: 'results.category', 
+                    model: 'Category', 
+                    select: 'category_name'},
                 {
                     path: 'results.share', 
                     model: 'Share', 
                     select:['user', 'post'], 
-                    populate: {path: 'post', populate: {path: 'user', select: 'user_detail', populate:{path: 'user_detail', select:['firstname', 'lastname']}}}}
-            ])
+                    populate: {
+                        path: 'post', 
+                        populate: {
+                            path: 'user', 
+                            select: 'user_detail', 
+                            populate:{
+                                path: 'user_detail', 
+                                select:['firstname', 'lastname']
+                            }
+                        }
+                    }
+                }
+        ]);
+        for (let i = 0; i < post_list.results.length; i++) {
+            console.log(post_list.results[i])
+            const is_sentiment_post = await Sentiment.findOne({sentiment: post_list.results[i], user: req.user})
+            if (is_sentiment_post) {
+                post_list.results[i].is_sentiment = true
+            }
+            else {
+                post_list.results[i].is_sentiment = false
+            }
+        }
         res.status(200).send(post_list)
     }
     catch (err) {

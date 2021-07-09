@@ -25,7 +25,6 @@
     </div>
 
   </div>
-  <AlertPopup/>
 </template>
 
 <script>

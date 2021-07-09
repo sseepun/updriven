@@ -119,7 +119,6 @@
 
     </div>
   </section>
-  <AlertPopup/>
 </template>
 
 <script>

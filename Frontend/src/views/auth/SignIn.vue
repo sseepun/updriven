@@ -79,7 +79,6 @@
 
     </div>
   </section>
-  <AlertPopup/>
 </template>
 
 <script>
@@ -133,7 +132,6 @@ export default {
           });
           this.assignAlert({ type: 'Success', message: 'Signed in successfully.' })
         }).catch( err => {
-          console.log(err)
           this.user.password = '';
         });
       }
