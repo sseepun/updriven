@@ -58,11 +58,11 @@ export const post = {
                     const post = changeStructurePost([res.post]);
                     commit('fetchCreated', post)
                     commit('clear_create')
-                    commit('authentication/updateAlert', { type: 'Success', message: 'Post created successfully.' }, { root: true })
+                    dispatch('alert/assign', { type: 'Success', message: 'Post created successfully.' }, { root: true })
                     resolve(res)
                 })
                 .catch( err => {
-                    commit('authentication/updateAlert', { type: 'Warning', message: err.response.data.message }, { root: true })
+                    dispatch('alert/assign', { type: 'Warning', message: err.response.data.message }, { root: true })
                     reject(err)
                 })
             })
@@ -72,16 +72,16 @@ export const post = {
         /**
          * Delete post
          */
-         delete({ commit }, id) {
+         delete({ commit, dispatch }, id) {
             return new Promise((resolve, reject) => {
                 postService.deletePost(id)
                 .then( res => {
                     commit('clearDeleted', id)
-                    commit('authentication/updateAlert', { type: 'Success', message: 'Post deleted successfully.' }, { root: true })
+                    dispatch('alert/assign', { type: 'Success', message: 'Post deleted successfully.' }, { root: true })
                     resolve(res)
                 })
                 .catch( err => {
-                    commit('authentication/updateAlert', { type: 'Warning', message: error.response.data.message }, { root: true })
+                    dispatch('alert/assign', { type: 'Warning', message: err.response.data.message }, { root: true })
                     reject(err)
                 })
             })
@@ -103,6 +103,40 @@ export const post = {
                     reject(err)
                 })
             })
+        },
+        sentiment({ dispatch, commit }, detail) {
+            return new Promise((resolve, reject) => {
+                postService.sentiment(detail)
+                .then( res => {
+                    //dispatch('alert/assign', { type: 'Success', message: res.message }, { root: true })
+                    resolve(res)
+                }, err => {
+                    dispatch('alert/assign', { type: 'Warning', message: err.response.data.message }, { root: true })
+                    resolve(err)
+                })
+                .catch( err => {
+                    dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+                    reject(err)
+                })
+            }) 
+            
+        },
+        rm_sentiment({ dispatch, commit }, detail) {
+            return new Promise((resolve, reject) => {
+                postService.rm_sentiment(detail)
+                .then( res => {
+                    dispatch('alert/assign', { type: 'Success', message: res.message }, { root: true })
+                    resolve(res)
+                }, err => {
+                    dispatch('alert/assign', { type: 'Warning', message: err.response.data.message }, { root: true })
+                    resolve(err)
+                })
+                .catch( err => {
+                    dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+                    reject(err)
+                })
+            }) 
+            
         }
     },
     mutations: {

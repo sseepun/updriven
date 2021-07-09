@@ -241,6 +241,8 @@ export default {
     ...mapActions({
       fetchComment: 'post/fetchComment',
       delete: 'post/delete',
+      sentiment: 'post/sentiment',
+      removeSentiment: 'post/rm_sentiment'
     }),
     formatNumber(value, digits=2) {
       let val = (value/1).toFixed(digits);
@@ -251,20 +253,40 @@ export default {
     },
     togglePostLike() {
       if(this.selfPost.actions.liked){
-        this.selfPost.actions.liked = false;
-        this.selfPost.counts.likes -= 1;
+        this.removeSentiment({
+          sentiment_id: this.selfPost.id,
+          sentiment_on: 'Post'
+        }).then( () => {
+          this.selfPost.actions.liked = false;
+          this.selfPost.counts.likes -= 1;
+        });
       }else{
-        this.selfPost.actions.liked = true;
-        this.selfPost.counts.likes += 1;
+        this.sentiment({
+          post_id: this.selfPost.id,
+          sentiment_type: '1'
+        }).then( () => {
+          this.selfPost.actions.liked = true;
+          this.selfPost.counts.likes += 1;
+        });
       }
     },
     commentLikeToggle(c) {
       if(c.actions.liked){
-        c.actions.liked = false;
-        c.counts.likes -= 1;
+        this.removeSentiment({
+          sentiment_id: c.id,
+          sentiment_on: 'Comment'
+        }).then( () => {
+          c.actions.liked = false;
+          c.counts.likes -= 1;
+        });
       }else{
-        c.actions.liked = true;
-        c.counts.likes += 1;
+        this.sentiment({
+          comment_id: c.id,
+          sentiment_type: '1'
+        }).then( () => {
+          c.actions.liked = true;
+          c.counts.likes += 1;
+        });
       }
     },
     onSubmit() {

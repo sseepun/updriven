@@ -6,7 +6,9 @@ export const postService = {
     createPost,
     fetchPost_Owner,
     fetchComment,
-    deletePost
+    deletePost,
+    sentiment,
+    rm_sentiment
 }
 
 function createPost(postDetail) {
@@ -34,6 +36,40 @@ function deletePost(id) {
           data: {
             post_id: id
           },
+          withCredentials: true,
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+}
+
+function sentiment(detail) {
+    return new Promise((resolve, reject) => {
+        axios({
+          method: 'POST',
+          url: `post/sentiment`,
+          data: detail,
+          withCredentials: true,
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+}
+
+function rm_sentiment(detail) {
+    return new Promise((resolve, reject) => {
+        axios({
+          method: 'POST',
+          url: `post/remove_sentiment`,
+          data: detail,
           withCredentials: true,
         })
         .then(res => {

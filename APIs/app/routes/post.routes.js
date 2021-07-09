@@ -32,7 +32,12 @@ module.exports = app => {
 
     router.post("/sentiment",
         auth.isLoggedIn,
-        postController.sentiment
+        postController.giveSentiment
+    );
+
+    router.post("/remove_sentiment",
+        auth.isLoggedIn,
+        postController.removeSentiment
     );
 
     router.post("/share",

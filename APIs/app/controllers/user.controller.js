@@ -3,6 +3,7 @@ const User = db.user;
 const User_detail = db.user_detail;
 const Post = db.post;
 const Organization = db.organization;
+const Sentiment = db.sentiment;
 
 exports.addOrganization = async (req, res) => {
     try {
@@ -56,9 +57,20 @@ exports.posts = async (req, res) => {
                 {path: 'results.user', model: 'User', select: 'user_detail', populate: {path: 'user_detail', select:['firstname', 'lastname']}},
                 {path: 'results.category', model: 'Category', select: 'category_name'}
             ])
+        for (let i = 0; i < post_list.results.length; i++) {
+            console.log(post_list.results[i])
+            const is_sentiment_post = await Sentiment.findOne({sentiment: post_list.results[i], user: req.user})
+            if (is_sentiment_post) {
+                post_list.results[i].is_sentiment = true
+            }
+            else {
+                post_list.results[i].is_sentiment = false
+            }
+        }
         res.status(200).send(post_list)
     }
     catch (err) {
+        console.log(err)
         return res.status(500).send({message: err})
     }
 }

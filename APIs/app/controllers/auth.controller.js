@@ -111,7 +111,7 @@ exports.generateForgotPwdLink = async (req, res) => {
             html: complete_html
         }
         const response = await sgMail.send(msg)
-				res.status(200).send({ message: "If a matching account was found an email was sent to " + req.params.email + " to allow you to reset your password" });
+			res.status(200).send({ message: "If a matching account was found an email was sent to " + req.params.email + " to allow you to reset your password" });
         //res.status(200).send({ verifyLink: token });
     }
     catch (err) {
@@ -120,7 +120,6 @@ exports.generateForgotPwdLink = async (req, res) => {
 };
 
 exports.resetPwd = (req, res) => {
-	console.log(req.body);
     if (req.params.token) {
         jwt.verify(req.params.token, process.env.RESET_PASSWORD_SECRET, (err, decoded) => {
             if (err) {

@@ -123,7 +123,7 @@ exports.updateComment = async (req, res) => {
     }
 }
 
-exports.sentiment = async (req, res) => {
+exports.giveSentiment = async (req, res) => {
     try {
         if (req.body.post_id && req.body.comment_id) {
             res.status(500).send({message: "cannot sentiment on post and comment at the same time"})
@@ -160,6 +160,25 @@ exports.sentiment = async (req, res) => {
     }
     catch (err) {
         console.log(err)
+        return res.status(500).send({message: err})
+    }
+}
+
+exports.removeSentiment = async (req, res) => {
+    try {
+        let sentiment_on;
+        if (req.body.sentiment_on === 'Post') { 
+            sentiment_on = await Post.findById(sanitize(req.body.sentiment_id)) 
+        }
+        else if (req.body.sentiment_on === 'Comment') { 
+            sentiment_on = await Comment.findById(sanitize(req.body.sentiment_id)) 
+        }
+        const sentiment = await Sentiment.deleteOne({sentiment: sentiment_on, user: req.user, sentiment_on: sanitize(req.body.sentiment_on)})
+        sentiment_on.sentiment_count -= 1
+        await sentiment_on.save()
+        res.status(200).send({message: 'sentiment removed'})
+    }
+    catch (err) {
         return res.status(500).send({message: err})
     }
 }
