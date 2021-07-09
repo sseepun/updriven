@@ -1,6 +1,5 @@
 <template>
   <TopNav />
-
   <div class="app-container">
 
     <div class="left-container">
@@ -26,7 +25,7 @@
     </div>
 
   </div>
-  <AlertPopup :alert="alert" />
+  <AlertPopup/>
 </template>
 
 <script>
@@ -50,11 +49,6 @@ export default {
   },
   mounted() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
-  },
-  computed: {
-    ...mapGetters({
-      alert: 'alert/alert'
-    })
   },
   methods: {
     createPost(post) {

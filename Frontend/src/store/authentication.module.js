@@ -8,15 +8,13 @@ const user = JSON.parse(localStorage.getItem(`${process.env.VUE_APP_API_URL}_USE
 export const authentication = {
   namespaced: true,
   state: {
-      user: user,
-      alert: { type: null, message: null }
+      user: user
   },
   getters: {
     user: state => state.user,
     isSignedin: state => state.user? true: false,
     isAdmin: state => state.user && state.user.is_admin,
-    isUser: state => state.user,
-    alert: state => state.alert,
+    isUser: state => state.user
   },
   // Asynchronous 
   actions: {
@@ -36,7 +34,7 @@ export const authentication = {
             )
 
             commit('signinSuccess', resUser);
-            dispatch('alert/assign', { type: 'Success', message: 'Signed in successfully.' }, { root: true })
+            //dispatch('alert/assign', { type: 'Success', message: 'Signed in successfully.' }, { root: true })
             resolve(res)
           },
           error => {
@@ -107,7 +105,6 @@ export const authentication = {
       return new Promise((resolve, reject) => {   
       authenService.forgetPasswordSentEmail(email).then(
         response => {
-          console.log("")
            dispatch('alert/assign', { type: 'Success', message: response.message }, { root: true })
           
           resolve(response)
@@ -127,7 +124,6 @@ export const authentication = {
       return new Promise((resolve, reject) => {   
       authenService.resetPassword(input).then(
         response => {
-          console.log(response.message)
           dispatch('alert/assign',  { type: 'Success', message: response.message }, { root: true })
           resolve(response)
         },
@@ -194,12 +190,6 @@ export const authentication = {
     signout(state) {
       state.user = null;
       localStorage.removeItem(`${process.env.VUE_APP_API_URL}_USER`);
-    },
-    updateAlert(state, alert) {
-      state.alert = alert;
-      setTimeout(() => {
-        state.alert = { type: null, message: null };
-      }, 2400);
     }
   }
 }

@@ -9,6 +9,9 @@ export const alert = {
     actions: {
         assign({ commit }, input) {
             commit('fetchAlert', input)
+        },
+        clear({ commit }) {
+            commit('fetchAlert', { type: null, message: null })
         }
     },
     mutations: {

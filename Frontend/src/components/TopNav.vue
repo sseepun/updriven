@@ -48,7 +48,7 @@
                 </router-link>
               </div>
               <div class="submenu">
-                <router-link  @click="signOut">
+                <router-link to='/' @click="signOut">
                   Sign Out
                 </router-link>
               </div>
