@@ -75,9 +75,15 @@ export default {
       isActiveProfile: false
     }
   },
+  created() {  
+    this.getSocketID.emit('join-with-id', {
+      user_id: this.user.id,
+    }); 
+  },
   computed: {
     ...mapGetters({
       user: 'authentication/user',
+      getSocketID: 'socketIO/getSocketID',
     })
   },
   methods: {
@@ -86,7 +92,8 @@ export default {
     }),
     signOut() {
       this.signout()
-    }
+    },
+
   }
 }
 </script>
