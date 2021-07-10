@@ -78,6 +78,9 @@ exports.posts = async (req, res) => {
 exports.editInfo = async (req, res) => {
     try {
         const user_detail = await User_detail.findOne({ username: req.userId })
+        if (req.files) {
+            user_detail.profile_pic = req.files[0].path
+        }
         user_detail.prefix = req.body.prefix;
         user_detail.firstname = req.body.firstname;
         user_detail.lastname = req.body.lastname;

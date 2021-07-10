@@ -44,6 +44,7 @@ exports.signup = async (req, res) => {
         const user_detail = new User_detail({
             firstname: req.body.firstname,
             lastname: req.body.lastname,
+            profile_pic: process.env.DEFAULT_PROFILE_IMAGE
         });
 
         await user.save()
@@ -111,7 +112,7 @@ exports.generateForgotPwdLink = async (req, res) => {
             html: complete_html
         }
         const response = await sgMail.send(msg)
-			res.status(200).send({ message: "If a matching account was found an email was sent to " + req.params.email + " to allow you to reset your password" });
+		res.status(200).send({ message: "If a matching account was found an email was sent to " + req.params.email + " to allow you to reset your password" });
         //res.status(200).send({ verifyLink: token });
     }
     catch (err) {
