@@ -76,25 +76,28 @@ const io = require("socket.io")(server, {
 io.on('connection', (socket) => {
   socket.on('join-with-id',(data) => {
       socket.join(data.user_id);
-      User.findById(data.user_id).exec((err,user) => {
+      console.log(data.user_id)
+    //   User.findById(data.user_id).exec((err,user) => {
           io.in(data.user_id).emit('receive-notify',
           {
               user_id: data.user_id,
-              notification:  user.notification
+              notification:  1//user.notification
           });
-          }
-      );
+    //       }
+    //   );
   });
   socket.on('sent-realtime-notify' , (data) =>{
-      Notification.findById(data.user_id)
-      .exec( (err, noti) => {
-          console.log(typeof data.user_id);
-          socket.to(data.user_id).emit('get-count-notify',{
-              createdAt: Date.now(),
-              detail: data.content,
-              id: data.id,
-          });
-      })
+
+    console.log(data);
+    io.in(data.user_id).emit('get-count-notify',{
+        sentiment_type: data.sentiment_type,
+        post_id: data.post_id,
+        user_id: data.user_id,
+        user_like_post_id: data.user_like_post_id,
+        user_like_post_firstname: data.user_like_post_firstname ,
+        user_like_post_lastname: data.user_like_post_lastname,
+    });
+        
   });
   
   socket.on('join', (data) => {
