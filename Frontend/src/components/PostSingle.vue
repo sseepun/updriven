@@ -235,6 +235,7 @@ export default {
     },
     ...mapGetters({
       user: 'authentication/user',
+      getSocketID: 'socketIO/getSocketID',
     })
   },
   methods: {
@@ -267,6 +268,21 @@ export default {
         }).then( () => {
           this.selfPost.actions.liked = true;
           this.selfPost.counts.likes += 1;
+          console.log("sent", this.selfPost.user.id)
+          console.log("sent", this.selfPost.id)
+          console.log("sent", this.user.id)
+          console.log("sent", this.user.firstname)
+          console.log("sent", this.user.lastname)
+
+          this.getSocketID.emit('sent-realtime-notify',{
+              sentiment_type: '1',
+              post_id: this.selfPost.id,
+              user_id: this.selfPost.user.id,
+              user_like_post_id: this.user.id,
+              user_like_post_firstname: this.user.firstname,
+              user_like_post_lastname: this.user.lastname,
+          });
+
         });
       }
     },

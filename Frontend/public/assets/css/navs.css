@@ -41,7 +41,6 @@ nav.topnav .option-profile .chev > img{
     filter:grayscale(100%); transition:transform .25s;
 }
 nav.topnav .option-profile.active .chev > img{transform:rotate(180deg);}
-
 nav.topnav .dropdown{
     display:block; position:absolute; top:calc(100% + .5rem); right:0;
     background:#ffffff; padding:.375rem 0; pointer-events:none;

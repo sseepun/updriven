@@ -1,13 +1,12 @@
 import axios from 'axios';
-import authHeader from './auth-header';
 
 class SocketIO {
     initializer() {
-        let socket = io.connect(process.env.VUE_APP_SERVERURL ,{
+        let socket = io.connect("http://localhost:8081" ,{
             withCredentials: false,
             transports : ['websocket']
         });
-
+        console.log('connect to port 8081')
         return socket;
     }
 
