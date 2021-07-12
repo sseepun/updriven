@@ -24,6 +24,18 @@
     />
   </button>
 
+  <a v-else-if="href.indexOf('javascript') > -1" href="javascript:" 
+    class="btn btn-action" :class="classer"
+  >
+    <img v-if="iconPrepend" 
+      class="img-icon mr-1" :src="'/assets/img/icon/'+iconPrepend" alt="Image Icon" 
+    />
+    <span>{{text}}</span>
+    <img v-if="iconAppend" 
+      class="img-icon ml-1" :src="'/assets/img/icon/'+iconAppend" alt="Image Icon" 
+    />
+  </a>
+
   <router-link v-else :to="href" class="btn btn-action" :class="classer">
     <img v-if="iconPrepend" 
       class="img-icon mr-1" :src="'/assets/img/icon/'+iconPrepend" alt="Image Icon" 

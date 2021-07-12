@@ -97,7 +97,10 @@
                 </a>
               </div>
               <div class="menu-container" v-if="selfPost.user.id == user.id">
-                <a class="menu color-gray h-color-01" href="javascript:" @click="onClickDelete">
+                <a 
+                  class="menu color-gray h-color-01" href="javascript:" 
+                  @click="isActivePopup = false; isActivePopupDelete = true;"
+                >
                   <div class="icon">
                     <img src="/assets/img/icon/close.png" alt="Image Icon" />
                   </div>
@@ -207,6 +210,32 @@
       </form>
     </div>
   </div>
+
+  <!-- Popup Delete -->
+  <div 
+    v-if="selfPost.user.id == user.id" class="popup-container" 
+    :class="{ 'active': isActivePopupDelete }"
+  >
+    <div class="wrapper">
+      <div class="close-filter" @click="isActivePopupDelete = false"></div>
+      <div class="popup-box md bg-white">
+        <form class="w-full" @submit.prevent="onClickDelete">
+          <h6 class="h5 fw-600 text-center lh-xs">
+            Are you sure that you want to delete this post?
+          </h6>
+          <div class="d-flex ai-center jc-center mt-4 pt-2">
+            <Button type="submit" text="DELETE" classer="btn-color-06 mr-3" />
+            <a 
+              href="javascript:" class="btn btn-action btn-color-05"
+              @click="isActivePopupDelete = false" 
+            >
+              CANCEL
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -223,6 +252,7 @@ export default {
     return {
       selfPost: this.post,
       isActivePopup: false,
+      isActivePopupDelete: false,
       commentLimit: 1,
       comment: ''
     }
@@ -246,6 +276,7 @@ export default {
       removeSentiment: 'post/rm_sentiment',
       commentOnPost: 'post/commentOnPost'
     }),
+
     formatNumber(value, digits=2) {
       let val = (value/1).toFixed(digits);
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -253,6 +284,7 @@ export default {
     formatDate(value) {
       return moment(String(value)).format('MM/DD/YYYY');
     },
+
     togglePostLike() {
       if(this.selfPost.actions.liked){
         this.removeSentiment({
@@ -291,6 +323,7 @@ export default {
         });
       }
     },
+
     onSubmit() {
       // this.selfPost.comments.push({
       //   comment: this.comment,
@@ -311,6 +344,7 @@ export default {
         this.comment = ''
       })
     },
+
     callComment() {
       const that = this
       this.fetchComment(that.selfPost.id)

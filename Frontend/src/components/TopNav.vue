@@ -17,9 +17,24 @@
         </div>
         <div class="option-container">
           <div class="option" :class="{ 'active': isActiveNoti }">
-            <a class="icon" href="javascript:" @click="isActiveNoti = !isActiveNoti">
+            <a class="icon icon-alert" href="javascript:" @click="isActiveNoti = !isActiveNoti">
               <img src="/assets/img/icon/bell.png" alt="Bell Icon" />
+              <div class="num">3</div>
             </a>
+            <div class="dropdown bshadow" :class="{ 'active': isActiveNoti }">
+              <div v-for="i in [0, 1]" :key="i" class="submenu submenu-alert">
+                <router-link to="/">
+                  <div class="icon">
+                    <img src="/assets/img/icon/alert.svg" alt="Image Icon" />
+                  </div>
+                  <div class="text-container">
+                    <div class="date">12/07/2021</div>
+                    <div class="title">Notification Title</div>
+                    <div class="desc">Notification long description</div>
+                  </div>
+                </router-link>
+              </div>
+            </div>
           </div>
           <div class="option" :class="{ 'active': isActiveMsg }">
             <router-link to="/user/chat" class="icon" @click="isActiveMsg = !isActiveMsg">
@@ -93,7 +108,6 @@ export default {
     signOut() {
       this.signout()
     },
-
   }
 }
 </script>

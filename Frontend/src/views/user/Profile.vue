@@ -72,7 +72,7 @@ export default {
   },
   mounted() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
-    this.$refs.middleContainer.style.minHeight = (this.$refs.rightContainer.clientHeight*2.5)+'px';
+    this.$refs.middleContainer.style.minHeight = (this.$refs.rightContainer.clientHeight*2.75)+'px';
   },
   methods: {
     createPost(post) {
