@@ -26,8 +26,8 @@
         </div>
         <div class="btn">
           <Button 
-            href="#" classer="d-block btn-color-01 btn-sm pl-4 pr-4" 
-            text="EDIT PROFILE"
+            href="/user/profile/update" text="EDIT PROFILE" 
+            classer="d-block btn-color-01 btn-sm pl-4 pr-4" 
           />
         </div>
       </div>

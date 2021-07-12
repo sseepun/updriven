@@ -11,7 +11,7 @@
 
     <Banner />
     
-    <div ref="rightContainer" class="right-container" data-aos="fade-up" data-aos-delay="150">
+    <div ref="rightContainer" class="right-container">
       <div class="wrapper" data-simplebar>
         <div class="p-3 bshadow">
           <SectionInfo />

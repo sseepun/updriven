@@ -56,6 +56,12 @@ const routes = [
     name: 'UserChatPage',
     component: () => import('../views/user/Chat.vue')
   },
+  
+  {
+    path: '/user/profile/update',
+    name: 'UserProfileUpdatePage',
+    component: () => import('../views/user/ProfileUpdate.vue')
+  },
 
 ]
 

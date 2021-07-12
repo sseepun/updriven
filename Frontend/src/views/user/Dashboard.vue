@@ -8,7 +8,7 @@
       </div>
     </div>
     
-    <div class="right-container" data-aos="fade-up" data-aos-delay="150">
+    <div class="right-container">
       <div class="wrapper" data-simplebar>
         <div>
           <SectionSponsored />

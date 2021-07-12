@@ -15,6 +15,7 @@ import FormGroup from './components/FormGroup'
 import SpecialCard01 from './components/SpecialCard01'
 import SpecialCard02 from './components/SpecialCard02'
 import PostSingle from './components/PostSingle'
+import SelectTag from './components/SelectTag'
 app.component('AlertPopup', AlertPopup)
 app.component('Avatar', Avatar)
 app.component('Button', Button)
@@ -22,6 +23,7 @@ app.component('FormGroup', FormGroup)
 app.component('SpecialCard01', SpecialCard01)
 app.component('SpecialCard02', SpecialCard02)
 app.component('PostSingle', PostSingle)
+app.component('SelectTag', SelectTag)
 
 // store.dispatch('checkSignin')
 app.use(store)
