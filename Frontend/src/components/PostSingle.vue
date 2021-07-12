@@ -1,6 +1,5 @@
 <template>
   <div v-if="user" class="post bshadow">
-
     <template v-if="selfPost.desc.indexOf('https://www.youtube.com/') > -1">
       <div class="ss-img video-view no-hover">
         <iframe 
@@ -120,7 +119,7 @@
           {{selfPost.desc}}
         </p>
       </template>
-      
+
       <div class="toolbar mt-3">
         <div class="post-icon color-gray mr-4">
           <img class="mr-2" src="/assets/img/icon/message.png" alt="Image Icon" />
@@ -177,7 +176,8 @@
           </div>
         </div>
       </div>
-      <div v-if="selfPost.counts.comments > 3" class="mt-3">
+
+      <div v-if="selfPost.counts.comments > 1" class="mt-3">
         <a 
           v-if="commentLimit < selfPost.counts.comments - 1"  
           class="p sm fw-400 color-gray h-color-01" href="javascript:" 
@@ -193,7 +193,7 @@
         </a>
       </div>
 
-      <form action="/" method="GET" @submit.prevent="onSubmit()">
+      <form @submit.prevent="onSubmit()">
         <div class="comment mt-4">
           <div class="wrapper ai-center">
             <Avatar :avatar="user.avatar" />
@@ -211,7 +211,8 @@
 
 <script>
 import moment from 'moment';
-import {mapGetters, mapActions, mapMutations} from "vuex"
+import {mapGetters, mapActions, mapMutations} from "vuex";
+import { _CommentPost } from '../models/post';
 
 export default {
   name: 'PostSingle',
@@ -243,7 +244,8 @@ export default {
       fetchComment: 'post/fetchComment',
       delete: 'post/delete',
       sentiment: 'post/sentiment',
-      removeSentiment: 'post/rm_sentiment'
+      removeSentiment: 'post/rm_sentiment',
+      commentOnPost: 'post/commentOnPost'
     }),
     formatNumber(value, digits=2) {
       let val = (value/1).toFixed(digits);
@@ -306,19 +308,24 @@ export default {
       }
     },
     onSubmit() {
-      this.selfPost.comments.push({
-        comment: this.comment,
-        createdAt: new Date(),
-        user: this.user,
-        counts: {
-          likes: 0
-        },
-        actions: {
-          liked: false
-        }
-      });
-      this.comment = '';
-      this.commentLimit += 1;
+      // this.selfPost.comments.push({
+      //   comment: this.comment,
+      //   createdAt: new Date(),
+      //   user: this.user,
+      //   counts: {
+      //     likes: 0
+      //   },
+      //   actions: {
+      //     liked: false
+      //   }
+      // });
+      // this.comment = '';
+      // this.commentLimit += 1;
+      const commentOnPost = new _CommentPost(this.selfPost.id);
+      commentOnPost.comment = this.comment
+      this.commentOnPost(commentOnPost).then( res => {
+        this.comment = ''
+      })
     },
     callComment() {
       const that = this

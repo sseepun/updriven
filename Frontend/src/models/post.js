@@ -16,6 +16,10 @@ export function changeStructurePost(posts) {
     for(let i = 0; i < posts.length; i++){
         const temp_data = posts[i];
 
+        if (temp_data['user'].length <= 0) {
+            continue;
+        }
+        
         temp_array.push({
             id: temp_data['_id'],
             image: temp_data['media'],
@@ -39,43 +43,41 @@ export function changeStructurePost(posts) {
             },
             comments: []
         })
-
-        // console.log(result)
-        console.log(temp_array)
     }
 
     return temp_array;
 }
 
-export function changeStructureComment(comments) {
-    console.log('comment :', comments);
-    console.log('type comment :', typeof comments);
+export function changeStructureComment(objectComments) {
+    const commentKeys = Object.keys(objectComments)
 
-    let temp_array = []
-    for(let i = 0; i < comments.length; i++){
-        const temp_data = comments[i];
+    let comments = []
+    for(let i = 0; i < commentKeys.length; i++){
+        const comment = objectComments[commentKeys[i]];
+        const childKeys = Object.keys(comment['children'])
 
-        temp_array.push({
-            id: temp_data['_id'],
-            comment: temp_data['comment'],
-            createdAt: temp_data['createdAt'],
+        comments.push({
+            id: comment['_id'],
+            comment: comment['comment'],
+            createdAt: comment['createdAt'],
             user: {
-                id: temp_data['author']['id'],
+                id: comment['author']['id'],
                 firstname: 'tata',
                 lastname: 'zakup',
                 avatar: '/assets/img/profile/01.jpg'
             },
             counts: {
-                likes: temp_data['sentiment_count']
+                likes: comment['sentiment_count']
             },
             actions: {
-                liked: true
+                liked: false
             },
-            depth: temp_data['depth']
+            depth: comment['depth'],
+            children: ( childKeys.length > 0? changeStructureComment(comment['children']) : {} )
         })
     }
-
-    return temp_array;
+    // console.log(comments)
+    return comments;
 }
 
 export class _create {
@@ -86,5 +88,13 @@ export class _create {
       this.PVmedia = PVmedia;
       this.fileMedia = fileMedia;
       this.visible_to = visible_to;
+    }
+}
+
+export class _CommentPost {
+    constructor(postID = '') {
+        this.postID = postID;
+        this.parentCommentID = ''
+        this.comment = '';
     }
 }

@@ -9,14 +9,14 @@
       <div class="right-container">
         <div class="search-container">
           <form action="/" method="GET">
-            <FormGroup 
-              placeholder="Search UpDriven" wrapperClass="append" 
+            <FormGroup
+              placeholder="Search UpDriven" wrapperClass="append"
               icon="search.png"
             />
           </form>
         </div>
         <div class="option-container">
-          
+
 
           <div class="option" :class="{ 'active': isActiveNoti }">
             <a class="icon" href="javascript:" @click="onclickRemoveAllNotification()"> <!-- @click="isActiveNoti = !isActiveNoti" -->
@@ -39,10 +39,10 @@
               </div>
             </div>
             -->
-            
+
           </div>
-           
-          
+
+
           <div class="option" :class="{ 'active': isActiveMsg }">
             <router-link to="/user/chat" class="icon" @click="isActiveMsg = !isActiveMsg">
               <img src="/assets/img/icon/message.png" alt="Message Icon" />
@@ -98,11 +98,11 @@ export default {
       amountNotify: 0,
     }
   },
-  created() {  
+  created() {
     console.log(this.user.id)
     this.getSocketID.emit('join-with-id', {
       user_id: this.user.id,
-    }); 
+    });
   },
   mounted() {
     this.getSocketID.on('receive-notify', (data) => {
@@ -131,7 +131,7 @@ export default {
       signout: 'authentication/signout',
       addNotification: 'socketIO/addNotification',
       removeAllNotification: 'socketIO/removeAllNotification',
-     
+
     }),
     signOut() {
       console.log(this.getSocketID)

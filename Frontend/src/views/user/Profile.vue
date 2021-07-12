@@ -50,7 +50,7 @@ import SectionPhotos from '../../components/SectionPhotos';
 import SectionFriends from '../../components/SectionFriends';
 import SectionInterested from '../../components/SectionInterested';
 import SectionLive from '../../components/SectionLive';
-import {mapGetters, mapActions, mapState} from "vuex"
+import {mapGetters, mapActions, mapState, mapMutations} from "vuex"
 
 export default {
   name: 'UserProfilePage',
@@ -66,12 +66,8 @@ export default {
     SectionInterested,
     SectionLive
   },
-  computed: {
-    ...mapGetters({
-      getPost:'post/getPost'
-    })
-  },
   created() {
+    this.clearPost();
     this.fetchPost_Owner();
   },
   mounted() {
@@ -91,6 +87,9 @@ export default {
     },
     ...mapActions({
       fetchPost_Owner:'post/fetchPost_Owner'
+    }),
+    ...mapMutations({
+      clearPost:'post/clearPost'
     })
   }
 }
