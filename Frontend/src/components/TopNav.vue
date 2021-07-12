@@ -19,7 +19,7 @@
 
 
           <div class="option" :class="{ 'active': isActiveNoti }">
-            <a class="icon" href="javascript:" @click="onclickRemoveAllNotification()">
+            <a class="icon icon-alert" href="javascript:" @click="onclickRemoveAllNotification()">
               <img src="/assets/img/icon/bell.png" alt="Bell Icon" />
               <div v-if="getAmount > 0" class="num">{{parseInt(getAmount, 10)}}</div>
             </a>
