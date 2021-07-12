@@ -31,10 +31,10 @@
 import TopNav from '../../components/TopNav';
 import LeftNav from '../../components/LeftNav';
 import PostNew from '../../components/PostNew';
-import PostMultiple from '../../components/PostMultiple';
+import PostMultiple from '../../components/PostMultiple_Profile';
 import SectionSponsored from '../../components/SectionSponsored';
 import SectionLive from '../../components/SectionLive';
-import {mapGetters, mapActions, mapState} from "vuex"
+import {mapGetters, mapActions, mapState, mapMutations} from "vuex"
 
 export default {
   name: 'UserDashboardPage',
@@ -45,6 +45,10 @@ export default {
     PostMultiple,
     SectionSponsored,
     SectionLive
+  },
+  created() {
+    this.clearPost()
+    this.fetchPostAll();
   },
   mounted() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
@@ -59,7 +63,13 @@ export default {
       }else{
         window.location.href = tab.link;
       }
-    }
+    },
+    ...mapActions({
+      fetchPostAll:'post/fetchPostAll'
+    }),
+    ...mapMutations({
+      clearPost:'post/clearPost'
+    })
   }
 }
 </script>

@@ -9,7 +9,6 @@ const Share = db.share;
 
 exports.createPost = async (req, res) => {
     try {
-        console.log(req.files)
         const post = new Post({
             user: req.userId,
             subject: req.body.subject,

@@ -1,6 +1,5 @@
 <template>
   <div v-if="user" class="post bshadow">
-
     <template v-if="selfPost.desc.indexOf('https://www.youtube.com/') > -1">
       <div class="ss-img video-view no-hover">
         <iframe 
@@ -98,7 +97,10 @@
                 </a>
               </div>
               <div class="menu-container" v-if="selfPost.user.id == user.id">
-                <a class="menu color-gray h-color-01" href="javascript:" @click="onClickDelete">
+                <a 
+                  class="menu color-gray h-color-01" href="javascript:" 
+                  @click="isActivePopup = false; isActivePopupDelete = true;"
+                >
                   <div class="icon">
                     <img src="/assets/img/icon/close.png" alt="Image Icon" />
                   </div>
@@ -120,7 +122,7 @@
           {{selfPost.desc}}
         </p>
       </template>
-      
+
       <div class="toolbar mt-3">
         <div class="post-icon color-gray mr-4">
           <img class="mr-2" src="/assets/img/icon/message.png" alt="Image Icon" />
@@ -177,7 +179,8 @@
           </div>
         </div>
       </div>
-      <div v-if="selfPost.counts.comments > 3" class="mt-3">
+
+      <div v-if="selfPost.counts.comments > 1" class="mt-3">
         <a 
           v-if="commentLimit < selfPost.counts.comments - 1"  
           class="p sm fw-400 color-gray h-color-01" href="javascript:" 
@@ -193,7 +196,7 @@
         </a>
       </div>
 
-      <form action="/" method="GET" @submit.prevent="onSubmit()">
+      <form @submit.prevent="onSubmit()">
         <div class="comment mt-4">
           <div class="wrapper ai-center">
             <Avatar :avatar="user.avatar" />
@@ -207,11 +210,38 @@
       </form>
     </div>
   </div>
+
+  <!-- Popup Delete -->
+  <div 
+    v-if="selfPost.user.id == user.id" class="popup-container" 
+    :class="{ 'active': isActivePopupDelete }"
+  >
+    <div class="wrapper">
+      <div class="close-filter" @click="isActivePopupDelete = false"></div>
+      <div class="popup-box md bg-white">
+        <form class="w-full" @submit.prevent="onClickDelete">
+          <h6 class="h5 fw-600 text-center lh-xs">
+            Are you sure that you want to delete this post?
+          </h6>
+          <div class="d-flex ai-center jc-center mt-4 pt-2">
+            <Button type="submit" text="DELETE" classer="btn-color-06 mr-3" />
+            <a 
+              href="javascript:" class="btn btn-action btn-color-05"
+              @click="isActivePopupDelete = false" 
+            >
+              CANCEL
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import moment from 'moment';
-import {mapGetters, mapActions, mapMutations} from "vuex"
+import {mapGetters, mapActions, mapMutations} from "vuex";
+import { _CommentPost } from '../models/post';
 
 export default {
   name: 'PostSingle',
@@ -222,6 +252,7 @@ export default {
     return {
       selfPost: this.post,
       isActivePopup: false,
+      isActivePopupDelete: false,
       commentLimit: 1,
       comment: ''
     }
@@ -235,6 +266,7 @@ export default {
     },
     ...mapGetters({
       user: 'authentication/user',
+      getSocketID: 'socketIO/getSocketID',
     })
   },
   methods: {
@@ -242,8 +274,10 @@ export default {
       fetchComment: 'post/fetchComment',
       delete: 'post/delete',
       sentiment: 'post/sentiment',
-      removeSentiment: 'post/rm_sentiment'
+      removeSentiment: 'post/rm_sentiment',
+      commentOnPost: 'post/commentOnPost'
     }),
+
     formatNumber(value, digits=2) {
       let val = (value/1).toFixed(digits);
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -251,6 +285,7 @@ export default {
     formatDate(value) {
       return moment(String(value)).format('MM/DD/YYYY');
     },
+
     togglePostLike() {
       if(this.selfPost.actions.liked){
         this.removeSentiment({
@@ -267,6 +302,21 @@ export default {
         }).then( () => {
           this.selfPost.actions.liked = true;
           this.selfPost.counts.likes += 1;
+          console.log("sent", this.selfPost.user.id)
+          console.log("sent", this.selfPost.id)
+          console.log("sent", this.user.id)
+          console.log("sent", this.user.firstname)
+          console.log("sent", this.user.lastname)
+
+          this.getSocketID.emit('sent-realtime-notify',{
+              sentiment_type: '1',
+              post_id: this.selfPost.id,
+              user_id: this.selfPost.user.id,
+              user_like_post_id: this.user.id,
+              user_like_post_firstname: this.user.firstname,
+              user_like_post_lastname: this.user.lastname,
+          });
+
         });
       }
     },
@@ -289,21 +339,28 @@ export default {
         });
       }
     },
+
     onSubmit() {
-      this.selfPost.comments.push({
-        comment: this.comment,
-        createdAt: new Date(),
-        user: this.user,
-        counts: {
-          likes: 0
-        },
-        actions: {
-          liked: false
-        }
-      });
-      this.comment = '';
-      this.commentLimit += 1;
+      // this.selfPost.comments.push({
+      //   comment: this.comment,
+      //   createdAt: new Date(),
+      //   user: this.user,
+      //   counts: {
+      //     likes: 0
+      //   },
+      //   actions: {
+      //     liked: false
+      //   }
+      // });
+      // this.comment = '';
+      // this.commentLimit += 1;
+      const commentOnPost = new _CommentPost(this.selfPost.id);
+      commentOnPost.comment = this.comment
+      this.commentOnPost(commentOnPost).then( res => {
+        this.comment = ''
+      })
     },
+
     callComment() {
       const that = this
       this.fetchComment(that.selfPost.id)

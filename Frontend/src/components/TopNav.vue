@@ -9,18 +9,37 @@
       <div class="right-container">
         <div class="search-container">
           <form action="/" method="GET">
-            <FormGroup 
-              placeholder="Search UpDriven" wrapperClass="append" 
+            <FormGroup
+              placeholder="Search UpDriven" wrapperClass="append"
               icon="search.png"
             />
           </form>
         </div>
         <div class="option-container">
+
+
           <div class="option" :class="{ 'active': isActiveNoti }">
-            <a class="icon" href="javascript:" @click="isActiveNoti = !isActiveNoti">
+            <a class="icon icon-alert" href="javascript:" @click="onclickRemoveAllNotification()">
               <img src="/assets/img/icon/bell.png" alt="Bell Icon" />
+              <div v-if="getAmount > 0" class="num">{{parseInt(getAmount, 10)}}</div>
             </a>
+            <div class="dropdown bshadow" :class="{ 'active': isActiveNoti }">
+              <div v-for="i in [0, 1]" :key="i" class="submenu submenu-alert">
+                <router-link to="/">
+                  <div class="icon">
+                    <img src="/assets/img/icon/alert.svg" alt="Image Icon" />
+                  </div>
+                  <div class="text-container">
+                    <div class="date">12/07/2021</div>
+                    <div class="title">Notification Title</div>
+                    <div class="desc">Notification long description</div>
+                  </div>
+                </router-link>
+              </div>
+            </div>
           </div>
+
+
           <div class="option" :class="{ 'active': isActiveMsg }">
             <router-link to="/user/chat" class="icon" @click="isActiveMsg = !isActiveMsg">
               <img src="/assets/img/icon/message.png" alt="Message Icon" />
@@ -72,21 +91,57 @@ export default {
       isActiveNoti: false,
       isActiveMsg: false,
       isActiveAdd: false,
-      isActiveProfile: false
+      isActiveProfile: false,
+      amountNotify: 0,
     }
+  },
+  created() {
+    console.log(this.user.id)
+    this.getSocketID.emit('join-with-id', {
+      user_id: this.user.id,
+    });
+  },
+  mounted() {
+    this.getSocketID.on('receive-notify', (data) => {
+        console.log("data received")
+        });
+
+    this.getSocketID.on('get-count-notify', (data) => {
+      this.amountNotify = this.amountNotify + 1
+      this.addNotification(data).then(response => {
+        this.getContents.forEach((element,index) => {console.log("index : "+index + " " + JSON.stringify(element))
+        });
+      })
+    });
+
   },
   computed: {
     ...mapGetters({
       user: 'authentication/user',
+      getSocketID: 'socketIO/getSocketID',
+      getAmount: 'socketIO/getAmount',
+      getContents: 'socketIO/getContents',
     })
   },
   methods: {
     ...mapActions({
-      signout: 'authentication/signout'
+      signout: 'authentication/signout',
+      addNotification: 'socketIO/addNotification',
+      removeAllNotification: 'socketIO/removeAllNotification',
+
     }),
     signOut() {
+      console.log(this.getSocketID)
       this.signout()
+    },
+    onclickNotification(post_id) {
+      console.log(post_id)
+    },
+    onclickRemoveAllNotification() {
+      this.removeAllNotification()
+      this.isActiveNoti = !this.isActiveNoti
     }
+
   }
 }
 </script>

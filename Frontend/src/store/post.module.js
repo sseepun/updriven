@@ -42,6 +42,46 @@ export const post = {
             })
         },
         /**
+         * fetch all posts to display on dashboard page
+         */
+         async fetchPostAll({ state, commit }) {
+            await commit('updateStatusLoading', true)
+            return await new Promise((resolve, reject) => {
+                postService.fetchPostAll(state.StatusPost)
+                .then( res => {
+                    console.log(res)
+                    const statusPost = new StatusPost(res.hasNext, res.hasPrevious, res.next, res.previous);
+                    commit('updateStatusPost', statusPost)
+                    const posts = changeStructurePost(res.results);
+                    commit('updatePost', posts)
+                    commit('updateStatusLoading', false)
+                    resolve(res)
+                })
+                .catch( err => {
+                    commit('updateStatusLoading', false)
+                    reject(err)
+                })
+            })
+        },
+        /**
+         * 
+         */
+        async commentOnPost({state, dispatch}, detail) {
+            var promise = await new Promise((resolve, reject) => {
+                postService.commentOnPost(detail)
+                .then( res => {
+                    dispatch('post/fetchComment', detail.postID , { root: true })
+                    dispatch('alert/assign', { type: 'Success', message: 'Commented on post successfully.' }, { root: true })
+                    resolve(res)
+                })
+                .catch( err => {
+                    reject(err)
+                })
+            });
+
+            return await promise
+        },
+        /**
          * Create post
          */
         async create({ state, commit, dispatch }) {
@@ -94,9 +134,10 @@ export const post = {
                 postService.fetchComment(postID)
                 .then( res => {
                     // let test = state.Post.findIndex(post => post.id == postID);
-                    console.log(res)
                     const commentPost = changeStructureComment(res.data.comments)
+                    console.log('commentPost :', commentPost)
                     state.Post[state.Post.findIndex(post => post.id == postID)].comments = commentPost
+                    state.Post[state.Post.findIndex(post => post.id == postID)].counts.comments = commentPost.length
                     resolve(res)
                 })
                 .catch( err => {
@@ -135,8 +176,7 @@ export const post = {
                     dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
                     reject(err)
                 })
-            }) 
-            
+            })
         }
     },
     mutations: {

@@ -8,7 +8,9 @@ export const postService = {
     fetchComment,
     deletePost,
     sentiment,
-    rm_sentiment
+    rm_sentiment,
+    commentOnPost,
+    fetchPostAll
 }
 
 function createPost(postDetail) {
@@ -101,6 +103,26 @@ function fetchPost_Owner(next_previous) {
   })
 }
 
+function fetchPostAll(next_previous) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'POST',
+      url: `feed/post`,
+      data: {
+        next: (next_previous.hasNext == true? next_previous.nextID: ''),
+        // previous: (next_previous.hasPrevious? '': '')
+      },
+      withCredentials: true,
+    })
+    .then(res => {
+      resolve(res.data);
+    })
+    .catch(err => {
+      reject(err);
+    });
+  })
+}
+
 function fetchComment(postID) {
   return new Promise((resolve, reject) => {
     axios({
@@ -108,6 +130,26 @@ function fetchComment(postID) {
       url: `feed/comment`,
       data: {
         post_id: postID,
+      },
+      withCredentials: true,
+    })
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    });
+  });
+}
+
+function commentOnPost(detail) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'POST',
+      url: `post/comment`,
+      data: {
+        post_id: detail.postID,
+        comment: detail.comment
       },
       withCredentials: true,
     })

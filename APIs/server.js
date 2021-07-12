@@ -62,7 +62,75 @@ require("./app/routes/user.routes")(app);
 require("./app/routes/post.routes")(app);
 require("./app/routes/feed.routes")(app);
 
-app.listen(port, () => console.log("server running on port " + port))
+server = app.listen(port, () => console.log("server running on port " + port))
+
+//socket.io instantiation
+const io = require("socket.io")(server, {
+  cors: {
+      origin: /localhost$/,
+      methods: ["GET", "POST"],
+      credentials: true
+  }
+});
+//listen on every connection
+io.on('connection', (socket) => {
+  socket.on('join-with-id',(data) => {
+      socket.join(data.user_id);
+      console.log(data.user_id)
+    //   User.findById(data.user_id).exec((err,user) => {
+          io.in(data.user_id).emit('receive-notify',
+          {
+              user_id: data.user_id,
+              notification:  1//user.notification
+          });
+    //       }
+    //   );
+  });
+  socket.on('sent-realtime-notify' , (data) =>{
+
+    console.log(data);
+    io.in(data.user_id).emit('get-count-notify',{
+        sentiment_type: data.sentiment_type,
+        post_id: data.post_id,
+        user_id: data.user_id,
+        user_like_post_id: data.user_like_post_id,
+        user_like_post_firstname: data.user_like_post_firstname ,
+        user_like_post_lastname: data.user_like_post_lastname,
+    });
+        
+  });
+  
+  socket.on('join', (data) => {
+      console.log('join room :', data.job_id)
+      socket.join(data.job_id);
+  });
+
+  socket.on('disconnect', () => {
+      // console.log("A user disconnected");
+  });
+
+  socket.on('send-message', (data) => {
+      User.findById(data.user_id)
+      .populate('avatar')
+      .exec((err, result) => {
+          socket.to(data.job_id).emit('recive-message', 
+          { 
+              user_id: data.user_id,
+              message: data.message,
+              job_id: data.job_id,
+              createdAt: new Date(data.createdAt),
+              avatar: result.avatar[0].value,
+              username: result.username
+          });
+          const chat = new Chat({
+              message: data.message,
+              });    
+          chat.user.push(data.user_id);
+          chat.job.push(data.job_id);
+          chat.save();
+      });
+  })
+})
 
 // connect to database
 db.mongoose.connect(process.env.DB, {
