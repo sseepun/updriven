@@ -76,9 +76,9 @@ export default {
     }
   },
   created() {  
-    this.getSocketID.emit('join-with-id', {
-      user_id: this.user.id,
-    }); 
+    // this.getSocketID.emit('join-with-id', {
+    //   user_id: this.user.id,
+    // }); 
   },
   computed: {
     ...mapGetters({
