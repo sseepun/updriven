@@ -7,8 +7,8 @@ const Sentiment = mongoose.model(
     new mongoose.Schema({
         user:
             [{
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "User"
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User"
             }],
         sentiment: {
             type: mongoose.Schema.Types.ObjectId,

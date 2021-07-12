@@ -1,28 +1,23 @@
 const mongoose = require("mongoose");
 const sanitizerPlugin = require('mongoose-sanitizer-plugin');
 
-const User = mongoose.model(
-  "User",
+const Notification = mongoose.model(
+  "Notification",
   new mongoose.Schema({
-    email: String,
-    password: String,
-    profile_image : String,
-    facebook_id : String,
-    google_id : String,
-    status: Boolean,
-    role:
-        [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Role"
-        }]
-      ,
-    user_detail:
-        [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User_detail"
-        }]
-    ,
+      action_to: {
+          type: mongoose.Schema.Types.ObjectId,
+          refPath: 'action_on'
+      },
+      action_on: {
+        type: String,
+        required: true,
+        enum: ['Post', 'Comment']
+    },
+      action_by: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User"
+      }
   }, { timestamps: true }).plugin(sanitizerPlugin)
 );
 
-module.exports = User;
+module.exports = Notification;

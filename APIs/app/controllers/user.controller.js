@@ -4,6 +4,7 @@ const User_detail = db.user_detail;
 const Post = db.post;
 const Organization = db.organization;
 const Sentiment = db.sentiment;
+const Notification = db.notification;
 
 exports.addOrganization = async (req, res) => {
     try {
@@ -55,7 +56,8 @@ exports.posts = async (req, res) => {
         await Post.populate(post_list,
             [
                 {path: 'results.user', model: 'User', select: 'user_detail', populate: {path: 'user_detail', select:['firstname', 'lastname']}},
-                {path: 'results.category', model: 'Category', select: 'category_name'}
+                {path: 'results.category', model: 'Category', select: 'category_name'},
+                {path: 'results.share', model: 'Share'}
             ])
         for (let i = 0; i < post_list.results.length; i++) {
             console.log(post_list.results[i])
@@ -92,6 +94,26 @@ exports.editInfo = async (req, res) => {
         user_detail.country_id = req.body.country_id;
         await user_detail.save()
         res.status(200).send({message: 'User info saved'});
+    }
+    catch (err) {
+        return res.status(500).send({message: err})
+    }
+}
+
+exports.getNotification = async (req, res) => {
+    try {
+        const notification = await Notification.find({ action_by: req.user })
+        .populate({path: 'action_to', select: ['_id']})
+        .populate({path: 'action_by', select: 'user_detail', populate: {path: 'user_detail', select: ['firstname','lastname']}})
+        return res.status(200).send(notification)
+    }
+    catch (err) {
+        return res.status(500).send({message: err})
+    }
+}
+
+exports.deleteNotification = async (req, res) => {
+    try {
     }
     catch (err) {
         return res.status(500).send({message: err})

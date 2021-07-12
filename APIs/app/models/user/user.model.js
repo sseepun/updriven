@@ -10,6 +10,7 @@ const User = mongoose.model(
     facebook_id : String,
     google_id : String,
     status: Boolean,
+    notification: { type: Number, default: 0 },
     role:
         [{
             type: mongoose.Schema.Types.ObjectId,

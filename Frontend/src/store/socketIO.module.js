@@ -27,12 +27,14 @@ export const socketIO = {
     actions: {
         getAllNotify({ commit , dispatch }) {
             return new Promise((resolve, reject) => {        
-                UserService.getAllNotification().then(
+                SocketIO.getAllNotification().then(
                     response => {
+                        console.log(response.data)
                         commit('fetchContents', response.data)
                         resolve(response)
                     },
                     error => {
+                        console.log('error')
                         reject(error)
                     }
                 )
@@ -67,11 +69,12 @@ export const socketIO = {
             state.contents = []
             input.forEach(notification => {
                 state.contents.push({
-                    post_id: notification.post_id,
+                    action_type: notification.action_on,
+                    action_to: notification.action_to._id,
                     user_id: notification.user_id,
-                    user_like_post_id: notification.user_like_post_id,
-                    user_like_post_firstname: notification.user_like_post_firstname,
-                    user_like_post_lastname: notification.user_like_post_lastname,
+                    user_like_post_id: notification.action_by._id,
+                    user_like_post_firstname: notification.action_by.user_detail.firstname,
+                    user_like_post_lastname: notification.action_by.user_detail.lastname,
                     _id: notification._id,
                     createdAt: notification.createdAt,
                 })

@@ -11,10 +11,9 @@ class SocketIO {
     }
 
 
-    // ffGetAllTgadmin() {
-    //     return axios.get('ff/getalltgadmin', { headers: authHeader() })
-        
-    // }
+    getAllNotification() {
+        return axios.get('/user/notification') 
+    }
 
     // tg_adminGetAllFF(company_id) {
     //     return axios.get(`tgadmin/getallff/${company_id}` , { headers: authHeader() })

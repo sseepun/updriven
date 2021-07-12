@@ -19,12 +19,17 @@ module.exports = app => {
     router.post('/post',
         auth.isLoggedIn,
         userController.posts
-    )
+    );
 
     router.post('/edit_info',
         auth.isLoggedIn,
         userController.editInfo
-    )
+    );
+
+    router.get('/notification',
+        auth.isLoggedIn,
+        userController.getNotification
+    );
 
     app.use('/apis/user', router);
 }

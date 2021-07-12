@@ -24,15 +24,15 @@
               <div v-if="getAmount > 0" class="num">{{parseInt(getAmount, 10)}}</div>
             </a>
             <div class="dropdown bshadow" :class="{ 'active': isActiveNoti }">
-              <div v-for="i in [0, 1]" :key="i" class="submenu submenu-alert">
+              <div v-for="(content, index) in getContents" :key="index" class="submenu submenu-alert">
                 <router-link to="/">
                   <div class="icon">
                     <img src="/assets/img/icon/alert.svg" alt="Image Icon" />
                   </div>
                   <div class="text-container">
                     <div class="date">12/07/2021</div>
-                    <div class="title">Notification Title</div>
-                    <div class="desc">Notification long description</div>
+                    <div class="title">{{content.user_like_post_firstname}} {{content.user_like_post_lastname}} Give Reaction To Your Post</div>
+                    <div class="desc">{{content.post_id}}</div>
                   </div>
                 </router-link>
               </div>
@@ -100,6 +100,7 @@ export default {
     this.getSocketID.emit('join-with-id', {
       user_id: this.user.id,
     });
+    this.getAllNotify()
   },
   mounted() {
     this.getSocketID.on('receive-notify', (data) => {
@@ -128,6 +129,7 @@ export default {
       signout: 'authentication/signout',
       addNotification: 'socketIO/addNotification',
       removeAllNotification: 'socketIO/removeAllNotification',
+      getAllNotify: 'socketIO/getAllNotify',
 
     }),
     signOut() {
@@ -138,8 +140,11 @@ export default {
       console.log(post_id)
     },
     onclickRemoveAllNotification() {
-      this.removeAllNotification()
+
       this.isActiveNoti = !this.isActiveNoti
+      // if(this.isActiveNoti === false){
+      //   this.removeAllNotification()
+      // }
     }
 
   }

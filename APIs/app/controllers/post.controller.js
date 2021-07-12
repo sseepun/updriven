@@ -6,6 +6,7 @@ const Category = db.category;
 const Comment = db.comment;
 const Sentiment = db.sentiment;
 const Share = db.share;
+const Notification = db.notification;
 
 exports.createPost = async (req, res) => {
     try {
@@ -138,6 +139,12 @@ exports.giveSentiment = async (req, res) => {
                 sentiment_type: req.body.sentiment_type
             });
             await sentiment.save();
+            const notification = new Notification({
+                action_to: post.id,
+                action_on: "Post",
+                action_by: req.user
+            })
+            await notification.save();
             res.status(200).send({message: "give sentiment on post successfully"})
         }
         else if (req.body.comment_id) {
@@ -151,6 +158,12 @@ exports.giveSentiment = async (req, res) => {
                 sentiment_type: req.body.sentiment_type
             });
             await sentiment.save();
+            const notification = new Notification({
+                action_to: comment.id,
+                action_on: "Comment",
+                action_by: req.user
+            })
+            await notification.save();
             res.status(200).send({message: "give sentiment on comment successfully"})
         }
         else {
