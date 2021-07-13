@@ -10,7 +10,8 @@ export const postService = {
     sentiment,
     rm_sentiment,
     commentOnPost,
-    fetchPostAll
+    fetchPostAll,
+    sharePost
 }
 
 function createPost(postDetail) {
@@ -150,6 +151,25 @@ function commentOnPost(detail) {
       data: {
         post_id: detail.postID,
         comment: detail.comment
+      },
+      withCredentials: true,
+    })
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    });
+  });
+}
+
+function sharePost(post_id) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'POST',
+      url: `post/share`,
+      data: {
+        post_id: post_id
       },
       withCredentials: true,
     })

@@ -25,16 +25,16 @@
             </a>
             <div class="dropdown bshadow" :class="{ 'active': isActiveNoti }">
               <div v-for="(content, index) in getContents" :key="index" class="submenu submenu-alert">
-                <router-link to="/">
+                <a @click="onclickClearNotification(content._id)" >
                   <div class="icon">
                     <img src="/assets/img/icon/alert.svg" alt="Image Icon" />
                   </div>
                   <div class="text-container">
                     <div class="date">12/07/2021</div>
-                    <div class="title">{{content.user_like_post_firstname}} {{content.user_like_post_lastname}} Give Reaction To Your Post</div>
-                    <div class="desc">{{content.post_id}}</div>
+                    <div class="title">{{content.user_like_post_firstname}} {{content.user_like_post_lastname}} Give Reaction To Your {{ content.action_type }}</div>
+                    <div class="desc">{{content.action_to}}</div>
                   </div>
-                </router-link>
+                </a>
               </div>
             </div>
           </div>
@@ -108,11 +108,7 @@ export default {
         });
 
     this.getSocketID.on('get-count-notify', (data) => {
-      this.amountNotify = this.amountNotify + 1
-      this.addNotification(data).then(response => {
-        this.getContents.forEach((element,index) => {console.log("index : "+index + " " + JSON.stringify(element))
-        });
-      })
+      this.getAllNotify()
     });
 
   },
@@ -127,8 +123,7 @@ export default {
   methods: {
     ...mapActions({
       signout: 'authentication/signout',
-      addNotification: 'socketIO/addNotification',
-      removeAllNotification: 'socketIO/removeAllNotification',
+      removeNotification: 'socketIO/removeNotification',
       getAllNotify: 'socketIO/getAllNotify',
 
     }),
@@ -136,15 +131,13 @@ export default {
       console.log(this.getSocketID)
       this.signout()
     },
-    onclickNotification(post_id) {
-      console.log(post_id)
+    onclickClearNotification(id) {
+      this.removeNotification({"notification_id": id}).then(response => {
+        console.log('delete notify successful')
+      })
     },
     onclickRemoveAllNotification() {
-
       this.isActiveNoti = !this.isActiveNoti
-      // if(this.isActiveNoti === false){
-      //   this.removeAllNotification()
-      // }
     }
 
   }

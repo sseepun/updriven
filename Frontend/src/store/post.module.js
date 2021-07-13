@@ -177,6 +177,22 @@ export const post = {
                     reject(err)
                 })
             })
+        },
+        sharePost({ dispatch, commit }, post_id) {
+            return new Promise((resolve, reject) => {
+                postService.sharePost(post_id)
+                .then( res => {
+                    dispatch('alert/assign', { type: 'Success', message: res.message }, { root: true })
+                    resolve(res)
+                }, err => {
+                    dispatch('alert/assign', { type: 'Warning', message: err.response.data.message }, { root: true })
+                    resolve(err)
+                })
+                .catch( err => {
+                    dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+                    reject(err)
+                })
+            })
         }
     },
     mutations: {

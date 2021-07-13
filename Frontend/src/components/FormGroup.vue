@@ -38,9 +38,9 @@
         <option v-if="placeholder" value="" disabled selected>
           {{placeholder}}
         </option>
-        <option v-for="option in options" :value="option.value" 
-        :selected="option.value == value || option.text == value" :key="option.value">
-          {{option.text}}
+        <option v-for="option in options" :value="option.abbreviation" 
+        :selected="option.abbreviation == value || option.name == value" :key="option.abbreviation">
+          {{option.name}}
         </option>
       </select>
       <div v-if="icon" class="icon">

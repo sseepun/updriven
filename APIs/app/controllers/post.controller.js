@@ -28,9 +28,23 @@ exports.createPost = async (req, res) => {
         await post.save()
         await Post.populate(post,
             [
-                {path: 'user', model: 'User', select: 'user_detail', populate: {path: 'user_detail', select:['firstname', 'lastname']}}, 
-                {path: 'category', model: 'Category', select: 'category_name'}
-            ])
+                {
+                    path: 'user', 
+                    model: 'User', 
+                    select: 'user_detail', 
+                    populate: 
+                    {
+                        path: 'user_detail', 
+                        select:['firstname', 'lastname']
+                    }
+                }, 
+                {
+                    path: 'category', 
+                    model: 'Category', 
+                    select: 'category_name'
+                }
+            ]
+        );
         res.status(200).send({post: post});
     }
     catch (err) {
@@ -69,7 +83,37 @@ exports.sharePost = async (req, res) => {
             share: share_post,
             status: true,
         }).save();
-        await Share.populate(share_post, {path: 'post'})
+        await Share.populate(share_post, 
+            [
+                {
+                    path: 'post', 
+                    populate: 
+                    [
+                        { 
+                            path:'category', 
+                            select: 'category_name' 
+                        }, 
+                        { 
+                            path: 'user', 
+                            select: 'user_detail', 
+                            populate: 
+                            { 
+                                path: 'user_detail', 
+                                select: ['firstname', 'lastname']
+                            }
+                        }
+                    ]
+                },
+                { 
+                    path:'user', 
+                    select: 'user_detail', 
+                    populate: 
+                    {
+                        path: 'user_detail', 
+                        select: ['firstname', 'lastname']
+                    }
+                }
+            ])
         res.status(200).send(share_post);
     }
     catch (err) {
@@ -130,6 +174,7 @@ exports.giveSentiment = async (req, res) => {
         }
         else if (req.body.post_id) {
             const post = await Post.findById(sanitize(req.body.post_id))
+            const post_user = await User.findById(post.user[0])
             post.sentiment_count = post.sentiment_count + 1;
             await post.save();
             const sentiment = new Sentiment({
@@ -139,16 +184,22 @@ exports.giveSentiment = async (req, res) => {
                 sentiment_type: req.body.sentiment_type
             });
             await sentiment.save();
-            const notification = new Notification({
-                action_to: post.id,
-                action_on: "Post",
-                action_by: req.user
-            })
-            await notification.save();
+            if (!(post_user.equals(req.user))) {
+                const notification = new Notification({
+                    action_to_content: post.id,
+                    action_to_user: post_user,
+                    action_on: "Post",
+                    action_by: req.user
+                })
+                post_user.notification += 1;
+                await post_user.save();
+                await notification.save();
+            }
             res.status(200).send({message: "give sentiment on post successfully"})
         }
         else if (req.body.comment_id) {
             let comment = await Comment.findById(sanitize(req.body.comment_id))
+            let comment_user = await User.findById(comment.author.id)
             comment.sentiment_count = comment.sentiment_count + 1;
             await comment.save();
             const sentiment = new Sentiment({
@@ -158,12 +209,17 @@ exports.giveSentiment = async (req, res) => {
                 sentiment_type: req.body.sentiment_type
             });
             await sentiment.save();
-            const notification = new Notification({
-                action_to: comment.id,
-                action_on: "Comment",
-                action_by: req.user
-            })
-            await notification.save();
+            if (!(comment_user.equals(req.user))) {
+                const notification = new Notification({
+                    action_to_content: comment.id,
+                    action_to_user: comment_user,
+                    action_on: "Comment",
+                    action_by: req.user
+                })
+                comment_user.notification += 1;
+                await comment_user.save();
+                await notification.save();
+            }
             res.status(200).send({message: "give sentiment on comment successfully"})
         }
         else {

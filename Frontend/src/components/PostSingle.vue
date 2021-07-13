@@ -1,5 +1,10 @@
 <template>
   <div v-if="user" class="post bshadow">
+    <div class="share bshadow" v-if="selfPost.shared">     
+      <p class="stat xs fw-600">
+        {{selfPost.shared.firstname}} {{selfPost.shared.lastname}} share this post at {{formatDate(selfPost.createdAt)}}
+      </p>
+    </div>
     <template v-if="selfPost.desc.indexOf('https://www.youtube.com/') > -1">
       <div class="ss-img video-view no-hover">
         <iframe 
@@ -139,7 +144,7 @@
         <a 
           class="post-icon mr-4" href="javascript:" 
           :class="{ 'active': selfPost.actions.shared  }" 
-          @click="selfPost.actions.shared = !selfPost.actions.shared"
+          @click="togglePostShare"
         >
           <img src="/assets/img/icon/share.png" alt="Image Icon" />
         </a>
@@ -275,7 +280,8 @@ export default {
       delete: 'post/delete',
       sentiment: 'post/sentiment',
       removeSentiment: 'post/rm_sentiment',
-      commentOnPost: 'post/commentOnPost'
+      sharePost: 'post/sharePost',
+      commentOnPost: 'post/commentOnPost',
     }),
 
     formatNumber(value, digits=2) {
@@ -302,12 +308,6 @@ export default {
         }).then( () => {
           this.selfPost.actions.liked = true;
           this.selfPost.counts.likes += 1;
-          console.log("sent", this.selfPost.user.id)
-          console.log("sent", this.selfPost.id)
-          console.log("sent", this.user.id)
-          console.log("sent", this.user.firstname)
-          console.log("sent", this.user.lastname)
-
           this.getSocketID.emit('sent-realtime-notify',{
               sentiment_type: '1',
               post_id: this.selfPost.id,
@@ -318,6 +318,25 @@ export default {
           });
 
         });
+      }
+    },
+
+    togglePostShare() {//selfPost.actions.shared = !selfPost.actions.shared
+      if(!this.selfPost.actions.shared){
+        this.sharePost(this.selfPost.id).then( () => {
+          //this.selfPost.actions.shared = true;
+        });
+      }else{
+          
+          /*this.selfPost.actions.shared = false;
+          this.getSocketID.emit('sent-realtime-notify',{
+              sentiment_type: '1',
+              post_id: this.selfPost.id,
+              user_id: this.selfPost.user.id,
+              user_like_post_id: this.user.id,
+              user_like_post_firstname: this.user.firstname,
+              user_like_post_lastname: this.user.lastname,
+          });*/
       }
     },
     commentLikeToggle(c) {

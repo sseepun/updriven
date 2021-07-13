@@ -11,11 +11,6 @@ module.exports = app => {
         next();
     });
 
-    router.post("/add_organization",
-        auth.isLoggedIn,
-        userController.addOrganization
-    );
-
     router.post('/post',
         auth.isLoggedIn,
         userController.posts
@@ -29,6 +24,11 @@ module.exports = app => {
     router.get('/notification',
         auth.isLoggedIn,
         userController.getNotification
+    );
+
+    router.post('/clear_notification',
+        auth.isLoggedIn,
+        userController.deleteNotification
     );
 
     app.use('/apis/user', router);

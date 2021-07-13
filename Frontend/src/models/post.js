@@ -14,14 +14,30 @@ export class StatusPost {
 export function changeStructurePost(posts) {
     let temp_array = []
     for(let i = 0; i < posts.length; i++){
-        const temp_data = posts[i];
+        var temp_data = posts[i];
+        var shared = null
 
         if (temp_data['user'].length <= 0) {
             continue;
         }
         
+        if (temp_data['share'].length > 0) {
+            console.log('temp_data',temp_data)
+            shared = {
+                firstname: temp_data['user'][0]['user_detail'][0]['firstname'],
+                lastname: temp_data['user'][0]['user_detail'][0]['lastname'],
+                is_sentiment: temp_data['is_sentiment'],
+                sentiment_count: temp_data['sentiment_count'],
+                comment_count: temp_data['comment_count'],
+                createdAt: temp_data['createdAt'],
+                _id: temp_data['_id']
+            }
+            temp_data = temp_data['share'][0]['post'][0]
+        }
+
         temp_array.push({
-            id: temp_data['_id'],
+            shared: shared,
+            id: shared? shared._id : temp_data['_id'],
             image: temp_data['media'],
             title: temp_data['subject'],
             desc: temp_data['content'],
@@ -33,12 +49,12 @@ export function changeStructurePost(posts) {
                 avatar: temp_data['user'][0]['_id'],
             },
             counts: {
-                likes: temp_data['sentiment_count'],
-                comments: temp_data['comment_count'],
+                likes: shared ? shared.sentiment_count : temp_data['sentiment_count'],
+                comments: shared ? shared.comment_count : temp_data['comment_count'],
             },
             actions: {
                 shared: false,
-                liked: temp_data['is_sentiment'],
+                liked: shared ? shared.is_sentiment :  temp_data['is_sentiment'],
                 followed: false,
             },
             comments: []

@@ -99,34 +99,45 @@ exports.getPosts = async (req, res) => {
                     path: 'results.user', 
                     model: 'User', 
                     select: 'user_detail', 
-                    populate: {
+                    populate: 
+                    {
                         path: 'user_detail', 
-                        select:['firstname', 'lastname']
+                        select: ['firstname', 'lastname']
                     }
-                }, 
+                },
                 {
                     path: 'results.category', 
                     model: 'Category', 
-                    select: 'category_name'},
+                    select: 'category_name'
+                },
                 {
                     path: 'results.share', 
                     model: 'Share', 
-                    select:['user', 'post'], 
-                    populate: {
-                        path: 'post', 
-                        populate: {
-                            path: 'user', 
-                            select: 'user_detail', 
-                            populate:{
-                                path: 'user_detail', 
-                                select:['firstname', 'lastname']
+                    select: 'post',
+                    populate:
+                    {
+                        path: 'post',
+                        populate: 
+                        [
+                            { 
+                                path:'category', 
+                                select: 'category_name' 
+                            }, 
+                            { 
+                                path: 'user', 
+                                select: 'user_detail', 
+                                populate: 
+                                { 
+                                    path: 'user_detail', 
+                                    select: ['firstname', 'lastname']
+                                }
                             }
-                        }
+                        ]
                     }
                 }
-        ]);
+            ]
+        );
         for (let i = 0; i < post_list.results.length; i++) {
-            console.log(post_list.results[i])
             const is_sentiment_post = await Sentiment.findOne({sentiment: post_list.results[i], user: req.user})
             if (is_sentiment_post) {
                 post_list.results[i].is_sentiment = true

@@ -1,4 +1,5 @@
-import { authenService } from '../services'
+import { authenService } from '../services';
+import { userService } from '../services';
 import { checkCookie } from '../helpers/authHeader';
 import User from '../models/user.js';
 import router from '../router';
@@ -30,9 +31,9 @@ export const authentication = {
               '/assets/img/bg/01.jpg',
               res.user_detail[0].state_id,
               res.user_detail[0].province,
-              res.user_detail[0].organization
+              res.email,
+              res.user_detail[0].organization,
             )
-
             commit('signinSuccess', resUser);
             //dispatch('alert/assign', { type: 'Success', message: 'Signed in successfully.' }, { root: true })
             resolve(res)
@@ -175,6 +176,49 @@ export const authentication = {
           })
         });
     },
+    editProfile({ commit, dispatch },input) {
+      console.log('editProfile')
+      return new Promise((resolve, reject) => {   
+      userService.editProfile(input).then(
+        response => {
+          dispatch( 'getProfile' )
+          resolve(response)
+        },
+        error => {
+          reject(error)
+        }
+      ).catch(err => {
+        
+      })
+    })
+    },
+    getProfile({ commit }) {
+      return new Promise((resolve, reject) => {   
+      userService.getProfile().then(
+        response => {
+          console.log(response.user_detail[0].firstname)
+          var resUser = new User(
+            response._id,
+            response.user_detail[0].firstname,
+            response.user_detail[0].lastname,
+            '/assets/img/profile/01.jpg',
+            '/assets/img/bg/01.jpg',
+            response.user_detail[0].state_id,
+            response.user_detail[0].province,
+            response.email,
+            response.user_detail[0].organization,
+          )
+          commit('signinSuccess', resUser);
+          resolve()
+        },
+        error => {
+          reject(error)
+        }
+      ).catch(err => {
+        
+      })
+    })
+    }
     
   },
   // Synchronous

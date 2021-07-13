@@ -9,15 +9,6 @@ class SocketIO {
         console.log('connect to port 8081')
         return socket;
     }
-
-
-    getAllNotification() {
-        return axios.get('/user/notification') 
-    }
-
-    // tg_adminGetAllFF(company_id) {
-    //     return axios.get(`tgadmin/getallff/${company_id}` , { headers: authHeader() })
-    // }
     
 }
 

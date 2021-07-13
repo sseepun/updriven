@@ -1,4 +1,5 @@
 import SocketIO from '../services/socketIO.service';
+import { userService } from '../services'
 import moment from 'moment';
 
 export const socketIO = {
@@ -27,7 +28,7 @@ export const socketIO = {
     actions: {
         getAllNotify({ commit , dispatch }) {
             return new Promise((resolve, reject) => {        
-                SocketIO.getAllNotification().then(
+                userService.getAllNotify().then(
                     response => {
                         console.log(response.data)
                         commit('fetchContents', response.data)
@@ -42,7 +43,7 @@ export const socketIO = {
         },
         removeNotification({ commit , dispatch }, id) {
             return new Promise((resolve, reject) => {        
-                UserService.removeNotification(id).then(
+                userService.clear_notify(id).then(
                     response => {
                         dispatch('getAllNotify')
                         resolve(response)
@@ -52,10 +53,6 @@ export const socketIO = {
                     }
                 )
             })
-        },
-        async addNotification ({ commit, state },input ) {
-            console.log(input)
-            await commit('addNotification', input)
         },
         async removeAllNotification ({ commit, state } ) {
             await commit('removeAllNotification')
@@ -68,15 +65,15 @@ export const socketIO = {
         fetchContents(state, input) {
             state.contents = []
             input.forEach(notification => {
+                const [yyyy,mm,dd,hh,mi]=notification.createdAt.split(/[/:\-T]/)
                 state.contents.push({
-                    action_type: notification.action_on,
-                    action_to: notification.action_to._id,
-                    user_id: notification.user_id,
-                    user_like_post_id: notification.action_by._id,
-                    user_like_post_firstname: notification.action_by.user_detail.firstname,
-                    user_like_post_lastname: notification.action_by.user_detail.lastname,
                     _id: notification._id,
-                    createdAt: notification.createdAt,
+                    action_type: notification.action_on,
+                    action_to: notification.action_to_content,
+                    user_id: notification.action_by.user_detail[0]._id,
+                    user_like_post_firstname: notification.action_by.user_detail[0].firstname,
+                    user_like_post_lastname: notification.action_by.user_detail[0].lastname,
+                    createdAt: `${dd}-${mm}-${yyyy} ${hh}:${mi}`,
                 })
             });           
         },
