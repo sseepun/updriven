@@ -120,6 +120,7 @@ async function createUser(profile, type) {
         const user_detail = new User_detail({
             firstname: profile.name.givenName,
             lastname: profile.name.familyName,
+            profile_pic: process.env.DEFAULT_PROFILE_IMAGE
         });
         await user.save()
         user_detail.username = user._id;
