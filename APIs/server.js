@@ -1,3 +1,4 @@
+const aws = require('aws-sdk')
 const express = require('express');
 const passport = require('passport');
 const cloudinary = require('cloudinary').v2;
@@ -6,30 +7,54 @@ const cookieSession = require('cookie-session');
 const bodyParser = require("body-parser");
 const migrations = require("./app/migrations/migrations");
 const cors = require("cors");
+const db = require("./app/models");
+const multer = require('multer')
+const multerS3 = require('multer-s3')
+const fs = require('fs')
 require('./app/passport/passport');
 require('dotenv').config()
 
 const app = express();
-const db = require("./app/models");
-
-var multer = require('multer')
-var fs = require('fs')
 
 app.use(cookieSession({
-    name: process.env.SESSION_PREFIX + 'session',
-    keys: ['key1', 'key2']
+  name: process.env.SESSION_PREFIX + 'session',
+  keys: ['key1', 'key2']
 }))
+
+//CDN Setting
+aws.config.update({
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  accessKeyId: process.env.ACCESS_KEY_ID,
+  region: process.env.REGION
+});
+
+const s3 = new aws.S3();
 
 cloudinary.config({ 
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
     api_key: process.env.CLOUDINARY_API_KEY, 
     api_secret: process.env.CLOUDINARY_API_SECRET,
     secure: false
-  });
+});
+
+//CloudinaryStorage
+app.use(multer({ storage: new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'media'
+  },
+}) }).array('media'));
+
+// S3
+// app.use(multer({
+//   storage: multerS3({
+//       s3: s3,
+//       bucket: 'arn:aws:iam::019019374527:user/updriven',
+//   })
+// }).array('media'));
 
 const CLIENT_URL_REGEX = new RegExp(process.env.CLIENT_REGEX)
 const DOMAIN_URL_REGEX = new RegExp(process.env.DOMAIN)
-console.log(CLIENT_URL_REGEX)
 const corsOptions = {
     origin: [CLIENT_URL_REGEX, DOMAIN_URL_REGEX], // น้ำตาจะไหล ลืมใส่ regex
     credentials: true,
@@ -37,15 +62,6 @@ const corsOptions = {
   }
 
 app.use(cors( corsOptions )); // remove corsOptions to allow all origins
-
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-      folder: 'media'
-    },
-  });
-
-app.use(multer({ storage: storage }).array('media'));
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
@@ -76,7 +92,6 @@ const io = require("socket.io")(server, {
 io.on('connection', (socket) => {
   socket.on('join-with-id',(data) => {
       socket.join(data.user_id);
-      console.log(data.user_id)
     //   User.findById(data.user_id).exec((err,user) => {
           io.in(data.user_id).emit('receive-notify',
           {

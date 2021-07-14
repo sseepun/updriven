@@ -10,6 +10,7 @@ const Notification = db.notification;
 
 exports.editInfo = async (req, res) => {
     try {
+        console.log(req.files)
         const user = await User.findById(req.userId).populate('user_detail')
         user.user_detail[0].firstname = req.body.firstname;
         user.user_detail[0].lastname = req.body.lastname;

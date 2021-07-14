@@ -11,7 +11,7 @@
             {{user.firstname}} {{user.lastname}}
           </h6>
           <p class="xxs fw-500 color-gray">
-            Student, NYC
+            Student, {{ user.state_id }}
           </p>
         </div>
       </div>

@@ -22,7 +22,6 @@ export function changeStructurePost(posts) {
         }
         
         if (temp_data['share'].length > 0) {
-            console.log('temp_data',temp_data)
             shared = {
                 firstname: temp_data['user'][0]['user_detail'][0]['firstname'],
                 lastname: temp_data['user'][0]['user_detail'][0]['lastname'],
@@ -30,7 +29,8 @@ export function changeStructurePost(posts) {
                 sentiment_count: temp_data['sentiment_count'],
                 comment_count: temp_data['comment_count'],
                 createdAt: temp_data['createdAt'],
-                _id: temp_data['_id']
+                _id: temp_data['_id'],
+                origin: temp_data['share'][0]['post'][0]['_id']
             }
             temp_data = temp_data['share'][0]['post'][0]
         }
@@ -92,7 +92,6 @@ export function changeStructureComment(objectComments) {
             children: ( childKeys.length > 0? changeStructureComment(comment['children']) : {} )
         })
     }
-    // console.log(comments)
     return comments;
 }
 

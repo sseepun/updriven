@@ -73,37 +73,18 @@ exports.deletePost = async (req, res) => {
 
 exports.sharePost = async (req, res) => {
     try {
-        const post = await Post.findById(sanitize(req.body.post_id))
+        const post_to_share = await Post.findById(sanitize(req.body.post_id))
         const share_post = await new Share({
             user: req.userId,
-            post: post._id
+            post: post_to_share._id
         }).save()
-        await  new Post({
+        const post = await new Post({
             user: req.userId,
             share: share_post,
             status: true,
         }).save();
-        await Share.populate(share_post, 
+        await Share.populate(post, 
             [
-                {
-                    path: 'post', 
-                    populate: 
-                    [
-                        { 
-                            path:'category', 
-                            select: 'category_name' 
-                        }, 
-                        { 
-                            path: 'user', 
-                            select: 'user_detail', 
-                            populate: 
-                            { 
-                                path: 'user_detail', 
-                                select: ['firstname', 'lastname']
-                            }
-                        }
-                    ]
-                },
                 { 
                     path:'user', 
                     select: 'user_detail', 
@@ -112,9 +93,35 @@ exports.sharePost = async (req, res) => {
                         path: 'user_detail', 
                         select: ['firstname', 'lastname']
                     }
+                },
+                {
+                    path: 'share',
+                    select: 'post',
+                    populate:
+                    {
+                        path: 'post',
+                        populate: 
+                        [
+                            { 
+                                path:'category', 
+                                select: 'category_name' 
+                            }, 
+                            { 
+                                path: 'user', 
+                                select: 'user_detail', 
+                                populate: 
+                                { 
+                                    path: 'user_detail', 
+                                    select: ['firstname', 'lastname']
+                                }
+                            }
+                        ]
+                    }
                 }
             ])
-        res.status(200).send(share_post);
+        let post_data = post.toObject();
+        post_data.is_sentiment = false
+        res.status(200).send(post_data);
     }
     catch (err) {
         console.log(err)

@@ -27,7 +27,7 @@ export const authentication = {
               res._id,
               res.user_detail[0].firstname,
               res.user_detail[0].lastname,
-              '/assets/img/profile/01.jpg',
+              res.user_detail[0].profile_pic,
               '/assets/img/bg/01.jpg',
               res.user_detail[0].state_id,
               res.user_detail[0].province,
@@ -57,7 +57,6 @@ export const authentication = {
             dispatch('alert/assign', { type: 'Success', message: 'Signed out successfully.' }, { root: true })
             resolve(response)
           }).catch(err => {
-            console.log(err)
             reject(err)
           })
         });
@@ -71,7 +70,6 @@ export const authentication = {
           resolve(response)
         },
         error => {
-          console.log(error.response.data.message)
           dispatch('alert/assign', { type: 'Warning', message: error.response.data.message }, { root: true })
           
           reject(error)
@@ -86,7 +84,6 @@ export const authentication = {
       return new Promise((resolve, reject) => {   
       authenService.verifyEmailRegister(token).then(
         response => {
-          console.log("verify email success")
           dispatch('alert/assign', { type: 'Success', message: 'Verify email successfully.' }, { root: true })
           
           resolve(response.data)
@@ -159,7 +156,7 @@ export const authentication = {
               response._id,
               response.user_detail[0].firstname,
               response.user_detail[0].lastname,
-              '/assets/img/profile/01.jpg',
+              response.user_detail[0].profile_pic,
               '/assets/img/bg/01.jpg'
             )
             commit('signinSuccess', resUser);
@@ -177,11 +174,11 @@ export const authentication = {
         });
     },
     editProfile({ commit, dispatch },input) {
-      console.log('editProfile')
       return new Promise((resolve, reject) => {   
       userService.editProfile(input).then(
         response => {
           dispatch( 'getProfile' )
+          dispatch('alert/assign', { type: 'Success', message: 'Edit profile successfully.' }, { root: true })
           resolve(response)
         },
         error => {
@@ -196,12 +193,11 @@ export const authentication = {
       return new Promise((resolve, reject) => {   
       userService.getProfile().then(
         response => {
-          console.log(response.user_detail[0].firstname)
           var resUser = new User(
             response._id,
             response.user_detail[0].firstname,
             response.user_detail[0].lastname,
-            '/assets/img/profile/01.jpg',
+            response.user_detail[0].profile_pic,
             '/assets/img/bg/01.jpg',
             response.user_detail[0].state_id,
             response.user_detail[0].province,

@@ -321,22 +321,11 @@ export default {
       }
     },
 
-    togglePostShare() {//selfPost.actions.shared = !selfPost.actions.shared
-      if(!this.selfPost.actions.shared){
-        this.sharePost(this.selfPost.id).then( () => {
-          //this.selfPost.actions.shared = true;
-        });
-      }else{
-          
-          /*this.selfPost.actions.shared = false;
-          this.getSocketID.emit('sent-realtime-notify',{
-              sentiment_type: '1',
-              post_id: this.selfPost.id,
-              user_id: this.selfPost.user.id,
-              user_like_post_id: this.user.id,
-              user_like_post_firstname: this.user.firstname,
-              user_like_post_lastname: this.user.lastname,
-          });*/
+    togglePostShare() {
+      if(this.selfPost.shared){
+        this.sharePost(this.selfPost.shared.origin)
+      } else {
+        this.sharePost(this.selfPost.id)
       }
     },
     commentLikeToggle(c) {

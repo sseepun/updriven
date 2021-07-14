@@ -12,8 +12,8 @@ export const category = {
             var option = []
             state._list.forEach(category => {
                 option.push({
-                    value: category.category_name,
-                    text: category.category_name
+                    abbreviation: category.category_name,
+                    name: category.category_name
                 })
             })
             return option

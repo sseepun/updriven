@@ -96,7 +96,6 @@ export default {
     }
   },
   created() {
-    console.log(this.user.id)
     this.getSocketID.emit('join-with-id', {
       user_id: this.user.id,
     });
@@ -104,7 +103,6 @@ export default {
   },
   mounted() {
     this.getSocketID.on('receive-notify', (data) => {
-        console.log("data received")
         });
 
     this.getSocketID.on('get-count-notify', (data) => {
@@ -128,12 +126,10 @@ export default {
 
     }),
     signOut() {
-      console.log(this.getSocketID)
       this.signout()
     },
     onclickClearNotification(id) {
       this.removeNotification({"notification_id": id}).then(response => {
-        console.log('delete notify successful')
       })
     },
     onclickRemoveAllNotification() {

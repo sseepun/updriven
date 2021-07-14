@@ -45,7 +45,6 @@
                   </a>
                 </div>
               </div>
-              
               <div :class="tabActiveIndex == 0 ? 'd-block': 'd-none'">
                 <form action="/" method="GET" @submit.prevent="onSubmitPost">
                   <div class="blocks no-padding">
@@ -180,11 +179,6 @@ export default {
       this.createPost().then(
         () => {
           this.isActivePopup = false;
-        },
-        error => {          
-          console.log('error')
-          console.log('status: ',error)
-          console.log('message: ',error.data.message)
         }
       )
     },

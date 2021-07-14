@@ -6,8 +6,8 @@
         <div class="icon">
           <img src="/assets/img/icon/education.png" alt="Image Icon" />
         </div>
-        <p class="xs fw-500 color-gray">
-          Study <span class="color-dark">{{user.organization}}</span>
+        <p class="xs fw-500 color-gray" v-if="user.organization">
+          Study <span class="color-dark">{{user.organization[0].name}}</span>
         </p>
       </div>
       <div class="info">

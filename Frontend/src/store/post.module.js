@@ -49,7 +49,6 @@ export const post = {
             return await new Promise((resolve, reject) => {
                 postService.fetchPostAll(state.StatusPost)
                 .then( res => {
-                    console.log(res)
                     const statusPost = new StatusPost(res.hasNext, res.hasPrevious, res.next, res.previous);
                     commit('updateStatusPost', statusPost)
                     const posts = changeStructurePost(res.results);
@@ -135,7 +134,6 @@ export const post = {
                 .then( res => {
                     // let test = state.Post.findIndex(post => post.id == postID);
                     const commentPost = changeStructureComment(res.data.comments)
-                    console.log('commentPost :', commentPost)
                     state.Post[state.Post.findIndex(post => post.id == postID)].comments = commentPost
                     state.Post[state.Post.findIndex(post => post.id == postID)].counts.comments = commentPost.length
                     resolve(res)
@@ -182,7 +180,9 @@ export const post = {
             return new Promise((resolve, reject) => {
                 postService.sharePost(post_id)
                 .then( res => {
-                    dispatch('alert/assign', { type: 'Success', message: res.message }, { root: true })
+                    const post = changeStructurePost([res.data]);
+                    commit('fetchCreated', post)
+                    dispatch('alert/assign', { type: 'Success', message: 'Post shared successfully.' }, { root: true })
                     resolve(res)
                 }, err => {
                     dispatch('alert/assign', { type: 'Warning', message: err.response.data.message }, { root: true })
