@@ -16,7 +16,8 @@ const Comment = mongoose.model(
         posted_date: {type: Date, default: Date.now},
         author: {
             id: mongoose.Schema.Types.ObjectId,
-            name: String,
+            firstname: String,
+            lastname: String,
         },
         comment: {
             type: String,

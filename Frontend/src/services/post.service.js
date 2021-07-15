@@ -4,7 +4,7 @@ const axios = require('axios');
 
 export const postService = {
     createPost,
-    fetchPost_Owner,
+    fetchPostOwner,
     fetchComment,
     deletePost,
     sentiment,
@@ -84,7 +84,7 @@ function rm_sentiment(detail) {
     });
 }
 
-function fetchPost_Owner(next_previous) {
+function fetchPostOwner(next_previous) {
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',

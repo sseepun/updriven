@@ -32,7 +32,6 @@ app.use(store).use(router).mount('#app')
 axios.interceptors.response.use(
     
     response => {
-      
       return response
     },
     err => {        

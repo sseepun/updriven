@@ -187,7 +187,7 @@
 
       <div v-if="selfPost.counts.comments > 1" class="mt-3">
         <a 
-          v-if="commentLimit < selfPost.counts.comments - 1"  
+          v-if="commentLimit <= selfPost.counts.comments - 1"  
           class="p sm fw-400 color-gray h-color-01" href="javascript:" 
           @click="callComment()"
         >
@@ -218,7 +218,7 @@
 
   <!-- Popup Delete -->
   <div 
-    v-if="selfPost.user.id == user.id" class="popup-container" 
+    v-if="((selfPost.user.id == user.id) || (selfPost.sharedUser == user.id))" class="popup-container" 
     :class="{ 'active': isActivePopupDelete }"
   >
     <div class="wrapper">

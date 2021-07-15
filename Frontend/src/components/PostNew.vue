@@ -173,7 +173,7 @@ export default {
     ...mapActions({
       get_list: 'category/get_list',
       createPost: 'post/create',      
-      fetchPost_Owner:'post/fetchPost_Owner'
+      fetchPostOwner:'post/fetchPostOwner'
     }),
     onSubmitPost() {
       this.createPost().then(

@@ -23,10 +23,10 @@ export const post = {
         /**
          * fetch post (owner's post)
          */
-        async fetchPost_Owner({ state, commit }) {
+        async fetchPostOwner({ state, commit }) {
             await commit('updateStatusLoading', true)
             return await new Promise((resolve, reject) => {
-                postService.fetchPost_Owner(state.StatusPost)
+                postService.fetchPostOwner(state.StatusPost)
                 .then( res => {
                     const statusPost = new StatusPost(res.hasNext, res.hasPrevious, res.next, res.previous);
                     commit('updateStatusPost', statusPost)
@@ -105,7 +105,7 @@ export const post = {
                     reject(err)
                 })
             })
-            //await dispatch('fetchPost_Owner')
+            //await dispatch('fetchPostOwner')
             return await promise
         },
         /**
@@ -211,6 +211,7 @@ export const post = {
 
         clearPost(state) {
             state.Post = []
+            state.StatusPost = initial_StatusPost;
         },
 
         clear_create(state) {

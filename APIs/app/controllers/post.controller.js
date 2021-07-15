@@ -57,8 +57,24 @@ exports.deletePost = async (req, res) => {
     try {
         const post = await Post.findById(sanitize(req.body.post_id))
         if (post.user[0].equals(req.userId)) {
-            await Post.deleteOne( {_id: sanitize(req.body.post_id) })
+            await Post.deleteOne( {_id: post })
             await Comment.deleteMany( { post_id: sanitize(req.body.post_id) })
+            const share_holder = await Share.find({post: post})
+            await Share.deleteMany({post: post})
+            if (share_holder.length > 0) {
+                for (i = 0; i < share_holder.length; i++)
+                {
+                    const children_post = await Post.find({share: share_holder[i]})
+                    console.log(children_post._id)
+                    let comment_id;
+                    if (children_post._id) {
+                        comment_id = (children_post._id).toString()
+                    }
+                    await Post.deleteOne( {_id: children_post })
+                    await Comment.deleteMany( { post_id: comment_id })
+                    console.log(children_post)
+                }
+            }
             res.status(200).send({message: "Your post has been deleted"})
         }
         else {
@@ -135,7 +151,8 @@ exports.commentPost = async (req, res) => {
             post_id: req.body.post_id,
             author: {
                 id: req.userId,
-                name: req.user.email
+                firstname: req.user.user_detail[0].firstname,
+                lastname: req.user.user_detail[0].lastname
             },
             comment: req.body.comment
         }

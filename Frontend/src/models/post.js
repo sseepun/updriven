@@ -30,13 +30,15 @@ export function changeStructurePost(posts) {
                 comment_count: temp_data['comment_count'],
                 createdAt: temp_data['createdAt'],
                 _id: temp_data['_id'],
-                origin: temp_data['share'][0]['post'][0]['_id']
+                origin: temp_data['share'][0]['post'][0]['_id'],
+                user: temp_data['user'][0]['_id']
             }
             temp_data = temp_data['share'][0]['post'][0]
         }
-
+        
         temp_array.push({
             shared: shared,
+            sharedUser: shared ? shared.user : null,
             id: shared? shared._id : temp_data['_id'],
             image: temp_data['media'],
             title: temp_data['subject'],
@@ -66,7 +68,7 @@ export function changeStructurePost(posts) {
 
 export function changeStructureComment(objectComments) {
     const commentKeys = Object.keys(objectComments)
-
+    console.log('objectComments', objectComments)
     let comments = []
     for(let i = 0; i < commentKeys.length; i++){
         const comment = objectComments[commentKeys[i]];
@@ -78,8 +80,8 @@ export function changeStructureComment(objectComments) {
             createdAt: comment['createdAt'],
             user: {
                 id: comment['author']['id'],
-                firstname: 'tata',
-                lastname: 'zakup',
+                firstname: comment['author']['firstname'],
+                lastname: comment['author']['lastname'],
                 avatar: '/assets/img/profile/01.jpg'
             },
             counts: {

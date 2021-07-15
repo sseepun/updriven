@@ -26,6 +26,9 @@ import {mapGetters, mapActions, mapMutations} from "vuex"
 
 export default {
   name: 'PostMultiple',
+  props: {
+    typePost: { type: Boolean, default: true } // 0 = Profile, 1 = Dashboard
+  },
   data() {
     return {
       title: null,
@@ -53,7 +56,14 @@ export default {
           if(this.getStatusPost.hasNext == true) {
             
             if ( this.isLoading == false) {
-              this.fetchPost_Owner()
+
+              console.log('this.typePost :', this.typePost)
+              if (this.typePost == true ) {
+                this.fetchPostAll();
+              } else if (this.typePost == false) {
+                this.fetchPostOwner();
+              }
+              
             }
             lazyLoadPosts.innerHTML = 'Loading...';
 
@@ -64,6 +74,7 @@ export default {
       }
     },
     createPost(post) {
+      
       console.log(post)
       this.posts = [ post, ...this.posts ];
     },
@@ -72,15 +83,22 @@ export default {
       this.icon = tab.icon;
       window.scrollTo(0,0);
       this.posts = [];
-      this.fetchPost_Owner()
+      
+      if (this.typePost == true ) {
+        this.fetchPostAll();
+      } else if (this.typePost == false) {
+        this.fetchPostOwner();
+      }
     },
     ...mapActions({
-      fetchPost_Owner:'post/fetchPost_Owner'
+      fetchPostOwner:'post/fetchPostOwner',
+      fetchPostAll:'post/fetchPostAll'
     })
   },
   mounted() {
     this.$nextTick(function(){
       window.addEventListener('scroll', this.onScroll);
+      // this.fetchPostOwner();
     });
   },
   beforeUnmount() {

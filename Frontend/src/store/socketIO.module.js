@@ -30,12 +30,10 @@ export const socketIO = {
             return new Promise((resolve, reject) => {        
                 userService.getAllNotify().then(
                     response => {
-                        console.log(response.data)
                         commit('fetchContents', response.data)
                         resolve(response)
                     },
                     error => {
-                        console.log('error')
                         reject(error)
                     }
                 )
@@ -55,9 +53,7 @@ export const socketIO = {
             })
         },
         async removeAllNotification ({ commit, state } ) {
-            await commit('removeAllNotification')
-            console.log("Remove All Notify Successful")
-        
+            await commit('removeAllNotification')        
         },
 
     },
