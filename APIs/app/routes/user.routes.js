@@ -21,6 +21,16 @@ module.exports = app => {
         userController.editInfo
     );
 
+    router.post('/edit_profile_image',
+        auth.isLoggedIn,
+        userController.updateProfileImage
+    );
+
+    router.post('/edit_background_image',
+        auth.isLoggedIn,
+        userController.updateBackground
+    )
+
     router.get('/notification',
         auth.isLoggedIn,
         userController.getNotification

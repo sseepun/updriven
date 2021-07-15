@@ -1,8 +1,6 @@
 const aws = require('aws-sdk')
 const express = require('express');
 const passport = require('passport');
-const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cookieSession = require('cookie-session');
 const bodyParser = require("body-parser");
 const migrations = require("./app/migrations/migrations");
@@ -28,31 +26,19 @@ aws.config.update({
   region: process.env.REGION
 });
 
-const s3 = new aws.S3();
+app.use(multer({
+  storage: multerS3({
+      s3: new aws.S3(),
+      bucket: 'updriven',
+      acl: 'public-read',
+      key: function (req, file, cb) {
+        const extension = file.originalname.split(".");
+        cb(null, Date.now().toString() + '.' + extension[1])
+      }
+  })
+}).array('media'));
 
-cloudinary.config({ 
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
-    api_key: process.env.CLOUDINARY_API_KEY, 
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-    secure: false
-});
-
-//CloudinaryStorage
-app.use(multer({ storage: new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'media'
-  },
-}) }).array('media'));
-
-// S3
-// app.use(multer({
-//   storage: multerS3({
-//       s3: s3,
-//       bucket: 'arn:aws:iam::019019374527:user/updriven',
-//   })
-// }).array('media'));
-
+// CORS
 const CLIENT_URL_REGEX = new RegExp(process.env.CLIENT_REGEX)
 const DOMAIN_URL_REGEX = new RegExp(process.env.DOMAIN)
 const corsOptions = {

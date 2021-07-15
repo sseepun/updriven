@@ -44,7 +44,8 @@ exports.signup = async (req, res) => {
         const user_detail = new User_detail({
             firstname: req.body.firstname,
             lastname: req.body.lastname,
-            profile_pic: process.env.DEFAULT_PROFILE_IMAGE
+            profile_pic: process.env.DEFAULT_PROFILE_IMAGE,
+            background_pic: process.env.DEFAULT_BACKGROUND_IMAGE
         });
 
         await user.save()

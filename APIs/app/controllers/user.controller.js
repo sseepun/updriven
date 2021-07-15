@@ -10,15 +10,10 @@ const Notification = db.notification;
 
 exports.editInfo = async (req, res) => {
     try {
-        console.log(req.files)
         const user = await User.findById(req.userId).populate('user_detail')
         user.user_detail[0].firstname = req.body.firstname;
         user.user_detail[0].lastname = req.body.lastname;
         user.user_detail[0].state_id = req.body.state_id;
-        if (req.files.length > 0) {
-            console.log('in')
-            user.user_detail[0].profile_pic = req.files[0].path
-        }
         const organization = await Organization.findOne({ name: req.body.organization })
         if (user.user_detail[0].organization.length > 0) {
             user.user_detail[0].organization = []
@@ -43,7 +38,41 @@ exports.editInfo = async (req, res) => {
         }
     }
     catch (err) {
-        console.log(err);
+        return res.status(500).send({message: err})
+    }
+}
+
+exports.updateProfileImage = async (req, res) => {
+    try {
+        console.log(req.files)
+        const user = await User.findById(req.userId).populate('user_detail')
+        if (req.files.length > 0) {
+            user.user_detail[0].profile_pic = req.files[0].location
+            await user.user_detail[0].save();
+            res.status(200).send({message: 'update image successful'});
+        }
+        else {
+            res.status(404).send({message: 'No image found'});
+        }
+    }
+    catch (err) {
+        return res.status(500).send({message: err})
+    }
+}
+
+exports.updateBackground = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId).populate('user_detail')
+        if (req.files.length > 0) {
+            user.user_detail[0].background_pic = req.files[0].location
+            await user.user_detail[0].save();
+            res.status(200).send({message: 'update background successful'});
+        }
+        else {
+            res.status(404).send({message: 'No image found'});
+        }
+    }
+    catch (err) {
         return res.status(500).send({message: err})
     }
 }

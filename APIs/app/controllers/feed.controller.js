@@ -12,6 +12,7 @@ exports.getComments = async (req, res) => {
             let value;
             for (const thread in threads) {
                 value = threads[thread];
+
                 if (thread.toString() === comment.parent_comment.toString()) {
                     value.children[comment._id] = comment;
                     return;
@@ -22,7 +23,6 @@ exports.getComments = async (req, res) => {
                 }
             }
         }
-
         let threads = {}, comment
         for (let i=0; i<comments.length; i++) {
             comment = comments[i]
@@ -44,46 +44,6 @@ exports.getComments = async (req, res) => {
         return res.status(500).send({message: err})
     }
 }
-
-// exports.getComments = async (req, res) => {
-//     try {
-//         const comments = await Comment.find({post_id: sanitize(req.body.post_id)}).sort({posted_date: 1}).lean()
-//         let rec = (comment, threads) => {
-//             let value;
-//             for (const thread in threads) {
-//                 value = threads[thread];
-//                 if (thread.toString() === comment.parent_comment.toString()) {
-//                     value.children[comment._id] = comment;
-//                     return;
-//                 }
-
-//                 if (value.children) {
-//                     rec(comment, value.children)
-//                 }
-//             }
-//         }
-
-//         let threads = [], comment
-//         for (let i=0; i<comments.length; i++) {
-//             comment = comments[i]
-//             comment['children'] = {}
-//             let parent_comment = comment.parent_comment
-//             if (!parent_comment) {
-//                 threads.push(comment)
-//                 continue
-//             }
-//             rec(comment, threads)
-//         }
-//         res.status(200).send({
-//             'count': comments.length,
-//             'comments': threads
-//         })
-//     }
-//     catch (err) {
-//         console.log(err)
-//         return res.status(500).send({message: err})
-//     }
-// }
 
 exports.getPosts = async (req, res) => {
     try {

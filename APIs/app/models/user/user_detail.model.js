@@ -20,6 +20,7 @@ const User_detail = mongoose.model(
         state_id: { type: String, default: '-' },
         country_id: { type:String, default: '-' },
         profile_pic: { type: String },
+        background_pic: { type: String },
         organization:
             [{
             type: mongoose.Schema.Types.ObjectId,

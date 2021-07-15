@@ -20,7 +20,7 @@ exports.createPost = async (req, res) => {
         await post.save();
         if (req.files) {
             req.files.forEach((item, index) => {
-                post.media.push({index: index, type: item.mimetype, path: item.path });
+                post.media.push({index: index, type: item.mimetype, path: item.location });
             });
         }
         const category = await Category.findOne({ category_name: sanitize(req.body.category)} );
