@@ -2,7 +2,7 @@
   <div v-if="user" class="new-post bshadow" @click="isActivePopup = !isActivePopup">
     <Avatar :avatar="user.avatar" />
     <FormGroup
-      type="text" placeholder="What's your topic today?" wrapperClass="fgray"
+      type="text" placeholder="What would you like to share about?" wrapperClass="fgray"
     />
     <div class="btns">
       <Button href="javascript:" classer="d-block btn-color-01 pl-4 pr-4" text="CREATE POST" />
@@ -16,7 +16,7 @@
           <div class="popup-comment bshadow">
             <div class="wrapper">
 
-              <div class="blocks">
+              <!-- <div class="blocks">
                 <div class="block fw-wrap mr-2">
                   <a 
                     v-for="(tab, i) in [
@@ -44,14 +44,15 @@
                     </div>
                   </a>
                 </div>
-              </div>
+              </div> -->
+
               <div :class="tabActiveIndex == 0 ? 'd-block': 'd-none'">
                 <form action="/" method="GET" @submit.prevent="onSubmitPost">
                   <div class="blocks no-padding">
                     <div class="block w-full">
                       <FormGroup 
                         type="select" 
-                        placeholder="Choose category" 
+                        placeholder="Choose a Discussion Topic" 
                         :required="true" 
                         classer="w-full" 
                         :options="optionList"

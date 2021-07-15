@@ -1,8 +1,10 @@
 <template>
   <div v-if="user" class="post bshadow">
-    <div class="share bshadow" v-if="selfPost.shared">     
-      <p class="stat xs fw-600">
-        {{selfPost.shared.firstname}} {{selfPost.shared.lastname}} share this post at {{formatDate(selfPost.createdAt)}}
+    <div class="p-3" v-if="selfPost.shared">     
+      <p class="xs fw-500">
+        {{selfPost.shared.firstname}} {{selfPost.shared.lastname}} 
+        shared this post on 
+        {{formatDate(selfPost.createdAt)}}
       </p>
     </div>
     <template v-if="selfPost.desc.indexOf('https://www.youtube.com/') > -1">
@@ -178,10 +180,52 @@
                   <span v-if="c.counts.likes">
                     {{c.counts.likes}}
                   </span>
+                </a> 
+                <a 
+                  class="color-gray h-color-01 fw-600 ml-3" 
+                  href="javascript:"
+                >
+                  Reply
                 </a>
               </p>
             </div>
           </div>
+
+          <!-- Replied Comments -->
+          <div class="comments">
+            <div class="comment mt-3">
+              <div class="wrapper">
+                <Avatar :avatar="c.user.avatar" />
+                <div class="text">
+                  <div class="bg-fgray bradius-1 p-3">
+                    <p class="sm fw-500 lh-xs">
+                      {{c.user.firstname}} {{c.user.lastname}}
+                    </p>
+                    <p class="sm lh-xs ovf-hidden" v-html="c.comment"></p>
+                  </div>
+                  <p class="xs fw-400 color-gray mt-1">
+                    {{formatDate(c.createdAt)}} 
+                    <a 
+                      class="color-gray fw-600 ml-3" :class="{ 'color-01': c.actions.liked }"
+                      href="javascript:" @click="commentLikeToggle(c)"
+                    >
+                      Like
+                      <span v-if="c.counts.likes">
+                        {{c.counts.likes}}
+                      </span>
+                    </a> 
+                    <a 
+                      class="color-gray h-color-01 fw-600 ml-3" 
+                      href="javascript:"
+                    >
+                      Reply
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 

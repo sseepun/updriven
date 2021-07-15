@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="h5 fw-600 color-mgray text-center pt-6 pb-2 text-center">
-      <div ref="lazyLoadPosts">No more feed found.</div>
+      <div ref="lazyLoadPosts">Loading...</div>
     </div>
   </div>
 
@@ -68,7 +68,7 @@ export default {
             lazyLoadPosts.innerHTML = 'Loading...';
 
           } else if (this.getStatusPost.hasNext == false) {
-            lazyLoadPosts.innerHTML = 'No more feed found.';
+            lazyLoadPosts.innerHTML = 'That’s All For New Content';
           }
         }
       }

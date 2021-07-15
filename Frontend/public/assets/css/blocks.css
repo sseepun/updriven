@@ -292,6 +292,7 @@
 .post .comment .avatar{margin-right:.5rem;}
 .post .comment .text{max-width:calc(100% - 2.75rem);}
 .post .comment .form-group{width:calc(100% - 2.75rem);}
+.post .comment > .comments{padding-left:2.75rem;}
 
 /* Post Header */
 .post-header{width:100%; display:flex; align-items:center;}

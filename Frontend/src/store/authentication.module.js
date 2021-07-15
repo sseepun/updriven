@@ -35,7 +35,7 @@ export const authentication = {
               res.user_detail[0].organization,
             )
             commit('signinSuccess', resUser);
-            //dispatch('alert/assign', { type: 'Success', message: 'Signed in successfully.' }, { root: true })
+            //dispatch('alert/assign', { type: 'Success', message: 'Sign in successful' }, { root: true })
             resolve(res)
           },
           error => {
@@ -45,7 +45,7 @@ export const authentication = {
           }
         ).catch(err => {
           commit('signinFailed');
-          dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+          dispatch('alert/assign', { type: 'Danger', message: 'System error' }, { root: true })
         })
       })
     },
@@ -54,7 +54,7 @@ export const authentication = {
         authenService.logout().then(
           response => {
             commit('signout');
-            dispatch('alert/assign', { type: 'Success', message: 'Signed out successfully.' }, { root: true })
+            dispatch('alert/assign', { type: 'Success', message: 'Sign out successful' }, { root: true })
             resolve(response)
           }).catch(err => {
             reject(err)
@@ -65,7 +65,7 @@ export const authentication = {
       return new Promise((resolve, reject) => {   
       authenService.register(regisuser).then(
         response => {
-          dispatch('alert/assign', { type: 'Success', message: 'Signed up successfully.' }, { root: true })
+          dispatch('alert/assign', { type: 'Success', message: 'Sign up successful' }, { root: true })
           
           resolve(response)
         },
@@ -84,7 +84,7 @@ export const authentication = {
       return new Promise((resolve, reject) => {   
       authenService.verifyEmailRegister(token).then(
         response => {
-          dispatch('alert/assign', { type: 'Success', message: 'Verify email successfully.' }, { root: true })
+          dispatch('alert/assign', { type: 'Success', message: 'Verify email successful' }, { root: true })
           
           resolve(response.data)
         },
@@ -94,7 +94,7 @@ export const authentication = {
           reject(error)
         }
       ).catch(err => {
-         dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+         dispatch('alert/assign', { type: 'Danger', message: 'System error' }, { root: true })
         
       })
     })
@@ -113,7 +113,7 @@ export const authentication = {
           reject(error)
         }
       ).catch(err => {
-         dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+         dispatch('alert/assign', { type: 'Danger', message: 'System error' }, { root: true })
         
       })
     })
@@ -130,7 +130,7 @@ export const authentication = {
           reject(error)
         }
       ).catch(err => {
-        dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+        dispatch('alert/assign', { type: 'Danger', message: 'System error' }, { root: true })
       })
     })
     },
@@ -160,7 +160,7 @@ export const authentication = {
               '/assets/img/bg/01.jpg'
             )
             commit('signinSuccess', resUser);
-            dispatch('alert/assign', { type: 'Success', message: 'Signed in successfully.' }, { root: true })
+            dispatch('alert/assign', { type: 'Success', message: 'Sign in successful' }, { root: true })
             resolve(response)
           },
           error => {
@@ -169,7 +169,7 @@ export const authentication = {
             reject(error)
           }).catch(err => {
             commit('signinFailed');
-            dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+            dispatch('alert/assign', { type: 'Danger', message: 'System error' }, { root: true })
           })
         });
     },
@@ -178,7 +178,7 @@ export const authentication = {
       userService.editProfile(input).then(
         response => {
           dispatch( 'getProfile' )
-          dispatch('alert/assign', { type: 'Success', message: 'Edit profile successfully.' }, { root: true })
+          dispatch('alert/assign', { type: 'Success', message: 'Edit profile successful' }, { root: true })
           resolve(response)
         },
         error => {

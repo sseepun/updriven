@@ -64,7 +64,7 @@ exports.signup = async (req, res) => {
         const msg = {
             to: user.email,
             from: process.env.EMAIL_FROM,
-            subject: "Email verification at UpDriven",
+            subject: "UpDriven Account Verification",
             html: complete_html
           }
         const response = await sgMail.send(msg)
@@ -108,7 +108,7 @@ exports.generateForgotPwdLink = async (req, res) => {
         const msg = {
             to: user.email,
             from: process.env.EMAIL_FROM,
-            subject: "Reset password link at UpDriven",
+            subject: "UpDriven Reset Password",
             html: complete_html
         }
         const response = await sgMail.send(msg)

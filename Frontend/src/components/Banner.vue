@@ -19,9 +19,7 @@
         <div class="tabs">
           <a class="tab" href="#">About</a>
           <a class="tab active" href="#">Post</a>
-          <a class="tab" href="#">Friends</a>
-          <a class="tab" href="#">Photo</a>
-          <a class="tab" href="#">Video</a>
+          <a class="tab" href="#">Mentors</a>
           <a class="tab" href="#">Activity</a>
         </div>
         <div class="btn">

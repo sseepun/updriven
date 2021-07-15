@@ -25,11 +25,11 @@
             <img src="/assets/img/logo.png" alt="Image Logo" />
           </div>
           <h4 class="fw-600 text-center lh-sm pt-4 mt-4">
-            Your account is activated successfully!
+            Your Account Has Been Activated
           </h4>
           <div class="fw-500 text-center mt-6">
             <router-link to="/auth/signin" class="h7 xs color-01 h-color-black">
-              Go to sign in
+              Sign In
             </router-link>
           </div>
         </div>
