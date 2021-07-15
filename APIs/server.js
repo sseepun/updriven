@@ -33,7 +33,7 @@ app.use(multer({
       acl: 'public-read',
       key: function (req, file, cb) {
         const extension = file.originalname.split(".");
-        cb(null, Date.now().toString() + '.' + extension[1])
+        cb(null, Date.now().toString() + '.' + extension[extension.length - 1])
       }
   })
 }).array('media'));

@@ -1,5 +1,6 @@
 const db = require("../models");
 const sanitize = require('mongo-sanitize');
+const User = require("../models/user/user.model");
 const Post = db.post;
 const Category = db.category;
 const Comment = db.comment;
@@ -7,7 +8,8 @@ const Sentiment = db.sentiment;
 
 exports.getComments = async (req, res) => {
     try {
-        const comments = await Comment.find({post_id: sanitize(req.body.post_id)}).sort({posted_date: 1}).lean()
+        let threads = {}, comment, comment_user = [], profile_image = []
+        const comments = await Comment.find({ post_id: sanitize(req.body.post_id) }).sort({ posted_date: 1 }).lean()
         let rec = (comment, threads) => {
             let value;
             for (const thread in threads) {
@@ -15,6 +17,7 @@ exports.getComments = async (req, res) => {
 
                 if (thread.toString() === comment.parent_comment.toString()) {
                     value.children[comment._id] = comment;
+                    comment_user.push(comment.author.id.toString())
                     return;
                 }
 
@@ -23,21 +26,34 @@ exports.getComments = async (req, res) => {
                 }
             }
         }
-        let threads = {}, comment
         for (let i=0; i<comments.length; i++) {
             comment = comments[i]
             comment['children'] = {}
             let parent_comment = comment.parent_comment
             if (!parent_comment) {
                 threads[comment._id] = comment
+                comment_user.push(comment.author.id.toString())
                 continue
             }
             rec(comment, threads)
         }
-        res.status(200).send({
+        const unique_user = Array.from(new Set(comment_user))
+        for (let i = 0; i < unique_user.length; i++) {
+            const user = await User.findById(unique_user[i]).select('user_detail').populate('user_detail')
+            profile_image.push(
+                { 
+                    id: user._id, 
+                    profile_pic: user.user_detail[0].profile_pic 
+                }
+            )
+        }
+        res.status(200).send(
+            {
             'count': comments.length,
+            'avatar': profile_image,
             'comments': threads
-        })
+            }
+        )
     }
     catch (err) {
         console.log(err)
