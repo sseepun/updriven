@@ -192,7 +192,7 @@
           </div>
 
           <!-- Replied Comments -->
-          <div class="comments">
+          <!-- <div class="comments">
             <div class="comment mt-3">
               <div class="wrapper">
                 <Avatar :avatar="c.user.avatar" />
@@ -224,7 +224,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
         </div>
       </div>
