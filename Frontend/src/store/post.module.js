@@ -158,8 +158,6 @@ export const post = {
                 .then( res => {
                     // let test = state.Post.findIndex(post => post.id == postID);
                     const commentPost = changeStructureFetchComment(res.data.comments, res.data.avatar)
-                    console.log(state.Post[state.Post.findIndex(post => post.id == postID)])
-                    console.log( 'commentPost', commentPost)
                     state.Post[state.Post.findIndex(post => post.id == postID)].comments = commentPost
                     state.Post[state.Post.findIndex(post => post.id == postID)].counts.comments = commentPost.length
                     resolve(res)

@@ -113,6 +113,7 @@ export function changeStructureFetchComment(objectComments, arrayAvatar = []) {
                 liked: false
             },
             depth: comment['depth'],
+            isSentiment: comment['is_sentiment'],
             children: ( childKeys.length > 0? changeStructureFetchComment(comment['children'], arrayAvatar) : {} )
         })
     }

@@ -14,7 +14,7 @@
                 <p class="xs fw-400 color-gray mt-1">
                     {{formatDate(c.createdAt)}} 
                     <a 
-                        class="color-gray fw-600 ml-3" :class="{ 'color-01': c.actions.liked }"
+                        class="color-gray fw-600 ml-3" :class="{ 'color-01': c.isSentiment }"
                         href="javascript:" @click="commentLikeToggle(c)"
                     >
                         Like
@@ -80,11 +80,13 @@ export default {
     methods: {
         ...mapActions({
             commentOrReply: 'post/commentOrReply',
+            sentiment: 'post/sentiment',
+            removeSentiment: 'post/rm_sentiment',
         }),
 
         commentLikeToggle(c) {
-            if(c.actions.liked){
-                c.actions.liked = false;
+            if(c.isSentiment){
+                c.isSentiment = false;
                 c.counts.likes -= 1;
                 this.removeSentiment({
                     sentiment_id: c.id,
@@ -94,21 +96,21 @@ export default {
                 /*c.actions.liked = false;
                 c.counts.likes -= 1;*/
                 },err => {
-                c.actions.liked = true;
+                c.isSentiment = true;
                 c.counts.likes += 1;
                 });
             }else{
-                c.actions.liked = true;
+                c.isSentiment = true;
                 c.counts.likes += 1;
                 this.sentiment({
                 comment_id: c.id,
                 sentiment_type: '1'
                 }).then( () => {
-                /*c.actions.liked = true;
-                c.counts.likes += 1;*/
+                    /*c.actions.liked = true;
+                    c.counts.likes += 1;*/
                 },err => {
-                c.actions.liked = false;
-                c.counts.likes -= 1;
+                    c.isSentiment = false;
+                    c.counts.likes -= 1;
                 });
             }
         },
