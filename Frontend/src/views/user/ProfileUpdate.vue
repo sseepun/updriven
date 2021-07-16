@@ -141,7 +141,7 @@ export default {
     this.dataset.firstname = this.user.firstname;
     this.dataset.lastname = this.user.lastname;
     this.dataset.email = this.user.email;
-    if(this.user.organization.length > 0){
+    if(this.user.organization){
       this.dataset.organization = this.user.organization[0].name;
     }
     this.dataset.state = this.user.state_id;

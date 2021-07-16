@@ -6,7 +6,7 @@
         <div class="icon">
           <img src="/assets/img/icon/education.png" alt="Image Icon" />
         </div>
-        <p class="xs fw-500 color-gray" v-if="user.organization.length > 0">
+        <p class="xs fw-500 color-gray" v-if="user.organization">
           Study <span class="color-dark">{{user.organization[0].name}}</span>
         </p>
       </div>
