@@ -16,8 +16,13 @@
       </div>
     </template>
     <template v-else-if="selfPost.image.length == 1">
-      <div class="ss-img no-hover">
+      <div v-if="selfPost.image[0].type != 'video/mp4'" class="ss-img no-hover">
         <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\');'"></div>
+      </div>
+      <div v-else-if="selfPost.image[0].type == 'video/mp4'" class="ss-img video-view no-hover">
+        <iframe  
+          class="img-bg w-full h-full" border="0" 
+          :src="selfPost.image[0].path"></iframe>
       </div>
     </template>
     <template v-else-if="selfPost.image.length == 2">
@@ -51,7 +56,7 @@
         </div>
       </div>
     </template>
-
+    
     <div class="text-container">
       <div class="title-container">
         <h6 class="title fw-600">
@@ -286,6 +291,9 @@ export default {
       _DepthComment: 0,
       _PostID: 0.
     }
+  },
+  created() {
+    console.log( this.selfPost )
   },
   computed: {
     showComments: function() {

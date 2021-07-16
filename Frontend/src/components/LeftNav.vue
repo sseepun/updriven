@@ -111,9 +111,13 @@ export default {
     });
   },
   methods: {
+    ...mapActions({
+      changeCategoryPost: 'post/changeCategoryPost'
+    }),
     onClick(tab) {
       tab.status = !tab.status;
       if(tab.clickType && tab.clickType=='emit'){
+        this.changeCategoryPost(tab.title)
         return this.$emit('on-click', tab);
       }else{
         return true;

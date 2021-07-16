@@ -104,14 +104,15 @@ function fetchPostOwner(next_previous) {
   })
 }
 
-function fetchPostAll(next_previous) {
+function fetchPostAll(next_previous, category) {
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
       url: `feed/post`,
       data: {
         next: (next_previous.hasNext == true? next_previous.nextID: ''),
-        // previous: (next_previous.hasPrevious? '': '')
+        // previous: (next_previous.hasPrevious? '': ''),
+        category: category
       },
       withCredentials: true,
     })

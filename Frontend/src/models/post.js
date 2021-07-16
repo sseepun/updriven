@@ -86,13 +86,14 @@ export function changeStructurePost(posts) {
     return temp_array;
 }
 
-export function changeStructureFetchComment(objectComments) {
+export function changeStructureFetchComment(objectComments, arrayAvatar = []) {
 
     const commentKeys = Object.keys(objectComments)
-    let comments = []
+    let comments = [];
     for(let i = 0; i < commentKeys.length; i++){
         const comment = objectComments[commentKeys[i]];
         const childKeys = Object.keys(comment['children'])
+        const avatar = arrayAvatar.findIndex( x => x.id == comment['author']['id'] )
 
         comments.push({
             id: comment['_id'],
@@ -103,7 +104,7 @@ export function changeStructureFetchComment(objectComments) {
                 id: comment['author']['id'],
                 firstname: comment['author']['firstname'],
                 lastname: comment['author']['lastname'],
-                avatar: '/assets/img/profile/01.jpg'
+                avatar: arrayAvatar[avatar].profile_pic
             },
             counts: {
                 likes: comment['sentiment_count']
@@ -112,7 +113,7 @@ export function changeStructureFetchComment(objectComments) {
                 liked: false
             },
             depth: comment['depth'],
-            children: ( childKeys.length > 0? changeStructureFetchComment(comment['children']) : {} )
+            children: ( childKeys.length > 0? changeStructureFetchComment(comment['children'], arrayAvatar) : {} )
         })
     }
     return comments;
