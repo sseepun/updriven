@@ -71,7 +71,6 @@ export default {
       this.icon = tab.icon;
       window.scrollTo(0,0);
       this.posts = [];
-      
       this.selectFetchOption()
     },
     selectFetchOption() {
@@ -89,7 +88,7 @@ export default {
     })
   },
   created() {
-    this.selectFetchOption()
+    // this.selectFetchOption()
   },
   mounted() {
     this.$nextTick(function(){

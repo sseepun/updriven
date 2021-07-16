@@ -103,7 +103,7 @@
                   <div class="text">Find suport or report post</div>
                 </a>
               </div>
-              <div class="menu-container" v-if="selfPost.user.id == user.id">
+              <div class="menu-container" v-if="selfPost.sharedUser == user.id || selfPost.user.id == user.id">
                 <a 
                   class="menu color-gray h-color-01" href="javascript:" 
                   @click="isActivePopup = false; isActivePopupDelete = true;"
@@ -159,93 +159,7 @@
         </a>
       </div>
 
-      <div class="comments">
-        <div v-for="(c, i) in showComments" :key="i" class="comment mt-3">
-          <div class="wrapper">
-            <Avatar :avatar="c.user.avatar" />
-            <div class="text">
-              <div class="bg-fgray bradius-1 p-3">
-                <p class="sm fw-500 lh-xs">
-                  {{c.user.firstname}} {{c.user.lastname}}
-                </p>
-                <p class="sm lh-xs ovf-hidden" v-html="c.comment"></p>
-              </div>
-              <p class="xs fw-400 color-gray mt-1">
-                {{formatDate(c.createdAt)}} 
-                <a 
-                  class="color-gray fw-600 ml-3" :class="{ 'color-01': c.actions.liked }"
-                  href="javascript:" @click="commentLikeToggle(c)"
-                >
-                  Like
-                  <span v-if="c.counts.likes">
-                    {{c.counts.likes}}
-                  </span>
-                </a> 
-                <a 
-                  class="color-gray h-color-01 fw-600 ml-3" 
-                  href="javascript:"
-                >
-                  Reply
-                </a>
-              </p>
-            </div>
-          </div>
-
-          <!-- Replied Comments -->
-          <!-- <div class="comments">
-            <div class="comment mt-3">
-              <div class="wrapper">
-                <Avatar :avatar="c.user.avatar" />
-                <div class="text">
-                  <div class="bg-fgray bradius-1 p-3">
-                    <p class="sm fw-500 lh-xs">
-                      {{c.user.firstname}} {{c.user.lastname}}
-                    </p>
-                    <p class="sm lh-xs ovf-hidden" v-html="c.comment"></p>
-                  </div>
-                  <p class="xs fw-400 color-gray mt-1">
-                    {{formatDate(c.createdAt)}} 
-                    <a 
-                      class="color-gray fw-600 ml-3" :class="{ 'color-01': c.actions.liked }"
-                      href="javascript:" @click="commentLikeToggle(c)"
-                    >
-                      Like
-                      <span v-if="c.counts.likes">
-                        {{c.counts.likes}}
-                      </span>
-                    </a> 
-                    <a 
-                      class="color-gray h-color-01 fw-600 ml-3" 
-                      href="javascript:"
-                    >
-                      Reply
-                    </a>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div> -->
-
-        </div>
-      </div>
-
-      <div v-if="selfPost.counts.comments > 1" class="mt-3">
-        <a 
-          v-if="commentLimit <= selfPost.counts.comments - 1"  
-          class="p sm fw-400 color-gray h-color-01" href="javascript:" 
-          @click="callComment()"
-        >
-          <u>View more comments</u>
-        </a>
-        <a 
-          v-else class="p sm fw-400 color-gray h-color-01" href="javascript:" 
-          @click="commentLimit = 1" 
-        >
-          <u>Hide comments</u>
-        </a>
-      </div>
-
-      <form @submit.prevent="onSubmit()">
+      <form @submit.prevent="commentOnPost()">
         <div class="comment mt-4">
           <div class="wrapper ai-center">
             <Avatar :avatar="user.avatar" />
@@ -257,12 +171,70 @@
           </div>
         </div>
       </form>
+
+      <div class="comments">
+
+        <commentPost v-if="showComments.length > 0" :comments="showComments"/>
+        
+        <!-- Replied Comments -->
+        <!-- <div class="comments">
+          <div class="comment mt-3">
+            <div class="wrapper">
+              <Avatar :avatar="c.user.avatar" />
+              <div class="text">
+                <div class="bg-fgray bradius-1 p-3">
+                  <p class="sm fw-500 lh-xs">
+                    {{c.user.firstname}} {{c.user.lastname}}
+                  </p>
+                  <p class="sm lh-xs ovf-hidden" v-html="c.comment"></p>
+                </div>
+                <p class="xs fw-400 color-gray mt-1">
+                  {{formatDate(c.createdAt)}} 
+                  <a 
+                    class="color-gray fw-600 ml-3" :class="{ 'color-01': c.actions.liked }"
+                    href="javascript:" @click="commentLikeToggle(c)"
+                  >
+                    Like
+                    <span v-if="c.counts.likes">
+                      {{c.counts.likes}}
+                    </span>
+                  </a> 
+                  <a 
+                    class="color-gray h-color-01 fw-600 ml-3" 
+                    href="javascript:"
+                  >
+                    Reply
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+      </div>
+
+      <div v-if="selfPost.counts.comments > 1" class="mt-3">
+        <a 
+          v-if="commentLimit <= selfPost.counts.comments - 1"  
+          class="p sm fw-400 color-gray h-color-01" href="javascript:" 
+          @click="callComment($event)"
+        >
+          <u>View more comments</u>
+        </a>
+        <a 
+          v-else class="p sm fw-400 color-gray h-color-01" href="javascript:" 
+          @click="commentLimit = 1" 
+        >
+          <u>Hide comments</u>
+        </a>
+      </div>
+
     </div>
   </div>
 
   <!-- Popup Delete -->
   <div 
-    v-if="((selfPost.user.id == user.id) || (selfPost.sharedUser == user.id))" class="popup-container" 
+    class="popup-container" 
     :class="{ 'active': isActivePopupDelete }"
   >
     <div class="wrapper">
@@ -291,9 +263,13 @@
 import moment from 'moment';
 import {mapGetters, mapActions, mapMutations} from "vuex";
 import { _CommentPost } from '../models/post';
+import commentPost from './commentPost';
 
 export default {
   name: 'PostSingle',
+  components: {
+    commentPost
+  },
   props: {
     post: { type: Object, default: {} }
   },
@@ -303,7 +279,12 @@ export default {
       isActivePopup: false,
       isActivePopupDelete: false,
       commentLimit: 1,
-      comment: ''
+      comment: '',
+
+      _DisplayInputComment: false,
+      _ReplyCommentID: 0,
+      _DepthComment: 0,
+      _PostID: 0.
     }
   },
   computed: {
@@ -325,7 +306,7 @@ export default {
       sentiment: 'post/sentiment',
       removeSentiment: 'post/rm_sentiment',
       sharePost: 'post/sharePost',
-      commentOnPost: 'post/commentOnPost',
+      commentOrReply: 'post/commentOrReply',
     }),
 
     formatNumber(value, digits=2) {
@@ -338,20 +319,27 @@ export default {
 
     togglePostLike() {
       if(this.selfPost.actions.liked){
+        this.selfPost.actions.liked = false;
+        this.selfPost.counts.likes -= 1;
         this.removeSentiment({
           sentiment_id: this.selfPost.id,
           sentiment_on: 'Post'
         }).then( () => {
-          this.selfPost.actions.liked = false;
-          this.selfPost.counts.likes -= 1;
+          /*this.selfPost.actions.liked = false;
+          this.selfPost.counts.likes -= 1;*/
+        }, err => {
+          this.selfPost.actions.liked = true;
+          this.selfPost.counts.likes += 1;
         });
       }else{
+        this.selfPost.actions.liked = true;
+        this.selfPost.counts.likes += 1;
         this.sentiment({
           post_id: this.selfPost.id,
           sentiment_type: '1'
         }).then( () => {
-          this.selfPost.actions.liked = true;
-          this.selfPost.counts.likes += 1;
+          /*this.selfPost.actions.liked = true;
+          this.selfPost.counts.likes += 1;*/
           this.getSocketID.emit('sent-realtime-notify',{
               sentiment_type: '1',
               post_id: this.selfPost.id,
@@ -361,6 +349,9 @@ export default {
               user_like_post_lastname: this.user.lastname,
           });
 
+        }, err => {
+          this.selfPost.actions.liked = false;
+          this.selfPost.counts.likes -= 1;
         });
       }
     },
@@ -374,25 +365,36 @@ export default {
     },
     commentLikeToggle(c) {
       if(c.actions.liked){
+        c.actions.liked = false;
+        c.counts.likes -= 1;
         this.removeSentiment({
           sentiment_id: c.id,
           sentiment_on: 'Comment'
         }).then( () => {
-          c.actions.liked = false;
-          c.counts.likes -= 1;
+          /*c.actions.liked = false;
+          c.counts.likes -= 1;*/
+        },err => {
+          c.actions.liked = true;
+          c.counts.likes += 1;
         });
       }else{
+        c.actions.liked = true;
+        c.counts.likes += 1;
         this.sentiment({
           comment_id: c.id,
           sentiment_type: '1'
         }).then( () => {
-          c.actions.liked = true;
-          c.counts.likes += 1;
+          /*c.actions.liked = true;
+          c.counts.likes += 1;*/
+        },err => {
+          c.actions.liked = false;
+          c.counts.likes -= 1;
         });
       }
     },
 
-    onSubmit() {
+    commentOnPost() {
+
       // this.selfPost.comments.push({
       //   comment: this.comment,
       //   createdAt: new Date(),
@@ -406,16 +408,19 @@ export default {
       // });
       // this.comment = '';
       // this.commentLimit += 1;
-      const commentOnPost = new _CommentPost(this.selfPost.id);
-      commentOnPost.comment = this.comment
-      this.commentOnPost(commentOnPost).then( res => {
-        this.comment = ''
-      })
+
+      const commentObject = new _CommentPost(this.selfPost.id);
+      commentObject.comment = this.comment;
+      this.commentOrReply(commentObject).then( res => {
+        this.comment = '';
+      });
+
     },
 
     callComment() {
-      const that = this
-      this.fetchComment(that.selfPost.id)
+      // const that = this
+      this.commentLimit = this.commentLimit + 3;
+      this.fetchComment(this.selfPost.id)
     },
     onClickDelete() {
       this.delete(this.selfPost.id)

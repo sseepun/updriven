@@ -16,13 +16,23 @@
         <h4 class="fw-600 color-01">Edit Profile</h4>
         <form @submit.prevent="onClickSubmitEditProfile">
           <div class="grids">
-          <div class="grid sm-100">
+          <div class="grid sm-50">
           <input 
               type="file" id="avatarUpload" name="filefield" accept="image/*"  
               @change="onPhotoSelected" hidden>
             <Button
               text="Change Profile Avatar" classer="btn-color-02"
               iconPrepend="camera.png" @click="onClickAddfiles"
+            />
+            </div>
+
+            <div class="grid sm-50">
+          <input 
+              type="file" id="backgroundUpload" name="filefield" accept="image/*"  
+              @change="onBGPhotoSelected" hidden>
+            <Button
+              text="Change Profile Background" classer="btn-color-02"
+              iconPrepend="camera.png" @click="onClickAddBGfiles"
             />
             </div>
             
@@ -121,6 +131,7 @@ export default {
         state: '',
         interests: [],
         avatar: "",
+        background: "",
       },
       states : [],
     };
@@ -136,6 +147,7 @@ export default {
     this.dataset.state = this.user.state_id;
     this.dataset.interests = this.user.interests;
     this.dataset.avatar = this.user.avatar;
+    this.dataset.background = this.user.background;
   }
   ,
   computed: {
@@ -146,12 +158,29 @@ export default {
   methods: {
     ...mapActions({
       editProfile: 'authentication/editProfile',
+      editProfileImage: 'authentication/editProfileImage',
+      editProfileBackground: 'authentication/editProfileBackground',
     }),
     onPhotoSelected(event) {  
       this.dataset.avatar  = event.target.files
+      var formData1 = new FormData();
+      formData1.append("media", this.dataset.avatar[0])
+      this.editProfileImage(formData1)
+    },
+    onBGPhotoSelected(event) {  
+      this.dataset.background  = event.target.files
+      var formData2 = new FormData();
+      console.log(this.dataset.background[0])
+      formData2.append("media", this.dataset.background[0])
+      this.editProfileBackground(formData2)
     },
     onClickAddfiles() {
       document.getElementById('avatarUpload').click()
+      console.log(JSON.stringify(this.dataset.avatar[0]))
+    },
+    onClickAddBGfiles() {
+      document.getElementById('backgroundUpload').click()
+      console.log(JSON.stringify(this.dataset.background[0]))
     },
     onClickSubmitEditProfile(){
       var formData = new FormData();
@@ -159,12 +188,7 @@ export default {
       formData.append("lastname", this.dataset.lastname);
       formData.append("state_id", this.dataset.state);
       formData.append("organization", this.dataset.organization);
-      formData.append("media", this.dataset.avatar[0])
-      console.log(formData)
-      console.log(this.dataset.avatar)
-      this.editProfile(formData).then(
-          response => {
-      })
+      this.editProfile(formData)
     }
   }
 }

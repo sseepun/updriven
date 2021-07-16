@@ -6,9 +6,49 @@ export  const userService = {
   editProfile,
   getProfile,
   clear_notify,
+  editPictureProfile,
+  editBackgroundProfile,
   
 };
 
+function editPictureProfile(input) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'POST',
+      url: `user/edit_profile_image`,
+      data: input,
+      withCredentials: true,
+    })
+    .then(res => {
+      console.log('res')
+      resolve(res);
+    })
+    .catch(err => {
+      console.log('err',err)
+      reject(err);
+    });
+});
+}
+
+function editBackgroundProfile(input) {
+  console.log("BG")
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'POST',
+      url: `user/edit_background_image`,
+      data: input,
+      withCredentials: true,
+    })
+    .then(res => {
+      console.log('res')
+      resolve(res);
+    })
+    .catch(err => {
+      console.log('err',err)
+      reject(err);
+    });
+});
+}
 function editProfile(input) {
   console.log('service'+input)
   return new Promise((resolve, reject) => {

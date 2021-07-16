@@ -11,6 +11,26 @@ export class StatusPost {
     }
 }
 
+export class _create {
+    constructor(subject = '', content = '', category = '', PVmedia = [], fileMedia = [], visible_to = '1') {
+      this.subject = subject;
+      this.content = content;
+      this.category = category;
+      this.PVmedia = PVmedia;
+      this.fileMedia = fileMedia;
+      this.visible_to = visible_to;
+    }
+}
+
+export class _CommentPost {
+    constructor(postID = '') {
+        this.postID = postID;
+        this.comment = '';
+        this.parentCommentID = null;
+        this.depth = null;
+    }
+}
+
 export function changeStructurePost(posts) {
     let temp_array = []
     for(let i = 0; i < posts.length; i++){
@@ -66,9 +86,9 @@ export function changeStructurePost(posts) {
     return temp_array;
 }
 
-export function changeStructureComment(objectComments) {
+export function changeStructureFetchComment(objectComments) {
+
     const commentKeys = Object.keys(objectComments)
-    console.log('objectComments', objectComments)
     let comments = []
     for(let i = 0; i < commentKeys.length; i++){
         const comment = objectComments[commentKeys[i]];
@@ -78,6 +98,7 @@ export function changeStructureComment(objectComments) {
             id: comment['_id'],
             comment: comment['comment'],
             createdAt: comment['createdAt'],
+            postID: comment['post_id'],
             user: {
                 id: comment['author']['id'],
                 firstname: comment['author']['firstname'],
@@ -91,27 +112,8 @@ export function changeStructureComment(objectComments) {
                 liked: false
             },
             depth: comment['depth'],
-            children: ( childKeys.length > 0? changeStructureComment(comment['children']) : {} )
+            children: ( childKeys.length > 0? changeStructureFetchComment(comment['children']) : {} )
         })
     }
     return comments;
-}
-
-export class _create {
-    constructor(subject = '', content = '', category = '', PVmedia = [], fileMedia = [], visible_to = '1') {
-      this.subject = subject;
-      this.content = content;
-      this.category = category;
-      this.PVmedia = PVmedia;
-      this.fileMedia = fileMedia;
-      this.visible_to = visible_to;
-    }
-}
-
-export class _CommentPost {
-    constructor(postID = '') {
-        this.postID = postID;
-        this.parentCommentID = ''
-        this.comment = '';
-    }
 }

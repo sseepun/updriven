@@ -28,7 +28,7 @@ export const authentication = {
               res.user_detail[0].firstname,
               res.user_detail[0].lastname,
               res.user_detail[0].profile_pic,
-              '/assets/img/bg/01.jpg',
+              res.user_detail[0].background_pic,
               res.user_detail[0].state_id,
               res.user_detail[0].province,
               res.email,
@@ -157,7 +157,7 @@ export const authentication = {
               response.user_detail[0].firstname,
               response.user_detail[0].lastname,
               response.user_detail[0].profile_pic,
-              '/assets/img/bg/01.jpg'
+              response.user_detail[0].background_pic,
             )
             commit('signinSuccess', resUser);
             dispatch('alert/assign', { type: 'Success', message: 'Sign in successful' }, { root: true })
@@ -189,6 +189,38 @@ export const authentication = {
       })
     })
     },
+    editProfileImage({ commit, dispatch },input) {
+      return new Promise((resolve, reject) => {   
+      userService.editPictureProfile(input).then(
+        response => {
+          dispatch( 'getProfile' )
+          dispatch('alert/assign', { type: 'Success', message: 'Edit image successfully.' }, { root: true })
+          resolve(response)
+        },
+        error => {
+          reject(error)
+        }
+      ).catch(err => {
+        
+      })
+    })
+    },  
+    editProfileBackground({ commit, dispatch },input) {
+      return new Promise((resolve, reject) => {   
+      userService.editBackgroundProfile(input).then(
+        response => {
+          dispatch( 'getProfile' )
+          dispatch('alert/assign', { type: 'Success', message: 'Edit Background successfully.' }, { root: true })
+          resolve(response)
+        },
+        error => {
+          reject(error)
+        }
+      ).catch(err => {
+        
+      })
+    })
+    },
     getProfile({ commit }) {
       return new Promise((resolve, reject) => {   
       userService.getProfile().then(
@@ -198,7 +230,7 @@ export const authentication = {
             response.user_detail[0].firstname,
             response.user_detail[0].lastname,
             response.user_detail[0].profile_pic,
-            '/assets/img/bg/01.jpg',
+            response.user_detail[0].background_pic,
             response.user_detail[0].state_id,
             response.user_detail[0].province,
             response.email,

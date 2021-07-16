@@ -9,7 +9,7 @@ export const postService = {
     deletePost,
     sentiment,
     rm_sentiment,
-    commentOnPost,
+    commentOrReply,
     fetchPostAll,
     sharePost
 }
@@ -143,14 +143,16 @@ function fetchComment(postID) {
   });
 }
 
-function commentOnPost(detail) {
+function commentOrReply(detail) {
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
       url: `post/comment`,
       data: {
         post_id: detail.postID,
-        comment: detail.comment
+        comment: detail.comment,
+        parent_comment: detail.parentCommentID,
+        depth: detail.depth,
       },
       withCredentials: true,
     })
