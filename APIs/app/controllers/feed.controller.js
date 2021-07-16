@@ -10,13 +10,20 @@ exports.getComments = async (req, res) => {
     try {
         let threads = {}, comment, comment_user = [], profile_image = []
         const comments = await Comment.find({ post_id: sanitize(req.body.post_id) }).sort({ posted_date: 1 }).lean()
-        let rec = (comment, threads) => {
+        let rec = async (comment, threads) => {
             let value;
             for (const thread in threads) {
                 value = threads[thread];
 
                 if (thread.toString() === comment.parent_comment.toString()) {
                     value.children[comment._id] = comment;
+                    const is_sentiment_comment = await Sentiment.findOne({sentiment: comment, user: req.user})
+                    if (is_sentiment_comment) {
+                        value.children[comment._id].is_sentiment = true
+                    }
+                    else {
+                        value.children[comment._id].is_sentiment = false
+                    }
                     comment_user.push(comment.author.id.toString())
                     return;
                 }
@@ -32,6 +39,13 @@ exports.getComments = async (req, res) => {
             let parent_comment = comment.parent_comment
             if (!parent_comment) {
                 threads[comment._id] = comment
+                const is_sentiment_comment = await Sentiment.findOne({sentiment: comment, user: req.user})
+                if (is_sentiment_comment) {
+                    threads[comment._id].is_sentiment = true
+                }
+                else {
+                    threads[comment._id].is_sentiment = false
+                }
                 comment_user.push(comment.author.id.toString())
                 continue
             }
