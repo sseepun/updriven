@@ -17,6 +17,7 @@ exports.getComments = async (req, res) => {
 
                 if (thread.toString() === comment.parent_comment.toString()) {
                     value.children[comment._id] = comment;
+                    comment_user.push(comment.author.id.toString())
                     const is_sentiment_comment = await Sentiment.findOne({sentiment: comment, user: req.user})
                     if (is_sentiment_comment) {
                         value.children[comment._id].is_sentiment = true
@@ -24,7 +25,6 @@ exports.getComments = async (req, res) => {
                     else {
                         value.children[comment._id].is_sentiment = false
                     }
-                    comment_user.push(comment.author.id.toString())
                     return;
                 }
 
