@@ -63,12 +63,27 @@ exports.getComments = async (req, res) => {
 
 exports.getPosts = async (req, res) => {
     try {
-        let post_list = await Post.paginate({
-            limit: 5,
-            next: req.body.next,
-            previous: req.body.previous,
-            paginatedField: 'Orderable'
-        })
+        let post_list;
+        if (req.body.category) {
+            const category = await Category.findOne({ category_name : req.body.category })
+            post_list = await Post.paginate({
+                query: {
+                    category: category._id
+                },
+                limit: 5,
+                next: req.body.next,
+                previous: req.body.previous,
+                paginatedField: 'Orderable'
+            })
+        }
+        else {
+            post_list = await Post.paginate({
+                limit: 5,
+                next: req.body.next,
+                previous: req.body.previous,
+                paginatedField: 'Orderable'
+            })
+        }
         await Post.populate(post_list,
             [
                 {

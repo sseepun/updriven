@@ -35,7 +35,8 @@ app.use(multer({
         const extension = file.originalname.split(".");
         cb(null, Date.now().toString() + '.' + extension[extension.length - 1])
       }
-  })
+  }),
+  limits: { fileSize: process.env.UPLOAD_MAX_SIZE }
 }).array('media'));
 
 // CORS
