@@ -18,7 +18,10 @@ exports.getComments = async (req, res) => {
                 if (thread.toString() === comment.parent_comment.toString()) {
                     value.children[comment._id] = comment;
                     comment_user.push(comment.author.id.toString())
-                    const is_sentiment_comment = await Sentiment.findOne({sentiment: comment, user: req.user})
+                    const user = await User.findById(comment.author.id).populate('user_detail')
+                    value.children[comment._id].author.firstname = user.user_detail[0].firstname
+                    value.children[comment._id].author.lastname = user.user_detail[0].lastname
+                    const is_sentiment_comment = await Sentiment.findOne({ sentiment: comment, user: req.user })
                     if (is_sentiment_comment) {
                         value.children[comment._id].is_sentiment = true
                     }
@@ -39,14 +42,17 @@ exports.getComments = async (req, res) => {
             let parent_comment = comment.parent_comment
             if (!parent_comment) {
                 threads[comment._id] = comment
-                const is_sentiment_comment = await Sentiment.findOne({sentiment: comment, user: req.user})
+                comment_user.push(comment.author.id.toString())
+                const user = await User.findById(comment.author.id).populate('user_detail')
+                threads[comment._id].author.firstname = user.user_detail[0].firstname
+                threads[comment._id].author.lastname = user.user_detail[0].lastname
+                const is_sentiment_comment = await Sentiment.findOne({ sentiment: comment, user: req.user })
                 if (is_sentiment_comment) {
                     threads[comment._id].is_sentiment = true
                 }
                 else {
                     threads[comment._id].is_sentiment = false
                 }
-                comment_user.push(comment.author.id.toString())
                 continue
             }
             rec(comment, threads)

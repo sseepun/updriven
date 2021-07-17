@@ -147,12 +147,12 @@ exports.sharePost = async (req, res) => {
 
 exports.commentPost = async (req, res) => {
     try {
-        let data = {
+        let data = 
+        { 
             post_id: req.body.post_id,
-            author: {
+            author: 
+            {
                 id: req.userId,
-                firstname: req.user.user_detail[0].firstname,
-                lastname: req.user.user_detail[0].lastname
             },
             comment: req.body.comment
         }
