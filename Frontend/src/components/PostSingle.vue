@@ -306,7 +306,6 @@ export default {
     }
   },
   created() {
-    console.log( this.selfPost )
   },
   mounted: function() {
     try{
