@@ -48,7 +48,7 @@
       </div>
     </div>
   </div>
-  
+
   <div v-else-if="type == 'plain'" class="form-group" :class="classer">
     <label v-if="label" class="p">
       {{label}} <div v-if="errorText" class="error">{{errorText}}</div>

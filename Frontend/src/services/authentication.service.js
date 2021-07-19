@@ -46,11 +46,11 @@ function signFacebook() {
           url: `auth/facebook`
         })
         .then(res => {
-          console.log('response: ',res)
+          
           resolve(res.data);
         })
         .catch(err => {
-          console.log('error: ',err)
+          
           reject(err);
         });
     });

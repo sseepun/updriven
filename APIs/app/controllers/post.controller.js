@@ -48,7 +48,6 @@ exports.createPost = async (req, res) => {
         res.status(200).send({post: post});
     }
     catch (err) {
-        console.log(err)
         return res.status(500).send({message: err});
     }
 };
@@ -65,14 +64,12 @@ exports.deletePost = async (req, res) => {
                 for (i = 0; i < share_holder.length; i++)
                 {
                     const children_post = await Post.find({share: share_holder[i]})
-                    console.log(children_post._id)
                     let comment_id;
                     if (children_post._id) {
                         comment_id = (children_post._id).toString()
                     }
                     await Post.deleteOne( {_id: children_post })
                     await Comment.deleteMany( { post_id: comment_id })
-                    console.log(children_post)
                 }
             }
             res.status(200).send({message: "Your post has been deleted"})
@@ -82,7 +79,6 @@ exports.deletePost = async (req, res) => {
         }
     }
     catch (err) {
-        console.log(err)
         return res.status(500).send({message: err})
     }
 }
@@ -140,7 +136,6 @@ exports.sharePost = async (req, res) => {
         res.status(200).send(post_data);
     }
     catch (err) {
-        console.log(err)
         return res.status(500).send({message: err})
     }
 }
@@ -171,7 +166,6 @@ exports.commentPost = async (req, res) => {
 
     }
     catch (err) {
-        console.log(err)
         return res.status(500).send({message: err})
     }
 }
@@ -186,7 +180,6 @@ exports.updateComment = async (req, res) => {
         })
     }
     catch (err) {
-        console.log(err)
         return res.status(500).send({message: err})
     }
 }
@@ -251,7 +244,6 @@ exports.giveSentiment = async (req, res) => {
         }
     }
     catch (err) {
-        console.log(err)
         return res.status(500).send({message: err})
     }
 }

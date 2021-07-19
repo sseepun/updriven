@@ -6,7 +6,7 @@ class SocketIO {
             withCredentials: false,
             transports : ['websocket']
         });
-        console.log('connect to port 8081')
+        
         return socket;
     }
     

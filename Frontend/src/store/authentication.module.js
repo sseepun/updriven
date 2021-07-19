@@ -152,7 +152,6 @@ export const authentication = {
       return new Promise((resolve, reject) => {    
         authenService.verify(id).then(
           response => {
-            console.log(response)
             var resUser = new User(
               response._id,
               response.user_detail[0].firstname,

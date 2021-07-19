@@ -177,18 +177,18 @@ export default {
           }.bind(this)
         }
       ).then(response => {
-        console.log('SUCCESS!!');
+        
         this.editProfileImage(response.data).then(this.uploadPercentage = 0)
       })
       .catch(function(){
-        console.log('FAILURE!!');
+       
       });
       
     },
     onBGPhotoSelected(event) {  
       this.dataset.background  = event.target.files
       var formData2 = new FormData();
-      console.log(this.dataset.background[0])
+      
       formData2.append("media", this.dataset.background[0])
       //this.editProfileBackground(formData2)
       axios.post( `user/edit_background_image`,
@@ -199,20 +199,20 @@ export default {
           }.bind(this)
         }
       ).then(response => {
-        console.log('SUCCESS!!');
+        
         this.editProfileBackground(response.data).then(this.uploadPercentage = 0)
       })
       .catch(function(){
-        console.log('FAILURE!!');
+        
       });
     },
     onClickAddfiles() {
       document.getElementById('avatarUpload').click()
-      console.log(JSON.stringify(this.dataset.avatar[0]))
+      
     },
     onClickAddBGfiles() {
       document.getElementById('backgroundUpload').click()
-      console.log(JSON.stringify(this.dataset.background[0]))
+      
     },
     onClickSubmitEditProfile(){
       var formData = new FormData();

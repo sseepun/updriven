@@ -85,10 +85,10 @@ export default {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
     this.checkPassword(this.$route.params.token).then(
             response => {
-              console.log("check token succesful")
+              
             },
             error => {
-              console.log(error)
+            
             }
           );
   },
@@ -113,7 +113,7 @@ export default {
               this.$router.push('/');
             },
             error => {
-              console.log(error)
+            
               this.message =
                 (error.response && error.response.data) ||
                 error.message ||
