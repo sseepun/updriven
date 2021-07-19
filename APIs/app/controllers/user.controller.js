@@ -1,14 +1,19 @@
 const db = require("../models");
+const sanitize = require('mongo-sanitize');
+const { rawListeners } = require("../models/log/log.model");
 const User = db.user;
 const User_detail = db.user_detail;
 const Post = db.post;
 const Organization = db.organization;
 const Sentiment = db.sentiment;
+const Notification = db.notification;
 
-exports.addOrganization = async (req, res) => {
+exports.editInfo = async (req, res) => {
     try {
         const user = await User.findById(req.userId).populate('user_detail')
-        user.user_detail[0].address = req.body.address;
+        user.user_detail[0].firstname = req.body.firstname;
+        user.user_detail[0].lastname = req.body.lastname;
+        user.user_detail[0].state_id = req.body.state_id;
         const organization = await Organization.findOne({ name: req.body.organization })
         if (user.user_detail[0].organization.length > 0) {
             user.user_detail[0].organization = []
@@ -17,25 +22,57 @@ exports.addOrganization = async (req, res) => {
             user.user_detail[0].organization.push(organization._id)
             await user.user_detail[0].save();
             console.log('Add organization successful');
-            res.status(200).send({message: 'Add organization successful'});
+            res.status(200).send({message: 'edit info successful'});
         }
         else {
             const organization = new Organization({
                 name: req.body.organization,
-                type: req.body.type,
-                start_year : req.body.start_year,
-                end_year : req.body.end_year ,
+                type: "School"
             });
             organization.user_detail.push(user.user_detail[0]._id);
             await organization.save();
             user.user_detail[0].organization.push(organization._id)
             await user.user_detail[0].save();
             console.log('Add organization successful');
-            res.status(200).send({message: 'Add organization successful'});
+            res.status(200).send({message: 'edit info successful'});
         }
     }
     catch (err) {
-        console.log(err);
+        return res.status(500).send({message: err})
+    }
+}
+
+exports.updateProfileImage = async (req, res) => {
+    try {
+        console.log(req.files)
+        const user = await User.findById(req.userId).populate('user_detail')
+        if (req.files.length > 0) {
+            user.user_detail[0].profile_pic = req.files[0].location
+            await user.user_detail[0].save();
+            res.status(200).send({message: 'update image successful'});
+        }
+        else {
+            res.status(404).send({message: 'No image found'});
+        }
+    }
+    catch (err) {
+        return res.status(500).send({message: err})
+    }
+}
+
+exports.updateBackground = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId).populate('user_detail')
+        if (req.files.length > 0) {
+            user.user_detail[0].background_pic = req.files[0].location
+            await user.user_detail[0].save();
+            res.status(200).send({message: 'update background successful'});
+        }
+        else {
+            res.status(404).send({message: 'No image found'});
+        }
+    }
+    catch (err) {
         return res.status(500).send({message: err})
     }
 }
@@ -54,11 +91,50 @@ exports.posts = async (req, res) => {
         })
         await Post.populate(post_list,
             [
-                {path: 'results.user', model: 'User', select: 'user_detail', populate: {path: 'user_detail', select:['firstname', 'lastname']}},
-                {path: 'results.category', model: 'Category', select: 'category_name'}
-            ])
+                {
+                    path: 'results.user', 
+                    model: 'User', 
+                    select: 'user_detail', 
+                    populate: 
+                    {
+                        path: 'user_detail', 
+                        select: ['firstname', 'lastname']
+                    }
+                },
+                {
+                    path: 'results.category', 
+                    model: 'Category', 
+                    select: 'category_name'
+                },
+                {
+                    path: 'results.share', 
+                    model: 'Share', 
+                    select: 'post',
+                    populate:
+                    {
+                        path: 'post',
+                        populate: 
+                        [
+                            { 
+                                path:'category', 
+                                select: 'category_name' 
+                            }, 
+                            { 
+                                path: 'user', 
+                                select: 'user_detail', 
+                                populate: 
+                                { 
+                                    path: 'user_detail', 
+                                    select: ['firstname', 'lastname']
+                                }
+                            }
+                        ]
+                    }
+                }
+                
+            ]
+        );
         for (let i = 0; i < post_list.results.length; i++) {
-            console.log(post_list.results[i])
             const is_sentiment_post = await Sentiment.findOne({sentiment: post_list.results[i], user: req.user})
             if (is_sentiment_post) {
                 post_list.results[i].is_sentiment = true
@@ -75,23 +151,27 @@ exports.posts = async (req, res) => {
     }
 }
 
-exports.editInfo = async (req, res) => {
+exports.getNotification = async (req, res) => {
     try {
-        const user_detail = await User_detail.findOne({ username: req.userId })
-        if (req.files) {
-            user_detail.profile_pic = req.files[0].path
+        const notification = await Notification.find({ action_to_user: req.user }).select(['action_by', 'action_to_content', '_id', 'createdAt', 'action_on'])
+        .populate({path: 'action_to', populate: { path: 'user', select: 'user_detail', populate: {path: 'user_detail', select: ['firstname','lastname']} }})
+        .populate({path: 'action_by', select: 'user_detail', populate: {path: 'user_detail', select: ['firstname','lastname']}})
+        return res.status(200).send(notification)
+    }
+    catch (err) {
+        return res.status(500).send({message: err})
+    }
+}
+
+exports.deleteNotification = async (req, res) => {
+    try {
+        const notification = await Notification.deleteOne({ _id: sanitize(req.body.notification_id) })
+        if (req.user.notification > 0) {
+            console.log('in')
+            req.user.notification -= 1;
         }
-        user_detail.prefix = req.body.prefix;
-        user_detail.firstname = req.body.firstname;
-        user_detail.lastname = req.body.lastname;
-        user_detail.phone = req.body.phone;
-        user_detail.address = req.body.address;
-        user_detail.province = req.body.province;
-        user_detail.gender = req.body.gender;
-        user_detail.state_id = req.body.state_id;
-        user_detail.country_id = req.body.country_id;
-        await user_detail.save()
-        res.status(200).send({message: 'User info saved'});
+        await req.user.save()
+        return res.status(200).send({message: "OK"})
     }
     catch (err) {
         return res.status(500).send({message: err})

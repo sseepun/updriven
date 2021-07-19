@@ -24,17 +24,17 @@
               <div v-if="getAmount > 0" class="num">{{parseInt(getAmount, 10)}}</div>
             </a>
             <div class="dropdown bshadow" :class="{ 'active': isActiveNoti }">
-              <div v-for="i in [0, 1]" :key="i" class="submenu submenu-alert">
-                <router-link to="/">
+              <div v-for="(content, index) in getContents" :key="index" class="submenu submenu-alert">
+                <a @click="onclickClearNotification(content._id)" >
                   <div class="icon">
                     <img src="/assets/img/icon/alert.svg" alt="Image Icon" />
                   </div>
                   <div class="text-container">
                     <div class="date">12/07/2021</div>
-                    <div class="title">Notification Title</div>
-                    <div class="desc">Notification long description</div>
+                    <div class="title">{{content.user_like_post_firstname}} {{content.user_like_post_lastname}} Give Reaction To Your {{ content.action_type }}</div>
+                    <div class="desc">{{content.action_to}}</div>
                   </div>
-                </router-link>
+                </a>
               </div>
             </div>
           </div>
@@ -96,22 +96,17 @@ export default {
     }
   },
   created() {
-    console.log(this.user.id)
     this.getSocketID.emit('join-with-id', {
       user_id: this.user.id,
     });
+    this.getAllNotify()
   },
   mounted() {
     this.getSocketID.on('receive-notify', (data) => {
-        console.log("data received")
         });
 
     this.getSocketID.on('get-count-notify', (data) => {
-      this.amountNotify = this.amountNotify + 1
-      this.addNotification(data).then(response => {
-        this.getContents.forEach((element,index) => {console.log("index : "+index + " " + JSON.stringify(element))
-        });
-      })
+      this.getAllNotify()
     });
 
   },
@@ -126,19 +121,18 @@ export default {
   methods: {
     ...mapActions({
       signout: 'authentication/signout',
-      addNotification: 'socketIO/addNotification',
-      removeAllNotification: 'socketIO/removeAllNotification',
+      removeNotification: 'socketIO/removeNotification',
+      getAllNotify: 'socketIO/getAllNotify',
 
     }),
     signOut() {
-      console.log(this.getSocketID)
       this.signout()
     },
-    onclickNotification(post_id) {
-      console.log(post_id)
+    onclickClearNotification(id) {
+      this.removeNotification({"notification_id": id}).then(response => {
+      })
     },
     onclickRemoveAllNotification() {
-      this.removeAllNotification()
       this.isActiveNoti = !this.isActiveNoti
     }
 

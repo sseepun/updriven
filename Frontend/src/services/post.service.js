@@ -4,13 +4,14 @@ const axios = require('axios');
 
 export const postService = {
     createPost,
-    fetchPost_Owner,
+    fetchPostOwner,
     fetchComment,
     deletePost,
     sentiment,
     rm_sentiment,
-    commentOnPost,
-    fetchPostAll
+    commentOrReply,
+    fetchPostAll,
+    sharePost
 }
 
 function createPost(postDetail) {
@@ -83,7 +84,7 @@ function rm_sentiment(detail) {
     });
 }
 
-function fetchPost_Owner(next_previous) {
+function fetchPostOwner(next_previous) {
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
@@ -103,14 +104,15 @@ function fetchPost_Owner(next_previous) {
   })
 }
 
-function fetchPostAll(next_previous) {
+function fetchPostAll(next_previous, category) {
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
       url: `feed/post`,
       data: {
         next: (next_previous.hasNext == true? next_previous.nextID: ''),
-        // previous: (next_previous.hasPrevious? '': '')
+        // previous: (next_previous.hasPrevious? '': ''),
+        category: category
       },
       withCredentials: true,
     })
@@ -142,14 +144,35 @@ function fetchComment(postID) {
   });
 }
 
-function commentOnPost(detail) {
+function commentOrReply(detail) {
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
       url: `post/comment`,
       data: {
         post_id: detail.postID,
-        comment: detail.comment
+        comment: detail.comment,
+        parent_comment: detail.parentCommentID,
+        depth: detail.depth,
+      },
+      withCredentials: true,
+    })
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    });
+  });
+}
+
+function sharePost(post_id) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'POST',
+      url: `post/share`,
+      data: {
+        post_id: post_id
       },
       withCredentials: true,
     })

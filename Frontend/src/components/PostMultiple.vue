@@ -9,11 +9,13 @@
       </div>
     </div>
     <div class="grids" :key="title">
-      <div v-for="post in posts" :key="post.id" class="grid sm-100">
-        <PostSingle :post="post" />
+      <div v-for="post in getPost" :key="post.id" class="grid sm-100">
+        <PostSingle :post="post"/>
       </div>
     </div>
-    <div ref="lazyLoadPosts">Loading...</div>
+    <div class="h5 fw-600 color-mgray text-center pt-6 pb-2 text-center">
+      <div ref="lazyLoadPosts">Loading...</div>
+    </div>
   </div>
 </template>
 
@@ -22,9 +24,11 @@ import {mapGetters, mapActions, mapMutations} from "vuex"
 
 export default {
   name: 'PostMultiple',
+  props: {
+    typePost: { type: Boolean, default: true } // 0 = Profile, 1 = Dashboard
+  },
   data() {
     return {
-      // user: this.$store.getters.user,
       title: null,
       icon: null,
       posts: []
@@ -33,116 +37,32 @@ export default {
   computed: {
     ...mapGetters({
       user: 'authentication/user',
+      getPost: 'post/getPost',
+      getStatusPost: 'post/getStatusPost',
+      isLoading: 'post/isLoading'
     })
   },
   methods: {
-    loadPosts() {
-      for(let i=0; i<4; i++){
-        this.posts.push({
-          id: this.posts.length+1,
-          image: `/assets/img/post/0${Math.round(Math.random()*2+1)}.jpg`,
-          title: 'The Top 5 Programming Languages in 2021 to get a job',
-          desc: `
-            Want to get a developer job in 2021? Some languages are better than others.
-            <br><br>
-            Here's a top 5 (we actually talk about 9 languages total) --- 
-            based on real year-end data, not just opinion or generic advice.
-          `,
-          createdAt: new Date(),
-          user: {
-            id: 1,
-            firstname: 'Emilia',
-            lastname: 'Bubu',
-            avatar: '/assets/img/profile/01.jpg'
-          },
-          counts: {
-            likes: 1235
-          },
-          actions: {
-            shared: false,
-            liked: true,
-            followed: true,
-          },
-          comments: [
-            {
-              comment: 'Can mobile\'s notification Led light be controlled by python?',
-              createdAt: new Date(),
-              user: {
-                id: 1,
-                firstname: 'Emilia',
-                lastname: 'Bubu',
-                avatar: '/assets/img/profile/01.jpg'
-              },
-              counts: {
-                likes: 5
-              },
-              actions: {
-                liked: true
-              }
-            },
-            {
-              comment: 'Can mobile\'s notification Led light be controlled by python?',
-              createdAt: new Date(),
-              user: {
-                id: 1,
-                firstname: 'Emilia',
-                lastname: 'Bubu',
-                avatar: '/assets/img/profile/01.jpg'
-              },
-              counts: {
-                likes: 5
-              },
-              actions: {
-                liked: true
-              }
-            },
-            {
-              comment: 'Can mobile\'s notification Led light be controlled by python?',
-              createdAt: new Date(),
-              user: {
-                id: 1,
-                firstname: 'Emilia',
-                lastname: 'Bubu',
-                avatar: '/assets/img/profile/01.jpg'
-              },
-              counts: {
-                likes: 5
-              },
-              actions: {
-                liked: true
-              }
-            },
-            {
-              comment: 'Can mobile\'s notification Led light be controlled by python?',
-              createdAt: new Date(),
-              user: {
-                id: 1,
-                firstname: 'Emilia',
-                lastname: 'Bubu',
-                avatar: '/assets/img/profile/01.jpg'
-              },
-              counts: {
-                likes: 5
-              },
-              actions: {
-                liked: true
-              }
-            }
-          ]
-        });
-      }
-    },
     onScroll() {
       var lazyLoadPosts = this.$refs['lazyLoadPosts'];
       if(lazyLoadPosts){
         var top = lazyLoadPosts.getBoundingClientRect().top;
         var innerHeight = window.innerHeight;
-        if(top - innerHeight < 0){                 
-          this.loadPosts();
+
+        if(top - innerHeight < 2000){
+          if(this.getStatusPost.hasNext == true) {
+            if ( this.isLoading == false) {
+              this.selectFetchOption()
+            }
+            lazyLoadPosts.innerHTML = 'Loading...';
+          } else if (this.getStatusPost.hasNext == false) {
+            lazyLoadPosts.innerHTML = 'That’s All For New Content';
+          }
         }
       }
     },
     createPost(post) {
+      
       console.log(post)
       this.posts = [ post, ...this.posts ];
     },
@@ -151,13 +71,29 @@ export default {
       this.icon = tab.icon;
       window.scrollTo(0,0);
       this.posts = [];
-      this.loadPosts();
-    }
+      this.selectFetchOption()
+    },
+    selectFetchOption() {
+
+      if (this.typePost == true ) {
+        this.fetchPostAll();
+      } else if (this.typePost == false) {
+        this.fetchPostOwner();
+      }
+
+    },
+    ...mapActions({
+      fetchPostOwner:'post/fetchPostOwner',
+      fetchPostAll:'post/fetchPostAll'
+    })
+  },
+  created() {
+    // this.selectFetchOption()
   },
   mounted() {
     this.$nextTick(function(){
       window.addEventListener('scroll', this.onScroll);
-      this.loadPosts();
+      // this.fetchPostOwner();
     });
   },
   beforeUnmount() {

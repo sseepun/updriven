@@ -40,6 +40,7 @@
 .app-container > .middle-container{
     display:block; width:calc(100% - 36rem - 2rem); margin:0 auto; padding:0 0 1rem 0;
 }
+.app-container > .middle-container.full{width:calc(100% - 18rem - 1rem); margin:0 0 0 auto;}
 .app-container > .banner-container{
     display:block; width:calc(100% - 18rem - 1rem); margin:0 0 1rem auto;
 }
@@ -79,6 +80,7 @@
 }
 @media screen and (max-width:991.98px){
     .app-container > .left-container{width:16rem;}
+    .app-container > .middle-container.full,
     .app-container > .middle-container{width:calc(100% - 16rem - 1rem);}
     .app-container > .banner-container{width:calc(100% - 16rem - 1rem);}
     .banner-container .tabs{flex-wrap:wrap; width:100%; margin:0 0 .75rem 0;}
@@ -86,7 +88,7 @@
 }
 @media screen and (max-width:767.98px){
     .app-container > .left-container{display:none;}
-    .app-container > .middle-container,
+    .app-container > .middle-container, .app-container > .middle-container.full,
     .app-container > .banner-container{width:100%; max-width:37.5rem; margin:0 auto;}
     .app-container > .banner-container{margin-bottom:1rem;}
 }
@@ -145,6 +147,24 @@
 @media screen and (max-width:575.98px){
     .auth-01 .auth-container{max-width:25rem;}
     .auth-01 .auth-container .auth-wrapper{padding:1.25rem 1rem;}
+}
+
+
+/* Box Container */
+.box-container{
+    display:block; width:100%; max-width:44rem; margin:2rem auto; padding:2rem;
+}
+@media screen and (max-width:1199.98px){
+    .box-container{margin:1.75rem auto; padding:1.75rem;}
+}
+@media screen and (max-width:991.98px){
+    .box-container{margin:1.5rem auto; padding:1.5rem;}
+}
+@media screen and (max-width:767.98px){
+    .box-container{margin:1.25rem auto; padding:1.25rem;}
+}
+@media screen and (max-width:575.98px){
+    .box-container{margin:1rem auto; padding:1rem;}
 }
 
 
@@ -272,6 +292,7 @@
 .post .comment .avatar{margin-right:.5rem;}
 .post .comment .text{max-width:calc(100% - 2.75rem);}
 .post .comment .form-group{width:calc(100% - 2.75rem);}
+.post .comment > .comments{padding-left:2.75rem;}
 
 /* Post Header */
 .post-header{width:100%; display:flex; align-items:center;}

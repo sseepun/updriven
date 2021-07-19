@@ -11,7 +11,7 @@
             {{user.firstname}} {{user.lastname}}
           </h6>
           <p class="xxs fw-500 color-gray">
-            Student, NYC
+            Student, {{ user.state_id }}
           </p>
         </div>
       </div>
@@ -19,15 +19,13 @@
         <div class="tabs">
           <a class="tab" href="#">About</a>
           <a class="tab active" href="#">Post</a>
-          <a class="tab" href="#">Friends</a>
-          <a class="tab" href="#">Photo</a>
-          <a class="tab" href="#">Video</a>
+          <a class="tab" href="#">Mentors</a>
           <a class="tab" href="#">Activity</a>
         </div>
         <div class="btn">
           <Button 
-            href="#" classer="d-block btn-color-01 btn-sm pl-4 pr-4" 
-            text="EDIT PROFILE"
+            href="/user/profile/update" text="EDIT PROFILE" 
+            classer="d-block btn-color-01 btn-sm pl-4 pr-4" 
           />
         </div>
       </div>

@@ -11,20 +11,35 @@ module.exports = app => {
         next();
     });
 
-    router.post("/add_organization",
-        auth.isLoggedIn,
-        userController.addOrganization
-    );
-
     router.post('/post',
         auth.isLoggedIn,
         userController.posts
-    )
+    );
 
     router.post('/edit_info',
         auth.isLoggedIn,
         userController.editInfo
+    );
+
+    router.post('/edit_profile_image',
+        auth.isLoggedIn,
+        userController.updateProfileImage
+    );
+
+    router.post('/edit_background_image',
+        auth.isLoggedIn,
+        userController.updateBackground
     )
+
+    router.get('/notification',
+        auth.isLoggedIn,
+        userController.getNotification
+    );
+
+    router.post('/clear_notification',
+        auth.isLoggedIn,
+        userController.deleteNotification
+    );
 
     app.use('/apis/user', router);
 }

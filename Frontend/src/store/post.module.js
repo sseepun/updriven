@@ -1,5 +1,5 @@
 import { checkCookie } from '../helpers/authHeader';
-import { StatusPost, changeStructurePost, _create, changeStructureComment } from '../models/post';
+import { StatusPost, changeStructurePost, _create, changeStructureFetchComment } from '../models/post';
 import { postService } from '../services';
 
 const initial_StatusPost = new StatusPost('', '', false, false);
@@ -11,7 +11,8 @@ export const post = {
         StatusPost: initial_StatusPost,
         Post: [],
         _create: createDetail,
-        loading: false
+        loading: false,
+        category: null
     },
     getters: {
         getPost: state => state.Post,
@@ -21,17 +22,32 @@ export const post = {
     },
     actions: {
         /**
+         * Change category post
+         */
+         async changeCategoryPost({ state, commit, dispatch }, newcategory) {
+            state.Post = []
+            state.StatusPost = initial_StatusPost;
+            state.category = newcategory;
+        },
+        /**
          * fetch post (owner's post)
          */
-        async fetchPost_Owner({ state, commit }) {
+        async fetchPostOwner({ state, commit, dispatch }) {
             await commit('updateStatusLoading', true)
             return await new Promise((resolve, reject) => {
-                postService.fetchPost_Owner(state.StatusPost)
+                postService.fetchPostOwner(state.StatusPost)
                 .then( res => {
+                    // update status 
                     const statusPost = new StatusPost(res.hasNext, res.hasPrevious, res.next, res.previous);
                     commit('updateStatusPost', statusPost)
+
+                    // fetch all post
                     const posts = changeStructurePost(res.results);
                     commit('updatePost', posts)
+
+                    // fetch comment each postID
+                    res.results.map( x => { dispatch('post/fetchComment', x._id, { root: true }) })
+
                     commit('updateStatusLoading', false)
                     resolve(res)
                 })
@@ -44,16 +60,23 @@ export const post = {
         /**
          * fetch all posts to display on dashboard page
          */
-         async fetchPostAll({ state, commit }) {
+         async fetchPostAll({ state, commit, dispatch }) {
             await commit('updateStatusLoading', true)
             return await new Promise((resolve, reject) => {
-                postService.fetchPostAll(state.StatusPost)
+                postService.fetchPostAll(state.StatusPost, state.category)
                 .then( res => {
-                    console.log(res)
+
+                    // update status 
                     const statusPost = new StatusPost(res.hasNext, res.hasPrevious, res.next, res.previous);
                     commit('updateStatusPost', statusPost)
+
+                    // fetch all post
                     const posts = changeStructurePost(res.results);
                     commit('updatePost', posts)
+
+                    // fetch comment each postID
+                    res.results.map( x => { dispatch('post/fetchComment', x._id, { root: true }) })
+
                     commit('updateStatusLoading', false)
                     resolve(res)
                 })
@@ -64,11 +87,11 @@ export const post = {
             })
         },
         /**
-         * 
+         * comment on post or reply comment
          */
-        async commentOnPost({state, dispatch}, detail) {
+        async commentOrReply({state, dispatch}, detail) {
             var promise = await new Promise((resolve, reject) => {
-                postService.commentOnPost(detail)
+                postService.commentOrReply(detail)
                 .then( res => {
                     dispatch('post/fetchComment', detail.postID , { root: true })
                     dispatch('alert/assign', { type: 'Success', message: 'Commented on post successfully.' }, { root: true })
@@ -106,7 +129,7 @@ export const post = {
                     reject(err)
                 })
             })
-            //await dispatch('fetchPost_Owner')
+            //await dispatch('fetchPostOwner')
             return await promise
         },
         /**
@@ -129,13 +152,12 @@ export const post = {
         /**
          * fetch comment each post if user want to see
          */
-        fetchComment({ state, commit }, postID) {
+        fetchComment({ state, commit }, postID) {  
             return new Promise((resolve, reject) => {
                 postService.fetchComment(postID)
                 .then( res => {
                     // let test = state.Post.findIndex(post => post.id == postID);
-                    const commentPost = changeStructureComment(res.data.comments)
-                    console.log('commentPost :', commentPost)
+                    const commentPost = changeStructureFetchComment(res.data.comments, res.data.avatar)
                     state.Post[state.Post.findIndex(post => post.id == postID)].comments = commentPost
                     state.Post[state.Post.findIndex(post => post.id == postID)].counts.comments = commentPost.length
                     resolve(res)
@@ -177,6 +199,24 @@ export const post = {
                     reject(err)
                 })
             })
+        },
+        sharePost({ dispatch, commit }, post_id) {
+            return new Promise((resolve, reject) => {
+                postService.sharePost(post_id)
+                .then( res => {
+                    const post = changeStructurePost([res.data]);
+                    commit('fetchCreated', post)
+                    dispatch('alert/assign', { type: 'Success', message: 'Post shared successfully.' }, { root: true })
+                    resolve(res)
+                }, err => {
+                    dispatch('alert/assign', { type: 'Warning', message: err.response.data.message }, { root: true })
+                    resolve(err)
+                })
+                .catch( err => {
+                    dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+                    reject(err)
+                })
+            })
         }
     },
     mutations: {
@@ -195,6 +235,8 @@ export const post = {
 
         clearPost(state) {
             state.Post = []
+            state.StatusPost = initial_StatusPost;
+            state.category = null;
         },
 
         clear_create(state) {

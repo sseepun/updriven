@@ -1,4 +1,5 @@
-import { authenService } from '../services'
+import { authenService } from '../services';
+import { userService } from '../services';
 import { checkCookie } from '../helpers/authHeader';
 import User from '../models/user.js';
 import router from '../router';
@@ -26,15 +27,15 @@ export const authentication = {
               res._id,
               res.user_detail[0].firstname,
               res.user_detail[0].lastname,
-              '/assets/img/profile/01.jpg',
-              '/assets/img/bg/01.jpg',
+              res.user_detail[0].profile_pic,
+              res.user_detail[0].background_pic,
               res.user_detail[0].state_id,
               res.user_detail[0].province,
-              res.user_detail[0].organization
+              res.email,
+              res.user_detail[0].organization,
             )
-
             commit('signinSuccess', resUser);
-            //dispatch('alert/assign', { type: 'Success', message: 'Signed in successfully.' }, { root: true })
+            //dispatch('alert/assign', { type: 'Success', message: 'Sign in successful' }, { root: true })
             resolve(res)
           },
           error => {
@@ -44,7 +45,7 @@ export const authentication = {
           }
         ).catch(err => {
           commit('signinFailed');
-          dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+          dispatch('alert/assign', { type: 'Danger', message: 'System error' }, { root: true })
         })
       })
     },
@@ -53,10 +54,9 @@ export const authentication = {
         authenService.logout().then(
           response => {
             commit('signout');
-            dispatch('alert/assign', { type: 'Success', message: 'Signed out successfully.' }, { root: true })
+            dispatch('alert/assign', { type: 'Success', message: 'Sign out successful' }, { root: true })
             resolve(response)
           }).catch(err => {
-            console.log(err)
             reject(err)
           })
         });
@@ -65,12 +65,11 @@ export const authentication = {
       return new Promise((resolve, reject) => {   
       authenService.register(regisuser).then(
         response => {
-          dispatch('alert/assign', { type: 'Success', message: 'Signed up successfully.' }, { root: true })
+          dispatch('alert/assign', { type: 'Success', message: 'Sign up successful' }, { root: true })
           
           resolve(response)
         },
         error => {
-          console.log(error.response.data.message)
           dispatch('alert/assign', { type: 'Warning', message: error.response.data.message }, { root: true })
           
           reject(error)
@@ -85,8 +84,7 @@ export const authentication = {
       return new Promise((resolve, reject) => {   
       authenService.verifyEmailRegister(token).then(
         response => {
-          console.log("verify email success")
-          dispatch('alert/assign', { type: 'Success', message: 'Verify email successfully.' }, { root: true })
+          dispatch('alert/assign', { type: 'Success', message: 'Verify email successful' }, { root: true })
           
           resolve(response.data)
         },
@@ -96,7 +94,7 @@ export const authentication = {
           reject(error)
         }
       ).catch(err => {
-         dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+         dispatch('alert/assign', { type: 'Danger', message: 'System error' }, { root: true })
         
       })
     })
@@ -115,7 +113,7 @@ export const authentication = {
           reject(error)
         }
       ).catch(err => {
-         dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+         dispatch('alert/assign', { type: 'Danger', message: 'System error' }, { root: true })
         
       })
     })
@@ -132,7 +130,7 @@ export const authentication = {
           reject(error)
         }
       ).catch(err => {
-        dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+        dispatch('alert/assign', { type: 'Danger', message: 'System error' }, { root: true })
       })
     })
     },
@@ -158,11 +156,11 @@ export const authentication = {
               response._id,
               response.user_detail[0].firstname,
               response.user_detail[0].lastname,
-              '/assets/img/profile/01.jpg',
-              '/assets/img/bg/01.jpg'
+              response.user_detail[0].profile_pic,
+              response.user_detail[0].background_pic,
             )
             commit('signinSuccess', resUser);
-            dispatch('alert/assign', { type: 'Success', message: 'Signed in successfully.' }, { root: true })
+            dispatch('alert/assign', { type: 'Success', message: 'Sign in successful' }, { root: true })
             resolve(response)
           },
           error => {
@@ -171,10 +169,84 @@ export const authentication = {
             reject(error)
           }).catch(err => {
             commit('signinFailed');
-            dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+            dispatch('alert/assign', { type: 'Danger', message: 'System error' }, { root: true })
           })
         });
     },
+    editProfile({ commit, dispatch },input) {
+      return new Promise((resolve, reject) => {   
+      userService.editProfile(input).then(
+        response => {
+          dispatch( 'getProfile' )
+          dispatch('alert/assign', { type: 'Success', message: 'Edit profile successful' }, { root: true })
+          resolve(response)
+        },
+        error => {
+          reject(error)
+        }
+      ).catch(err => {
+        
+      })
+    })
+    },
+    editProfileImage({ commit, dispatch },input) {
+      return new Promise((resolve, reject) => {   
+      userService.editPictureProfile(input).then(
+        response => {
+          dispatch( 'getProfile' )
+          dispatch('alert/assign', { type: 'Success', message: 'Edit image successfully.' }, { root: true })
+          resolve(response)
+        },
+        error => {
+          reject(error)
+        }
+      ).catch(err => {
+        
+      })
+    })
+    },  
+    editProfileBackground({ commit, dispatch },input) {
+      return new Promise((resolve, reject) => {   
+      userService.editBackgroundProfile(input).then(
+        response => {
+          dispatch( 'getProfile' )
+          dispatch('alert/assign', { type: 'Success', message: 'Edit Background successfully.' }, { root: true })
+          resolve(response)
+        },
+        error => {
+          reject(error)
+        }
+      ).catch(err => {
+        
+      })
+    })
+    },
+    getProfile({ commit }) {
+      return new Promise((resolve, reject) => {   
+      userService.getProfile().then(
+        response => {
+          var resUser = new User(
+            response._id,
+            response.user_detail[0].firstname,
+            response.user_detail[0].lastname,
+            response.user_detail[0].profile_pic,
+            response.user_detail[0].background_pic,
+            response.user_detail[0].state_id,
+            response.user_detail[0].province,
+            response.email,
+            response.user_detail[0].organization,
+          )
+          commit('signinSuccess', resUser);
+          resolve()
+        },
+        error => {
+          reject(error)
+        }
+      ).catch(err => {
+        
+      })
+    })
+    }
     
   },
   // Synchronous

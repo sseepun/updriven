@@ -11,7 +11,7 @@
 
     <Banner />
     
-    <div ref="rightContainer" class="right-container" data-aos="fade-up" data-aos-delay="150">
+    <div ref="rightContainer" class="right-container">
       <div class="wrapper" data-simplebar>
         <div class="p-3 bshadow">
           <SectionInfo />
@@ -33,7 +33,7 @@
 
     <div ref="middleContainer" class="middle-container">
       <PostNew @on-post="(post) => createPost(post)" />
-      <PostMultiple ref="posts" />
+      <PostMultiple ref="posts" :typePost="false"/>
     </div>
 
   </div>
@@ -43,7 +43,7 @@
 import TopNav from '../../components/TopNav';
 import LeftNav from '../../components/LeftNav';
 import PostNew from '../../components/PostNew';
-import PostMultiple from '../../components/PostMultiple_Profile';
+import PostMultiple from '../../components/PostMultiple';
 import Banner from '../../components/Banner';
 import SectionInfo from '../../components/SectionInfo';
 import SectionPhotos from '../../components/SectionPhotos';
@@ -68,7 +68,7 @@ export default {
   },
   created() {
     this.clearPost();
-    this.fetchPost_Owner();
+    this.fetchPostOwner();
   },
   mounted() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
@@ -86,7 +86,7 @@ export default {
       }
     },
     ...mapActions({
-      fetchPost_Owner:'post/fetchPost_Owner'
+      fetchPostOwner:'post/fetchPostOwner'
     }),
     ...mapMutations({
       clearPost:'post/clearPost'

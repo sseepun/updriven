@@ -1,5 +1,12 @@
 <template>
   <div v-if="user" class="post bshadow">
+    <div class="p-3" v-if="selfPost.shared">     
+      <p class="xs fw-500">
+        {{selfPost.shared.firstname}} {{selfPost.shared.lastname}} 
+        shared this post on 
+        {{formatDate(selfPost.createdAt)}}
+      </p>
+    </div>
     <template v-if="selfPost.desc.indexOf('https://www.youtube.com/') > -1">
       <div class="ss-img video-view no-hover">
         <iframe 
@@ -9,8 +16,13 @@
       </div>
     </template>
     <template v-else-if="selfPost.image.length == 1">
-      <div class="ss-img no-hover">
+      <div v-if="selfPost.image[0].type != 'video/mp4'" class="ss-img no-hover">
         <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\');'"></div>
+      </div>
+      <div v-else-if="selfPost.image[0].type == 'video/mp4'" class="ss-img video-view no-hover">
+        <iframe  
+          class="img-bg w-full h-full" border="0" 
+          :src="selfPost.image[0].path"></iframe>
       </div>
     </template>
     <template v-else-if="selfPost.image.length == 2">
@@ -44,7 +56,7 @@
         </div>
       </div>
     </template>
-
+    
     <div class="text-container">
       <div class="title-container">
         <h6 class="title fw-600">
@@ -96,7 +108,7 @@
                   <div class="text">Find suport or report post</div>
                 </a>
               </div>
-              <div class="menu-container" v-if="selfPost.user.id == user.id">
+              <div class="menu-container" v-if="selfPost.sharedUser == user.id || selfPost.user.id == user.id">
                 <a 
                   class="menu color-gray h-color-01" href="javascript:" 
                   @click="isActivePopup = false; isActivePopupDelete = true;"
@@ -139,7 +151,7 @@
         <a 
           class="post-icon mr-4" href="javascript:" 
           :class="{ 'active': selfPost.actions.shared  }" 
-          @click="selfPost.actions.shared = !selfPost.actions.shared"
+          @click="togglePostShare"
         >
           <img src="/assets/img/icon/share.png" alt="Image Icon" />
         </a>
@@ -152,51 +164,7 @@
         </a>
       </div>
 
-      <div class="comments">
-        <div v-for="(c, i) in showComments" :key="i" class="comment mt-3">
-          <div class="wrapper">
-            <Avatar :avatar="c.user.avatar" />
-            <div class="text">
-              <div class="bg-fgray bradius-1 p-3">
-                <p class="sm fw-500 lh-xs">
-                  {{c.user.firstname}} {{c.user.lastname}}
-                </p>
-                <p class="sm lh-xs ovf-hidden" v-html="c.comment"></p>
-              </div>
-              <p class="xs fw-400 color-gray mt-1">
-                {{formatDate(c.createdAt)}} 
-                <a 
-                  class="color-gray fw-600 ml-3" :class="{ 'color-01': c.actions.liked }"
-                  href="javascript:" @click="commentLikeToggle(c)"
-                >
-                  Like
-                  <span v-if="c.counts.likes">
-                    {{c.counts.likes}}
-                  </span>
-                </a>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div v-if="selfPost.counts.comments > 1" class="mt-3">
-        <a 
-          v-if="commentLimit < selfPost.counts.comments - 1"  
-          class="p sm fw-400 color-gray h-color-01" href="javascript:" 
-          @click="callComment()"
-        >
-          <u>View more comments</u>
-        </a>
-        <a 
-          v-else class="p sm fw-400 color-gray h-color-01" href="javascript:" 
-          @click="commentLimit = 1" 
-        >
-          <u>Hide comments</u>
-        </a>
-      </div>
-
-      <form @submit.prevent="onSubmit()">
+      <form @submit.prevent="commentOnPost()">
         <div class="comment mt-4">
           <div class="wrapper ai-center">
             <Avatar :avatar="user.avatar" />
@@ -208,12 +176,70 @@
           </div>
         </div>
       </form>
+
+      <div class="comments">
+
+        <commentPost v-if="showComments.length > 0" :comments="showComments"/>
+        
+        <!-- Replied Comments -->
+        <!-- <div class="comments">
+          <div class="comment mt-3">
+            <div class="wrapper">
+              <Avatar :avatar="c.user.avatar" />
+              <div class="text">
+                <div class="bg-fgray bradius-1 p-3">
+                  <p class="sm fw-500 lh-xs">
+                    {{c.user.firstname}} {{c.user.lastname}}
+                  </p>
+                  <p class="sm lh-xs ovf-hidden" v-html="c.comment"></p>
+                </div>
+                <p class="xs fw-400 color-gray mt-1">
+                  {{formatDate(c.createdAt)}} 
+                  <a 
+                    class="color-gray fw-600 ml-3" :class="{ 'color-01': c.actions.liked }"
+                    href="javascript:" @click="commentLikeToggle(c)"
+                  >
+                    Like
+                    <span v-if="c.counts.likes">
+                      {{c.counts.likes}}
+                    </span>
+                  </a> 
+                  <a 
+                    class="color-gray h-color-01 fw-600 ml-3" 
+                    href="javascript:"
+                  >
+                    Reply
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+      </div>
+
+      <div v-if="selfPost.counts.comments > 1" class="mt-3">
+        <a 
+          v-if="commentLimit <= selfPost.counts.comments - 1"  
+          class="p sm fw-400 color-gray h-color-01" href="javascript:" 
+          @click="callComment($event)"
+        >
+          <u>View more comments</u>
+        </a>
+        <a 
+          v-else class="p sm fw-400 color-gray h-color-01" href="javascript:" 
+          @click="commentLimit = 1" 
+        >
+          <u>Hide comments</u>
+        </a>
+      </div>
+
     </div>
   </div>
 
   <!-- Popup Delete -->
   <div 
-    v-if="selfPost.user.id == user.id" class="popup-container" 
+    class="popup-container" 
     :class="{ 'active': isActivePopupDelete }"
   >
     <div class="wrapper">
@@ -242,9 +268,13 @@
 import moment from 'moment';
 import {mapGetters, mapActions, mapMutations} from "vuex";
 import { _CommentPost } from '../models/post';
+import commentPost from './commentPost';
 
 export default {
   name: 'PostSingle',
+  components: {
+    commentPost
+  },
   props: {
     post: { type: Object, default: {} }
   },
@@ -254,8 +284,16 @@ export default {
       isActivePopup: false,
       isActivePopupDelete: false,
       commentLimit: 1,
-      comment: ''
+      comment: '',
+
+      _DisplayInputComment: false,
+      _ReplyCommentID: 0,
+      _DepthComment: 0,
+      _PostID: 0.
     }
+  },
+  created() {
+    console.log( this.selfPost )
   },
   computed: {
     showComments: function() {
@@ -275,7 +313,8 @@ export default {
       delete: 'post/delete',
       sentiment: 'post/sentiment',
       removeSentiment: 'post/rm_sentiment',
-      commentOnPost: 'post/commentOnPost'
+      sharePost: 'post/sharePost',
+      commentOrReply: 'post/commentOrReply',
     }),
 
     formatNumber(value, digits=2) {
@@ -288,26 +327,27 @@ export default {
 
     togglePostLike() {
       if(this.selfPost.actions.liked){
+        this.selfPost.actions.liked = false;
+        this.selfPost.counts.likes -= 1;
         this.removeSentiment({
           sentiment_id: this.selfPost.id,
           sentiment_on: 'Post'
         }).then( () => {
-          this.selfPost.actions.liked = false;
-          this.selfPost.counts.likes -= 1;
+          /*this.selfPost.actions.liked = false;
+          this.selfPost.counts.likes -= 1;*/
+        }, err => {
+          this.selfPost.actions.liked = true;
+          this.selfPost.counts.likes += 1;
         });
       }else{
+        this.selfPost.actions.liked = true;
+        this.selfPost.counts.likes += 1;
         this.sentiment({
           post_id: this.selfPost.id,
           sentiment_type: '1'
         }).then( () => {
-          this.selfPost.actions.liked = true;
-          this.selfPost.counts.likes += 1;
-          console.log("sent", this.selfPost.user.id)
-          console.log("sent", this.selfPost.id)
-          console.log("sent", this.user.id)
-          console.log("sent", this.user.firstname)
-          console.log("sent", this.user.lastname)
-
+          /*this.selfPost.actions.liked = true;
+          this.selfPost.counts.likes += 1;*/
           this.getSocketID.emit('sent-realtime-notify',{
               sentiment_type: '1',
               post_id: this.selfPost.id,
@@ -317,30 +357,52 @@ export default {
               user_like_post_lastname: this.user.lastname,
           });
 
-        });
-      }
-    },
-    commentLikeToggle(c) {
-      if(c.actions.liked){
-        this.removeSentiment({
-          sentiment_id: c.id,
-          sentiment_on: 'Comment'
-        }).then( () => {
-          c.actions.liked = false;
-          c.counts.likes -= 1;
-        });
-      }else{
-        this.sentiment({
-          comment_id: c.id,
-          sentiment_type: '1'
-        }).then( () => {
-          c.actions.liked = true;
-          c.counts.likes += 1;
+        }, err => {
+          this.selfPost.actions.liked = false;
+          this.selfPost.counts.likes -= 1;
         });
       }
     },
 
-    onSubmit() {
+    togglePostShare() {
+      if(this.selfPost.shared){
+        this.sharePost(this.selfPost.shared.origin)
+      } else {
+        this.sharePost(this.selfPost.id)
+      }
+    },
+    commentLikeToggle(c) {
+      if(c.actions.liked){
+        c.actions.liked = false;
+        c.counts.likes -= 1;
+        this.removeSentiment({
+          sentiment_id: c.id,
+          sentiment_on: 'Comment'
+        }).then( () => {
+          /*c.actions.liked = false;
+          c.counts.likes -= 1;*/
+        },err => {
+          c.actions.liked = true;
+          c.counts.likes += 1;
+        });
+      }else{
+        c.actions.liked = true;
+        c.counts.likes += 1;
+        this.sentiment({
+          comment_id: c.id,
+          sentiment_type: '1'
+        }).then( () => {
+          /*c.actions.liked = true;
+          c.counts.likes += 1;*/
+        },err => {
+          c.actions.liked = false;
+          c.counts.likes -= 1;
+        });
+      }
+    },
+
+    commentOnPost() {
+
       // this.selfPost.comments.push({
       //   comment: this.comment,
       //   createdAt: new Date(),
@@ -354,16 +416,19 @@ export default {
       // });
       // this.comment = '';
       // this.commentLimit += 1;
-      const commentOnPost = new _CommentPost(this.selfPost.id);
-      commentOnPost.comment = this.comment
-      this.commentOnPost(commentOnPost).then( res => {
-        this.comment = ''
-      })
+
+      const commentObject = new _CommentPost(this.selfPost.id);
+      commentObject.comment = this.comment;
+      this.commentOrReply(commentObject).then( res => {
+        this.comment = '';
+      });
+
     },
 
     callComment() {
-      const that = this
-      this.fetchComment(that.selfPost.id)
+      // const that = this
+      this.commentLimit = this.commentLimit + 3;
+      this.fetchComment(this.selfPost.id)
     },
     onClickDelete() {
       this.delete(this.selfPost.id)

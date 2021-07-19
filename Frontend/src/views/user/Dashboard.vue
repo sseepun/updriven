@@ -8,7 +8,7 @@
       </div>
     </div>
     
-    <div class="right-container" data-aos="fade-up" data-aos-delay="150">
+    <div class="right-container">
       <div class="wrapper" data-simplebar>
         <div>
           <SectionSponsored />
@@ -21,7 +21,7 @@
 
     <div class="middle-container">
       <PostNew @on-post="(post) => createPost(post)" />
-      <PostMultiple ref="posts" />
+      <PostMultiple ref="posts" :typePost="true"/>
     </div>
 
   </div>
@@ -31,7 +31,7 @@
 import TopNav from '../../components/TopNav';
 import LeftNav from '../../components/LeftNav';
 import PostNew from '../../components/PostNew';
-import PostMultiple from '../../components/PostMultiple_Profile';
+import PostMultiple from '../../components/PostMultiple';
 import SectionSponsored from '../../components/SectionSponsored';
 import SectionLive from '../../components/SectionLive';
 import {mapGetters, mapActions, mapState, mapMutations} from "vuex"

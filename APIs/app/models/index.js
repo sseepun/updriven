@@ -17,5 +17,6 @@ db.organization = require('./user/organization.model');
 db.role = require('./user/role.model');
 db.user_detail = require("./user/user_detail.model");
 db.user = require("./user/user.model");
+db.notification = require("./user/notification.model");
 
 module.exports = db;

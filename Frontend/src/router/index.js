@@ -1,21 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '../store/index.js';
 
-function requireAuth (to, from, next) {
-  if ( store.getters['auth/isAuthenticated'] ) {
-    const LS_ROUTE_KEY = localStorage.getItem('LS_ROUTE_KEY')
-    if (LS_ROUTE_KEY != null) {
-      localStorage.removeItem('LS_ROUTE_KEY')
-      next(LS_ROUTE_KEY)
-    } else {
-      next()
-    }
-    
-  } else {
-    localStorage.setItem('LS_ROUTE_KEY', to.fullPath);
-    next('/');
-  }  
-}
 const routes = [
 
   // Auth Pages
@@ -70,6 +55,12 @@ const routes = [
     path: '/user/chat',
     name: 'UserChatPage',
     component: () => import('../views/user/Chat.vue')
+  },
+  
+  {
+    path: '/user/profile/update',
+    name: 'UserProfileUpdatePage',
+    component: () => import('../views/user/ProfileUpdate.vue')
   },
 
 ]
