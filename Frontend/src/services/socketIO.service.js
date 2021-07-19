@@ -2,7 +2,7 @@ import axios from 'axios';
 
 class SocketIO {
     initializer() {
-        let socket = io.connect("http://localhost:8081" ,{
+        let socket = io.connect(process.env.VUE_APP_API_URL ,{
             withCredentials: false,
             transports : ['websocket']
         });
