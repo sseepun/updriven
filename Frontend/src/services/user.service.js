@@ -21,7 +21,7 @@ function editPictureProfile(input) {
     })
     .then(res => {
       console.log('res')
-      resolve(res);
+      resolve(res.data);
     })
     .catch(err => {
       console.log('err',err)
@@ -41,7 +41,7 @@ function editBackgroundProfile(input) {
     })
     .then(res => {
       console.log('res')
-      resolve(res);
+      resolve(res.data);
     })
     .catch(err => {
       console.log('err',err)
@@ -57,6 +57,7 @@ function editProfile(input) {
       url: `user/edit_info`,
       data: input,
       withCredentials: true,
+      
     })
     .then(res => {
       console.log('res')

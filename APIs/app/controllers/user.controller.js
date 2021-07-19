@@ -49,7 +49,7 @@ exports.updateProfileImage = async (req, res) => {
         if (req.files.length > 0) {
             user.user_detail[0].profile_pic = req.files[0].location
             await user.user_detail[0].save();
-            res.status(200).send({message: 'update image successful'});
+            res.status(200).send(user);
         }
         else {
             res.status(404).send({message: 'No image found'});
@@ -66,7 +66,7 @@ exports.updateBackground = async (req, res) => {
         if (req.files.length > 0) {
             user.user_detail[0].background_pic = req.files[0].location
             await user.user_detail[0].save();
-            res.status(200).send({message: 'update background successful'});
+            res.status(200).send(user);
         }
         else {
             res.status(404).send({message: 'No image found'});

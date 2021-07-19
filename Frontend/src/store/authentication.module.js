@@ -152,6 +152,7 @@ export const authentication = {
       return new Promise((resolve, reject) => {    
         authenService.verify(id).then(
           response => {
+            console.log(response)
             var resUser = new User(
               response._id,
               response.user_detail[0].firstname,
@@ -159,6 +160,7 @@ export const authentication = {
               response.user_detail[0].profile_pic,
               response.user_detail[0].background_pic,
             )
+            resUser.email = response.email
             commit('signinSuccess', resUser);
             dispatch('alert/assign', { type: 'Success', message: 'Sign in successful' }, { root: true })
             resolve(response)
@@ -176,6 +178,7 @@ export const authentication = {
     editProfile({ commit, dispatch },input) {
       return new Promise((resolve, reject) => {   
       userService.editProfile(input).then(
+        
         response => {
           dispatch( 'getProfile' )
           dispatch('alert/assign', { type: 'Success', message: 'Edit profile successful' }, { root: true })
@@ -189,36 +192,40 @@ export const authentication = {
       })
     })
     },
-    editProfileImage({ commit, dispatch },input) {
+    editProfileImage({ commit, dispatch },response) {
       return new Promise((resolve, reject) => {   
-      userService.editPictureProfile(input).then(
-        response => {
-          dispatch( 'getProfile' )
-          dispatch('alert/assign', { type: 'Success', message: 'Edit image successfully.' }, { root: true })
-          resolve(response)
-        },
-        error => {
-          reject(error)
-        }
-      ).catch(err => {
-        
-      })
+        var resUser = new User(
+          response._id,
+          response.user_detail[0].firstname,
+          response.user_detail[0].lastname,
+          response.user_detail[0].profile_pic,
+          response.user_detail[0].background_pic,
+          response.user_detail[0].state_id,
+          response.user_detail[0].province,
+          response.email,
+          response.user_detail[0].organization,
+        )
+        commit('signinSuccess', resUser);
+        dispatch('alert/assign', { type: 'Success', message: 'Edit image successfully.' }, { root: true })
+        resolve(response)
     })
     },  
-    editProfileBackground({ commit, dispatch },input) {
+    editProfileBackground({ commit, dispatch },response) {
       return new Promise((resolve, reject) => {   
-      userService.editBackgroundProfile(input).then(
-        response => {
-          dispatch( 'getProfile' )
-          dispatch('alert/assign', { type: 'Success', message: 'Edit Background successfully.' }, { root: true })
-          resolve(response)
-        },
-        error => {
-          reject(error)
-        }
-      ).catch(err => {
-        
-      })
+        var resUser = new User(
+          response._id,
+          response.user_detail[0].firstname,
+          response.user_detail[0].lastname,
+          response.user_detail[0].profile_pic,
+          response.user_detail[0].background_pic,
+          response.user_detail[0].state_id,
+          response.user_detail[0].province,
+          response.email,
+          response.user_detail[0].organization,
+        )
+        commit('signinSuccess', resUser);
+        dispatch('alert/assign', { type: 'Success', message: 'Edit Background successfully.' }, { root: true })
+        resolve(response)
     })
     },
     getProfile({ commit }) {

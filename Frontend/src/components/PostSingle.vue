@@ -16,13 +16,26 @@
       </div>
     </template>
     <template v-else-if="selfPost.image.length == 1">
+
       <div v-if="selfPost.image[0].type != 'video/mp4'" class="ss-img no-hover">
         <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\');'"></div>
       </div>
+
       <div v-else-if="selfPost.image[0].type == 'video/mp4'" class="ss-img video-view no-hover">
-        <iframe  
-          class="img-bg w-full h-full" border="0" 
-          :src="selfPost.image[0].path"></iframe>
+        <!-- <video
+          id="video-container"
+          ref="videoRef"
+          class="img-bg w-full h-full" border="0"
+          :src="selfPost.image[0].path"></video> -->
+
+        <video ref="videoPlayer" class="img-bg w-full h-full" border="0">
+          <source
+            :src="selfPost.image[0].path"
+            :type="selfPost.image[0].type"
+          />
+          
+        </video>
+
       </div>
     </template>
     <template v-else-if="selfPost.image.length == 2">
@@ -294,6 +307,13 @@ export default {
   },
   created() {
     console.log( this.selfPost )
+  },
+  mounted: function() {
+    try{
+      this.$refs.videoPlayer.play();
+    } catch {
+      
+    }
   },
   computed: {
     showComments: function() {
