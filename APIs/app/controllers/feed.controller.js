@@ -76,7 +76,6 @@ exports.getComments = async (req, res) => {
         )
     }
     catch (err) {
-        console.log(err)
         return res.status(500).send({message: err})
     }
 }
@@ -207,7 +206,6 @@ exports.getSentiments = async (req, res) => {
         res.status(200).send(sentiment_list)
     }
     catch (err) {
-        console.log(err)
         return res.status(500).send({message: err})
     }
 }

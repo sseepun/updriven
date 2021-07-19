@@ -20,18 +20,17 @@ function editPictureProfile(input) {
       withCredentials: true,
     })
     .then(res => {
-      console.log('res')
-      resolve(res);
+
+      resolve(res.data);
     })
     .catch(err => {
-      console.log('err',err)
+
       reject(err);
     });
 });
 }
 
 function editBackgroundProfile(input) {
-  console.log("BG")
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
@@ -40,30 +39,31 @@ function editBackgroundProfile(input) {
       withCredentials: true,
     })
     .then(res => {
-      console.log('res')
-      resolve(res);
+
+      resolve(res.data);
     })
     .catch(err => {
-      console.log('err',err)
+
       reject(err);
     });
 });
 }
 function editProfile(input) {
-  console.log('service'+input)
+
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
       url: `user/edit_info`,
       data: input,
       withCredentials: true,
+      
     })
     .then(res => {
-      console.log('res')
+  
       resolve(res);
     })
     .catch(err => {
-      console.log('err',err)
+
       reject(err);
     });
 });
@@ -102,7 +102,6 @@ function getAllNotify() {
 }
 
 function clear_notify(input) {
-  console.log(input)
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',

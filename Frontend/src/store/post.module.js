@@ -167,7 +167,7 @@ export const post = {
                 })
             })
         },
-        sentiment({ dispatch, commit }, detail) {
+        sentiment({ dispatch }, detail) {
             return new Promise((resolve, reject) => {
                 postService.sentiment(detail)
                 .then( res => {

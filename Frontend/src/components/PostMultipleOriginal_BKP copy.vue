@@ -56,8 +56,6 @@ export default {
           if(this.getStatusPost.hasNext == true) {
             
             if ( this.isLoading == false) {
-
-              console.log('this.typePost :', this.typePost)
               if (this.typePost == true ) {
                 this.fetchPostAll();
               } else if (this.typePost == false) {
@@ -74,8 +72,6 @@ export default {
       }
     },
     createPost(post) {
-      
-      console.log(post)
       this.posts = [ post, ...this.posts ];
     },
     updateCategory(tab) {

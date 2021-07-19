@@ -24,8 +24,9 @@
               text="Change Profile Avatar" classer="btn-color-02"
               iconPrepend="camera.png" @click="onClickAddfiles"
             />
+            {{uploadPercentage}} %
             </div>
-
+          
             <div class="grid sm-50">
           <input 
               type="file" id="backgroundUpload" name="filefield" accept="image/*"  
@@ -112,6 +113,7 @@ import Banner from '../../components/Banner';
 import {mapGetters, mapActions, mapState, mapMutations} from "vuex";
 import json from '../../assets/state.json'
 import onlystate from '../../assets/onlystate.json'
+import axios from 'axios'
 
 export default {
   name: 'UserProfileUpdatePage',
@@ -134,6 +136,7 @@ export default {
         background: "",
       },
       states : [],
+      uploadPercentage: 0,
     };
   },
   created(){
@@ -165,22 +168,51 @@ export default {
       this.dataset.avatar  = event.target.files
       var formData1 = new FormData();
       formData1.append("media", this.dataset.avatar[0])
-      this.editProfileImage(formData1)
+      // this.editProfileImage(formData1)
+      axios.post( 'user/edit_profile_image',
+        formData1,
+        {
+          onUploadProgress: function( progressEvent ) {
+            this.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded / progressEvent.total ) * 100 ));
+          }.bind(this)
+        }
+      ).then(response => {
+        
+        this.editProfileImage(response.data).then(this.uploadPercentage = 0)
+      })
+      .catch(function(){
+       
+      });
+      
     },
     onBGPhotoSelected(event) {  
       this.dataset.background  = event.target.files
       var formData2 = new FormData();
-      console.log(this.dataset.background[0])
+      
       formData2.append("media", this.dataset.background[0])
-      this.editProfileBackground(formData2)
+      //this.editProfileBackground(formData2)
+      axios.post( `user/edit_background_image`,
+        formData2,
+        {
+          onUploadProgress: function( progressEvent ) {
+            this.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded / progressEvent.total ) * 100 ));
+          }.bind(this)
+        }
+      ).then(response => {
+        
+        this.editProfileBackground(response.data).then(this.uploadPercentage = 0)
+      })
+      .catch(function(){
+        
+      });
     },
     onClickAddfiles() {
       document.getElementById('avatarUpload').click()
-      console.log(JSON.stringify(this.dataset.avatar[0]))
+      
     },
     onClickAddBGfiles() {
       document.getElementById('backgroundUpload').click()
-      console.log(JSON.stringify(this.dataset.background[0]))
+      
     },
     onClickSubmitEditProfile(){
       var formData = new FormData();

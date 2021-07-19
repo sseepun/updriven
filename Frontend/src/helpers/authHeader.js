@@ -29,8 +29,6 @@ export function checkCookie() {
   var UPDRIVEN2020sessionsig = Cookie.get('UPDRIVEN2020session.sig');
   var UPDRIVEN_2020_session = Cookie.get('UPDRIVEN_2020_session');
   var UPDRIVEN_2020_sessionsig = Cookie.get('UPDRIVEN_2020_session.sig');
-  console.log(Cookie.get())
-  console.log('cookie', UPDRIVEN2020session, UPDRIVEN2020sessionsig, UPDRIVEN_2020_session, UPDRIVEN_2020_sessionsig);
   if (
     UPDRIVEN2020session &&
     UPDRIVEN2020sessionsig &&

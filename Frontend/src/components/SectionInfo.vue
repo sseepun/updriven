@@ -65,7 +65,6 @@ export default {
     })
   },
   created() {
-    console.log('user :', this.user)
   }
   
 }

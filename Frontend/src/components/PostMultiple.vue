@@ -62,8 +62,6 @@ export default {
       }
     },
     createPost(post) {
-      
-      console.log(post)
       this.posts = [ post, ...this.posts ];
     },
     updateCategory(tab) {

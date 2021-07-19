@@ -28,7 +28,6 @@ exports.checkLogIn = async (req, res) => {
         res.status(200).send(user);
     }
     catch (err) {
-        console.log(err)
         return res.status(500).send({message: err});
     }
 }
@@ -73,7 +72,6 @@ exports.signup = async (req, res) => {
         res.status(200).send({token: token});
     }
     catch (err) {
-        console.log(err)
         return res.status(500).send({message: err});
     }
 }
@@ -88,7 +86,6 @@ exports.verifyEmail = async (req, res) => {
         res.status(200).send({ message: "User is activated" });
     }
     catch (err) {
-        console.log(err)
         return res.status(500).send(err);
     }
 }

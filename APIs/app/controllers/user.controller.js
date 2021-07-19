@@ -21,7 +21,6 @@ exports.editInfo = async (req, res) => {
         if (!(organization === null)) {
             user.user_detail[0].organization.push(organization._id)
             await user.user_detail[0].save();
-            console.log('Add organization successful');
             res.status(200).send({message: 'edit info successful'});
         }
         else {
@@ -33,7 +32,6 @@ exports.editInfo = async (req, res) => {
             await organization.save();
             user.user_detail[0].organization.push(organization._id)
             await user.user_detail[0].save();
-            console.log('Add organization successful');
             res.status(200).send({message: 'edit info successful'});
         }
     }
@@ -44,12 +42,11 @@ exports.editInfo = async (req, res) => {
 
 exports.updateProfileImage = async (req, res) => {
     try {
-        console.log(req.files)
         const user = await User.findById(req.userId).populate('user_detail')
         if (req.files.length > 0) {
             user.user_detail[0].profile_pic = req.files[0].location
             await user.user_detail[0].save();
-            res.status(200).send({message: 'update image successful'});
+            res.status(200).send(user);
         }
         else {
             res.status(404).send({message: 'No image found'});
@@ -66,7 +63,7 @@ exports.updateBackground = async (req, res) => {
         if (req.files.length > 0) {
             user.user_detail[0].background_pic = req.files[0].location
             await user.user_detail[0].save();
-            res.status(200).send({message: 'update background successful'});
+            res.status(200).send(user);
         }
         else {
             res.status(404).send({message: 'No image found'});
@@ -146,7 +143,6 @@ exports.posts = async (req, res) => {
         res.status(200).send(post_list)
     }
     catch (err) {
-        console.log(err)
         return res.status(500).send({message: err})
     }
 }
@@ -167,7 +163,6 @@ exports.deleteNotification = async (req, res) => {
     try {
         const notification = await Notification.deleteOne({ _id: sanitize(req.body.notification_id) })
         if (req.user.notification > 0) {
-            console.log('in')
             req.user.notification -= 1;
         }
         await req.user.save()

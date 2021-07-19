@@ -84,8 +84,8 @@
                       <FormGroup 
                         type="select" classer="w-full" 
                         :options="[
-                          { value: 1, text: 'Visible to Anyone' },
-                          { value: 2, text: 'Visible to Friends Only' }
+                          { abbreviation: 1, name: 'Visible to Anyone' },
+                          { abbreviation: 2, name: 'Visible to Friends Only' }
                         ]" 
                         :value="createDetail.visible_to"                         
                         @input="createDetail.visible_to = $event" 
