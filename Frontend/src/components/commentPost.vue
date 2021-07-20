@@ -1,9 +1,8 @@
 <template>
   <div class="comments">
-
     <div 
       v-for="(c, i) in updateCommentOrReply" :key="i" class="comment mt-3" 
-      :class="{ 'has-children': c.children.length }"
+      :class="{ 'has-children': c.children.length || _DisplayInputComment }"
     >
       <div class="wrapper">
         <Avatar :avatar="c.user.avatar" />
@@ -34,22 +33,22 @@
           </p>
         </div>
       </div>
-      <CommentPost v-if="c.children.length > 0" :comments="c.children" />
-    </div>
 
-    <form @submit.prevent="replyComment()" v-if="_DisplayInputComment == true">
-      <div class="comment mt-4">
-        <div class="wrapper ai-center">
-            <Avatar :avatar="user.avatar" />
-            <FormGroup
-              placeholder="Write a comment..." :required="true" 
-              icon="send.png" wrapperClass="append fgray" 
-              :value="comment" @input="(event) => comment = event" 
-            />
+      <form @submit.prevent="replyComment()" v-if="_DisplayInputComment == true" class="comments">
+        <div class="comment mt-3">
+          <div class="wrapper ai-center">
+              <Avatar :avatar="user.avatar" />
+              <FormGroup
+                placeholder="Write a comment..." :required="true" 
+                icon="send.png" wrapperClass="append fgray" 
+                :value="comment" @input="(event) => comment = event" 
+              />
+          </div>
         </div>
-      </div>
-    </form>
-
+      </form>
+      
+      <CommentPost v-if="c.children.length > 0" :comments="c.children" :key="randomId" />
+    </div>
   </div>
 </template>
 
@@ -65,6 +64,7 @@ export default {
   },
   data() {
     return {
+      randomId: Math.round(Math.random() * 10000000),
       _Comments: this.comments,
       _DisplayInputComment: false,
       _ReplyCommentID: 0,

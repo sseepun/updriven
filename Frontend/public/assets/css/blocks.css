@@ -298,7 +298,7 @@
     content:''; position:absolute; top:2.25rem; bottom:0; left:1rem; z-index:1;
     border-left:2px solid #dddddd;
 }
-.post .comment > .comments > .comment:last-child:before{
+.post .comment > .comments:last-child > .comment:last-child:before{
     content:''; position:absolute; top:.5rem; bottom:0; right:calc(100% + 1.625rem);
     width:.25rem; background:#ffffff; z-index:2;
 }

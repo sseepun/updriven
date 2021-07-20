@@ -185,7 +185,7 @@
         </div>
       </form>
 
-      <CommentPost v-if="showComments.length > 0" :comments="showComments" />
+      <CommentPost v-if="showComments.length > 0" :comments="showComments" :key="randomId" />
 
       <div v-if="selfPost.counts.comments > 1" class="mt-3">
         <a 
@@ -246,6 +246,8 @@ export default {
   },
   data() {
     return {
+      randomId: Math.round(Math.random() * 10000000),
+
       selfPost: this.post,
       isActivePopup: false,
       isActivePopupDelete: false,
@@ -255,7 +257,7 @@ export default {
       _DisplayInputComment: false,
       _ReplyCommentID: 0,
       _DepthComment: 0,
-      _PostID: 0.
+      _PostID: 0
     }
   },
   created() {
