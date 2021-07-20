@@ -1,7 +1,5 @@
 <template>
-    
-    <div v-for="(c, i) in comments" :key="i" class="comment mt-3">
-        
+    <div v-for="(c, i) in updateCommentOrReply" :key="i" class="comment mt-3">
         <div class="wrapper">
             <Avatar :avatar="c.user.avatar" />
             <div class="text">
@@ -25,7 +23,7 @@
                     <a 
                         class="color-gray h-color-01 fw-600 ml-3" 
                         href="javascript:"
-                        @click="_DisplayInputComment = true, _ReplyCommentID = c.id, _DepthComment = c.depth"
+                        @click="_DisplayInputComment = true, _ReplyCommentID = c.id, _DepthComment = c.depth, _IndexReply = i"
                     >
                         Reply
                     </a>
@@ -61,21 +59,31 @@ import { _CommentPost } from '../models/post';
 export default {
     name: 'commentPost',
     props: {
-        comments: { type: Array, default: [] },
+        comments: { type: Object, default: [] },
     },
     data() {
         return {
+            _Comments: this.comments,
             _DisplayInputComment: false,
             _ReplyCommentID: 0,
             _Comment: '',
             _DepthComment: 0,
             _PostID: this.comments[0].postID,
+            _IndexReply: 0,
         }
+    },
+    mounted() {
+        console.log('updated')
     },
     computed: {
         ...mapGetters({
-        user: 'authentication/user',
-        })
+            user: 'authentication/user',
+        }),
+
+        updateCommentOrReply: function() {
+            this._Comments = this.comments;
+            return this._Comments
+        }
     },
     methods: {
         ...mapActions({
@@ -117,28 +125,13 @@ export default {
 
         replyComment() {
 
-            // this.selfPost.comments.push({
-            //   comment: this.comment,
-            //   createdAt: new Date(),
-            //   user: this.user,
-            //   counts: {
-            //     likes: 0
-            //   },
-            //   actions: {
-            //     liked: false
-            //   }
-            // });
-            // this.comment = '';
-            // this.commentLimit += 1;
+            const commentObject = new _CommentPost(this._PostID, this.comment, this.user, this._DepthComment + 1, this._ReplyCommentID);
 
-            const commentObject = new _CommentPost(this._PostID);
-            commentObject.comment = this.comment;
-            commentObject.parentCommentID = this._ReplyCommentID;
-            commentObject.depth = this._DepthComment;
-            
-            this.commentOrReply(commentObject).then( res => {
+            this._Comments[this._IndexReply].children.push( commentObject )
+
+            this.commentOrReply(commentObject).then( 
                 this.comment = ''
-            })
+            )
         },
 
         formatDate(value) {

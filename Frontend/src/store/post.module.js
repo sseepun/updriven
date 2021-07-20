@@ -87,9 +87,28 @@ export const post = {
             })
         },
         /**
+         * fetch comment each post if user want to see
+         */
+        fetchComment({ state, commit }, postID) {  
+            return new Promise((resolve, reject) => {
+                postService.fetchComment(postID)
+                .then( res => {
+                    // let test = state.Post.findIndex(post => post.id == postID);
+                    const commentPost = changeStructureFetchComment(res.data.comments, res.data.avatar);
+                    state.Post[state.Post.findIndex(post => post.id == postID)].comments = commentPost;
+                    state.Post[state.Post.findIndex(post => post.id == postID)].counts.comments = res.data.count;
+                    resolve(res)
+                })
+                .catch( err => {
+                    reject(err)
+                })
+            })
+        },
+        /**
          * comment on post or reply comment
          */
         async commentOrReply({state, dispatch}, detail) {
+            console.log( detail )
             var promise = await new Promise((resolve, reject) => {
                 postService.commentOrReply(detail)
                 .then( res => {
@@ -145,24 +164,6 @@ export const post = {
                 })
                 .catch( err => {
                     dispatch('alert/assign', { type: 'Warning', message: err.response.data.message }, { root: true })
-                    reject(err)
-                })
-            })
-        },
-        /**
-         * fetch comment each post if user want to see
-         */
-        fetchComment({ state, commit }, postID) {  
-            return new Promise((resolve, reject) => {
-                postService.fetchComment(postID)
-                .then( res => {
-                    // let test = state.Post.findIndex(post => post.id == postID);
-                    const commentPost = changeStructureFetchComment(res.data.comments, res.data.avatar)
-                    state.Post[state.Post.findIndex(post => post.id == postID)].comments = commentPost
-                    state.Post[state.Post.findIndex(post => post.id == postID)].counts.comments = commentPost.length
-                    resolve(res)
-                })
-                .catch( err => {
                     reject(err)
                 })
             })

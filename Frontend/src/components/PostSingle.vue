@@ -148,6 +148,8 @@
         </p>
       </template>
 
+      {{selfPost.counts.comments}}
+      
       <div class="toolbar mt-3">
         <div class="post-icon color-gray mr-4">
           <img class="mr-2" src="/assets/img/icon/message.png" alt="Image Icon" />
@@ -436,8 +438,10 @@ export default {
       // this.comment = '';
       // this.commentLimit += 1;
 
-      const commentObject = new _CommentPost(this.selfPost.id);
-      commentObject.comment = this.comment;
+      const commentObject = new _CommentPost(this.selfPost.id, this.comment, this.user, this.selfPost.depth);
+
+      this.selfPost.comments.push( commentObject )
+
       this.commentOrReply(commentObject).then( res => {
         this.comment = '';
       });

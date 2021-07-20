@@ -23,11 +23,28 @@ export class _create {
 }
 
 export class _CommentPost {
-    constructor(postID = '') {
-        this.postID = postID;
-        this.comment = '';
-        this.parentCommentID = null;
-        this.depth = null;
+    constructor(_PostID, _Comment = '', _MySelf, _Depth = 1, _ParentCommentID = null) {
+
+        this.id = null
+        this.comment = _Comment;
+        this.createdAt = new Date(Date.now());
+        this.postID = _PostID;
+        this.parentCommentID = _ParentCommentID;
+        this.user = {
+            id : _MySelf.id,
+            firstname : _MySelf.firstname,
+            lastname : _MySelf.lastname,
+            avatar : _MySelf.avatar
+        };
+        this.counts = {
+            likes : 0
+        };
+        this.actions = {
+            liked: false
+        }
+        this.depth = _Depth;
+        this.isSentiment = false;
+        this.children = [];
     }
 }
 
@@ -94,7 +111,6 @@ export function changeStructureFetchComment(objectComments, arrayAvatar = []) {
         const comment = objectComments[commentKeys[i]];
         const childKeys = Object.keys(comment['children'])
         const avatar = arrayAvatar.findIndex( x => x.id == comment['author']['id'] )
-
         comments.push({
             id: comment['_id'],
             comment: comment['comment'],
@@ -102,8 +118,8 @@ export function changeStructureFetchComment(objectComments, arrayAvatar = []) {
             postID: comment['post_id'],
             user: {
                 id: comment['author']['id'],
-                firstname: comment['author']['firstname'],
-                lastname: comment['author']['lastname'],
+                firstname: arrayAvatar[avatar].firstname,
+                lastname: arrayAvatar[avatar].lastname,
                 avatar: arrayAvatar[avatar].profile_pic
             },
             counts: {
@@ -114,7 +130,7 @@ export function changeStructureFetchComment(objectComments, arrayAvatar = []) {
             },
             depth: comment['depth'],
             isSentiment: comment['is_sentiment'],
-            children: ( childKeys.length > 0? changeStructureFetchComment(comment['children'], arrayAvatar) : {} )
+            children: ( childKeys.length > 0? changeStructureFetchComment(comment['children'], arrayAvatar) : [] )
         })
     }
     return comments;
