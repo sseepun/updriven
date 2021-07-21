@@ -9,13 +9,15 @@ const user = JSON.parse(localStorage.getItem(`${process.env.VUE_APP_API_URL}_USE
 export const authentication = {
   namespaced: true,
   state: {
-      user: user
+      user: user,
+      authenticated: user? true: false
   },
   getters: {
     user: state => state.user,
     isSignedin: state => state.user? true: false,
     isAdmin: state => state.user && state.user.is_admin,
-    isUser: state => state.user
+    isUser: state => state.user,
+    isAuthenticated: state => state.authenticated
   },
   // Asynchronous 
   actions: {
@@ -258,16 +260,19 @@ export const authentication = {
   // Synchronous
   mutations: {
     signinSuccess(state, user) {
-      state.user = user;
       localStorage.setItem(`${process.env.VUE_APP_API_URL}_USER`, JSON.stringify(user));
+      state.user = user;
+      state.authenticated = true
     },
     signinFailed(state) {
-      state.user = null;
       localStorage.removeItem(`${process.env.VUE_APP_API_URL}_USER`);
+      state.user = null;
+      state.authenticated = false
     },
-    signout(state) {
+    async signout(state) {
+      await localStorage.removeItem(`${process.env.VUE_APP_API_URL}_USER`);
       state.user = null;
-      localStorage.removeItem(`${process.env.VUE_APP_API_URL}_USER`);
+      state.authenticated = false
     }
   }
 }

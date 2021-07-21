@@ -67,9 +67,9 @@
                 </router-link>
               </div>
               <div class="submenu">
-                <router-link to='/' @click="signOut">
+                <a @click.prevent="signOut">
                   Sign Out
-                </router-link>
+                </a>
               </div>
             </div>
           </div>
@@ -126,7 +126,13 @@ export default {
 
     }),
     signOut() {
-      this.signout()
+      this.signout().then(
+        () => {
+          this.$router.push({ 
+            name: 'Home'
+          })
+        }
+      )
     },
     onclickClearNotification(id) {
       this.removeNotification({"notification_id": id}).then(response => {

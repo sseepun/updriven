@@ -7,7 +7,11 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../views/auth/SignIn.vue')
+    component: () => import('../views/auth/SignIn.vue'),
+    beforeEnter: (to, from, next) => {
+      if (store.getters['authentication/isAuthenticated']) next({ name: 'UserDashboardPage' })
+      else next()
+    }
   },
   {
     path: '/auth/signin',
@@ -35,7 +39,7 @@ const routes = [
     component: () => import('../views/auth/ForgetConfirmPassword.vue')
   },
   {
-    path: '/auth/verify-token-register/:token?',//  path: '/auth/verify-token-register/:token?',
+    path: '/auth/verify-token-register/:token?',
     name: 'AuthVerifyTokenRegisterPage',
     component: () => import('../views/auth/verifyTokenRegister.vue')
   },
@@ -71,8 +75,9 @@ const router = createRouter({
 })
 
 
-// router.beforeEach((to, from, next) => {
-  
-// });
+router.beforeEach((to, from, next) => {
+  if (!(to.path.includes('/auth') || to.name == 'Home') && !store.getters['authentication/isAuthenticated']) next({ name: 'Home' })
+  else next()
+});
 
 export default router
