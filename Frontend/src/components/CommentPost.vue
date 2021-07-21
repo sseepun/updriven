@@ -74,9 +74,6 @@ export default {
       _IndexReply: 0,
     }
   },
-  mounted() {
-    console.log('updated')
-  },
   computed: {
     ...mapGetters({
       user: 'authentication/user',
