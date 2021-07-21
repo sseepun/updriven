@@ -288,11 +288,25 @@
     filter:grayscale(100%); transition:filter .25s;
 }
 .post .toolbar .post-icon.active img{filter:grayscale(0);}
-.post .comment > .wrapper{width:100%; display:flex;}
+.post .comment{position:relative;}
+.post .comment > .wrapper{position:relative; width:100%; display:flex; z-index:10;}
 .post .comment .avatar{margin-right:.5rem;}
 .post .comment .text{max-width:calc(100% - 2.75rem);}
 .post .comment .form-group{width:calc(100% - 2.75rem);}
 .post .comment > .comments{padding-left:2.75rem;}
+.post .comment.has-children::after{
+    content:''; position:absolute; top:2.25rem; bottom:0; left:1rem; z-index:1;
+    border-left:2px solid #dddddd;
+}
+.post .comment > .comments:last-child > .comment:last-child:before{
+    content:''; position:absolute; top:.5rem; bottom:0; right:calc(100% + 1.625rem);
+    width:.25rem; background:#ffffff; z-index:2;
+}
+.post .comment > .comments > .comment > .wrapper::after{
+    content:''; position:absolute; bottom:calc(100% - 1.125rem); right:100%; z-index:3;
+    width:1.625rem; height:2.25rem; border-bottom-left-radius:.5rem;
+    border:2px solid #dddddd; border-top:0; border-right:0;
+}
 
 /* Post Header */
 .post-header{width:100%; display:flex; align-items:center;}

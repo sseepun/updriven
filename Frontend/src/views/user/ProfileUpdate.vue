@@ -144,7 +144,7 @@ export default {
     this.dataset.firstname = this.user.firstname;
     this.dataset.lastname = this.user.lastname;
     this.dataset.email = this.user.email;
-    if(this.user.organization){
+    if(this.user.organization[0]){
       this.dataset.organization = this.user.organization[0].name;
     }
     this.dataset.state = this.user.state_id;
@@ -163,26 +163,31 @@ export default {
       editProfile: 'authentication/editProfile',
       editProfileImage: 'authentication/editProfileImage',
       editProfileBackground: 'authentication/editProfileBackground',
+      assign: 'alert/assign',
     }),
     onPhotoSelected(event) {  
       this.dataset.avatar  = event.target.files
       var formData1 = new FormData();
       formData1.append("media", this.dataset.avatar[0])
       // this.editProfileImage(formData1)
-      axios.post( 'user/edit_profile_image',
-        formData1,
-        {
-          onUploadProgress: function( progressEvent ) {
-            this.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded / progressEvent.total ) * 100 ));
-          }.bind(this)
-        }
-      ).then(response => {
-        
-        this.editProfileImage(response.data).then(this.uploadPercentage = 0)
-      })
-      .catch(function(){
-       
-      });
+      var sizeInMB = (this.dataset.background[0].size / (1024*1024)).toFixed(2);
+      if(sizeInMB < 5) {
+        axios.post('user/edit_profile_image',
+            formData1,
+            {
+              onUploadProgress: function (progressEvent) {
+                this.uploadPercentage = parseInt(Math.round((progressEvent.loaded / progressEvent.total) * 100));
+              }.bind(this)
+            }
+        ).then(response => {
+
+          this.editProfileImage(response.data).then(this.uploadPercentage = 0)
+        })
+      }
+      else{
+        this.assign({ type: 'Warning', message: "You cannot upload files exceeding 5mbs" }, { root: true })
+
+      }
       
     },
     onBGPhotoSelected(event) {  
@@ -191,20 +196,23 @@ export default {
       
       formData2.append("media", this.dataset.background[0])
       //this.editProfileBackground(formData2)
-      axios.post( `user/edit_background_image`,
-        formData2,
-        {
-          onUploadProgress: function( progressEvent ) {
-            this.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded / progressEvent.total ) * 100 ));
-          }.bind(this)
-        }
-      ).then(response => {
-        
-        this.editProfileBackground(response.data).then(this.uploadPercentage = 0)
-      })
-      .catch(function(){
-        
-      });
+      var sizeInMB = (this.dataset.background[0].size / (1024*1024)).toFixed(2);
+      if(sizeInMB < 5) {
+        axios.post(`user/edit_background_image`,
+            formData2,
+            {
+              onUploadProgress: function (progressEvent) {
+                this.uploadPercentage = parseInt(Math.round((progressEvent.loaded / progressEvent.total) * 100));
+              }.bind(this)
+            }
+        ).then(response => {
+
+          this.editProfileBackground(response.data).then(this.uploadPercentage = 0)
+        })
+      }
+      else{
+          this.assign({ type: 'Warning', message: "You cannot upload files exceeding 5mbs" }, { root: true })
+      }
     },
     onClickAddfiles() {
       document.getElementById('avatarUpload').click()

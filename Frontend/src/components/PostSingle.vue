@@ -16,26 +16,19 @@
       </div>
     </template>
     <template v-else-if="selfPost.image.length == 1">
-
-      <div v-if="selfPost.image[0].type != 'video/mp4'" class="ss-img no-hover">
-        <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\');'"></div>
-      </div>
-
-      <div v-else-if="selfPost.image[0].type == 'video/mp4'" class="ss-img video-view no-hover">
-        <!-- <video
-          id="video-container"
-          ref="videoRef"
-          class="img-bg w-full h-full" border="0"
-          :src="selfPost.image[0].path"></video> -->
-
-        <video ref="videoPlayer" class="img-bg w-full h-full" border="0">
+      <div 
+        v-if="selfPost.image[0].type == 'video/mp4' || selfPost.image[0].path.indexOf('.mp4') > -1" 
+        class="ss-img video-view no-hover"
+      >
+        <video ref="videoPlayer" class="img-bg w-full h-full" border="0" controls>
           <source
             :src="selfPost.image[0].path"
             :type="selfPost.image[0].type"
           />
-          
         </video>
-
+      </div>
+      <div v-else class="ss-img no-hover">
+        <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\');'"></div>
       </div>
     </template>
     <template v-else-if="selfPost.image.length == 2">
@@ -148,6 +141,8 @@
         </p>
       </template>
 
+      {{selfPost.counts.comments}}
+      
       <div class="toolbar mt-3">
         <div class="post-icon color-gray mr-4">
           <img class="mr-2" src="/assets/img/icon/message.png" alt="Image Icon" />
@@ -190,46 +185,7 @@
         </div>
       </form>
 
-      <div class="comments">
-
-        <commentPost v-if="showComments.length > 0" :comments="showComments"/>
-        
-        <!-- Replied Comments -->
-        <!-- <div class="comments">
-          <div class="comment mt-3">
-            <div class="wrapper">
-              <Avatar :avatar="c.user.avatar" />
-              <div class="text">
-                <div class="bg-fgray bradius-1 p-3">
-                  <p class="sm fw-500 lh-xs">
-                    {{c.user.firstname}} {{c.user.lastname}}
-                  </p>
-                  <p class="sm lh-xs ovf-hidden" v-html="c.comment"></p>
-                </div>
-                <p class="xs fw-400 color-gray mt-1">
-                  {{formatDate(c.createdAt)}} 
-                  <a 
-                    class="color-gray fw-600 ml-3" :class="{ 'color-01': c.actions.liked }"
-                    href="javascript:" @click="commentLikeToggle(c)"
-                  >
-                    Like
-                    <span v-if="c.counts.likes">
-                      {{c.counts.likes}}
-                    </span>
-                  </a> 
-                  <a 
-                    class="color-gray h-color-01 fw-600 ml-3" 
-                    href="javascript:"
-                  >
-                    Reply
-                  </a>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
-      </div>
+      <CommentPost v-if="showComments.length > 0" :comments="showComments" :key="randomId" />
 
       <div v-if="selfPost.counts.comments > 1" class="mt-3">
         <a 
@@ -251,10 +207,7 @@
   </div>
 
   <!-- Popup Delete -->
-  <div 
-    class="popup-container" 
-    :class="{ 'active': isActivePopupDelete }"
-  >
+  <div class="popup-container" :class="{ 'active': isActivePopupDelete }">
     <div class="wrapper">
       <div class="close-filter" @click="isActivePopupDelete = false"></div>
       <div class="popup-box md bg-white">
@@ -281,18 +234,20 @@
 import moment from 'moment';
 import {mapGetters, mapActions, mapMutations} from "vuex";
 import { _CommentPost } from '../models/post';
-import commentPost from './commentPost';
+import CommentPost from './CommentPost';
 
 export default {
   name: 'PostSingle',
   components: {
-    commentPost
+    CommentPost
   },
   props: {
     post: { type: Object, default: {} }
   },
   data() {
     return {
+      randomId: Math.round(Math.random() * 10000000),
+
       selfPost: this.post,
       isActivePopup: false,
       isActivePopupDelete: false,
@@ -302,17 +257,17 @@ export default {
       _DisplayInputComment: false,
       _ReplyCommentID: 0,
       _DepthComment: 0,
-      _PostID: 0.
+      _PostID: 0
     }
   },
   created() {
   },
   mounted: function() {
-    try{
-      this.$refs.videoPlayer.play();
-    } catch {
+    // try{
+    //   this.$refs.videoPlayer.play();
+    // } catch {
       
-    }
+    // }
   },
   computed: {
     showComments: function() {
@@ -421,7 +376,6 @@ export default {
     },
 
     commentOnPost() {
-
       // this.selfPost.comments.push({
       //   comment: this.comment,
       //   createdAt: new Date(),
@@ -435,13 +389,11 @@ export default {
       // });
       // this.comment = '';
       // this.commentLimit += 1;
-
-      const commentObject = new _CommentPost(this.selfPost.id);
-      commentObject.comment = this.comment;
+      const commentObject = new _CommentPost(this.selfPost.id, this.comment, this.user, this.selfPost.depth);
+      this.selfPost.comments.push( commentObject );
       this.commentOrReply(commentObject).then( res => {
         this.comment = '';
       });
-
     },
 
     callComment() {
