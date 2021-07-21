@@ -3,10 +3,11 @@
     <h6 class="fw-600 color-01">About</h6>
     <div class="personal-info">
       <div class="info">
+        <p class="xs fw-500 color-gray" v-if="user.organization[0]">
         <div class="icon">
           <img src="/assets/img/icon/education.png" alt="Image Icon" />
         </div>
-        <p class="xs fw-500 color-gray" v-if="user.organization">
+
           Study <span class="color-dark">{{user.organization[0].name}}</span>
         </p>
       </div>
