@@ -1,5 +1,5 @@
 export default class User {
-    constructor(id = null, firstname = null, lastname = null, avatar = null, background = null, state_id=null, province=null, email=null, organization = null, interests = null ) {
+    constructor(id = null, firstname = null, lastname = null, avatar = null, background = null, state_id=null, province=null, email=null, organization = [], interests = null ) {
       this.id = id;
       this.firstname = firstname;
       this.lastname = lastname;
