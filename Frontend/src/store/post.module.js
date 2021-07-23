@@ -12,7 +12,7 @@ export const post = {
         Post: [],
         _create: createDetail,
         loading: false,
-        category: null
+        category: null,
     },
     getters: {
         getPost: state => state.Post,

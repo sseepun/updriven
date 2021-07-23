@@ -170,7 +170,7 @@ export default {
       var formData1 = new FormData();
       formData1.append("media", this.dataset.avatar[0])
       // this.editProfileImage(formData1)
-      var sizeInMB = (this.dataset.background[0].size / (1024*1024)).toFixed(2);
+      var sizeInMB = (this.dataset.avatar[0].size / (1024*1024)).toFixed(2);
       if(sizeInMB < 5) {
         axios.post('user/edit_profile_image',
             formData1,

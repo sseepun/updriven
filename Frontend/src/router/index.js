@@ -67,6 +67,12 @@ const routes = [
     component: () => import('../views/user/ProfileUpdate.vue')
   },
 
+  // Page Not Found
+  {
+    path: '/:catchAll(.*)',
+    name: 'NotFound',
+    component: () => import('../components/PageNotFound.vue')
+  }
 ]
 
 const router = createRouter({
