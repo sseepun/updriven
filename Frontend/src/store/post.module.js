@@ -13,6 +13,7 @@ export const post = {
         _create: createDetail,
         loading: false,
         category: null,
+        OwnerOrAll: null, // 0 : Dashboard, 1 : Profile
     },
     getters: {
         getPost: state => state.Post,
@@ -24,7 +25,7 @@ export const post = {
         /**
          * Change category post
          */
-         async changeCategoryPost({ state, commit, dispatch }, newcategory) {
+        async changeCategoryPost({ state, commit, dispatch }, newcategory) {
             state.Post = []
             state.StatusPost = initial_StatusPost;
             state.category = newcategory;
@@ -60,7 +61,7 @@ export const post = {
         /**
          * fetch all posts to display on dashboard page
          */
-         async fetchPostAll({ state, commit, dispatch }) {
+        async fetchPostAll({ state, commit, dispatch }) {
             await commit('updateStatusLoading', true)
             return await new Promise((resolve, reject) => {
                 postService.fetchPostAll(state.StatusPost, state.category)
@@ -154,7 +155,7 @@ export const post = {
         /**
          * Delete post
          */
-         delete({ commit, dispatch }, id) {
+        delete({ commit, dispatch }, id) {
             return new Promise((resolve, reject) => {
                 postService.deletePost(id)
                 .then( res => {
@@ -235,6 +236,9 @@ export const post = {
         },
 
         clearPost(state) {
+            while ( state.loading == true ) {
+                
+            }
             state.Post = []
             state.StatusPost = initial_StatusPost;
             state.category = null;
@@ -255,6 +259,6 @@ export const post = {
         },
         fetchCreated(state, newPost) {
             state.Post = newPost.concat(state.Post)
-        }
+        },
     }
 }
