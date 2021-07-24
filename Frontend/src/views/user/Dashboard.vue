@@ -46,9 +46,9 @@ export default {
     SectionSponsored,
     SectionLive
   },
-  created() {
-    this.clearPost()
-    this.fetchPostAll();
+  async created() {
+    await this.clearPost()
+    await this.fetchPostAll();
   },
   mounted() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });

@@ -66,9 +66,9 @@ export default {
     SectionInterested,
     SectionLive
   },
-  created() {
-    this.clearPost();
-    this.fetchPostOwner();
+  async created() {
+    await this.clearPost();
+    await this.fetchPostOwner();
   },
   mounted() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
