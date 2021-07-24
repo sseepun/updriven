@@ -236,6 +236,9 @@ export const post = {
         },
 
         clearPost(state) {
+            while ( state.loading == true ) {
+                setTimeout(() => {  console.log("Wait!"); }, 2000);
+            }
             state.Post = []
             state.StatusPost = initial_StatusPost;
             state.category = null;
