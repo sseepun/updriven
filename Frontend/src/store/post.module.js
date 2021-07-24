@@ -236,9 +236,6 @@ export const post = {
         },
 
         clearPost(state) {
-            while ( state.loading == true ) {
-                
-            }
             state.Post = []
             state.StatusPost = initial_StatusPost;
             state.category = null;
