@@ -47,7 +47,7 @@ export default {
     SectionLive
   },
   async created() {
-    await this.clearPost()
+    await this.clearPost();
     await this.fetchPostAll();
   },
   mounted() {
@@ -65,10 +65,8 @@ export default {
       }
     },
     ...mapActions({
-      fetchPostAll:'post/fetchPostAll'
-    }),
-    ...mapMutations({
-      clearPost:'post/clearPost'
+      fetchPostAll:'post/fetchPostAll',
+      clearPost: 'post/clearPost'
     })
   }
 }

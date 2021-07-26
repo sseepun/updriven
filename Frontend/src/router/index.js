@@ -82,6 +82,7 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
+  store.dispatch('axios/cancelPendingRequests');
   if (!(to.path.includes('/auth') || to.name == 'Home') && !store.getters['authentication/isAuthenticated']) next({ name: 'Home' })
   else next()
 });

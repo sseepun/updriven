@@ -29,6 +29,18 @@ app.component('SelectTag', SelectTag)
 app.use(store)
 app.use(store).use(router).mount('#app')
 
+axios.interceptors.request.use(function (config) {
+  let source = axios.CancelToken.source();
+
+  config.cancelToken = source.token;
+
+  store.commit('axios/addCancelToken', source);
+
+  return config;
+}, function (error) {
+  return Promise.reject(error);
+});
+
 axios.interceptors.response.use(
     
     response => {

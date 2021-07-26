@@ -12,8 +12,7 @@ export const post = {
         Post: [],
         _create: createDetail,
         loading: false,
-        category: null,
-        OwnerOrAll: null, // 0 : Dashboard, 1 : Profile
+        category: null
     },
     getters: {
         getPost: state => state.Post,
@@ -66,7 +65,6 @@ export const post = {
             return await new Promise((resolve, reject) => {
                 postService.fetchPostAll(state.StatusPost, state.category)
                 .then( res => {
-
                     // update status 
                     const statusPost = new StatusPost(res.hasNext, res.hasPrevious, res.next, res.previous);
                     commit('updateStatusPost', statusPost)
@@ -219,6 +217,11 @@ export const post = {
                     reject(err)
                 })
             })
+        },
+        async clearPost({ state }) {
+            state.Post = await []
+            state.StatusPost = await initial_StatusPost;
+            state.category = await null;
         }
     },
     mutations: {
@@ -234,16 +237,6 @@ export const post = {
         updateStatusLoading(state, statusLoading) {
             state.loading = statusLoading
         },
-
-        clearPost(state) {
-            while ( state.loading == true ) {
-                setTimeout(() => {  console.log("Wait!"); }, 2000);
-            }
-            state.Post = []
-            state.StatusPost = initial_StatusPost;
-            state.category = null;
-        },
-
         clear_create(state) {
             state._create = new _create();
         },
@@ -259,6 +252,6 @@ export const post = {
         },
         fetchCreated(state, newPost) {
             state.Post = newPost.concat(state.Post)
-        },
+        }
     }
 }

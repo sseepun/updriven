@@ -86,10 +86,8 @@ export default {
       }
     },
     ...mapActions({
-      fetchPostOwner:'post/fetchPostOwner'
-    }),
-    ...mapMutations({
-      clearPost:'post/clearPost'
+      fetchPostOwner:'post/fetchPostOwner',
+      clearPost: 'post/clearPost'
     })
   }
 }
