@@ -51,16 +51,21 @@ const routes = [
     component: () => import('../views/user/Dashboard.vue')
   },
   {
-    path: '/user/profile',
-    name: 'UserProfilePage',
-    component: () => import('../views/user/Profile.vue')
-  },
-  {
     path: '/user/chat',
     name: 'UserChatPage',
     component: () => import('../views/user/Chat.vue')
   },
   
+  {
+    path: '/user/profile',
+    name: 'UserProfilePage',
+    component: () => import('../views/user/Profile.vue')
+  },
+  {
+    path: '/user/profile/about',
+    name: 'UserProfileAboutPage',
+    component: () => import('../views/user/ProfileAbout.vue')
+  },
   {
     path: '/user/profile/update',
     name: 'UserProfileUpdatePage',

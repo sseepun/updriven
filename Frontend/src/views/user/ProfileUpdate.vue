@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <Banner />
+    <Banner :activeIndex="bannerActiveIndex" />
 
     <div class="middle-container full">
       <div class="box-container bshadow">
@@ -28,17 +28,16 @@
             </div>
           
             <div class="grid sm-50">
-          <input 
-              type="file" id="backgroundUpload" name="filefield" accept="image/*"  
-              @change="onBGPhotoSelected" hidden>
-            <Button
-              text="Change Profile Background" classer="btn-color-02"
-              iconPrepend="camera.png" @click="onClickAddBGfiles"
-            />
+              <input 
+                type="file" id="backgroundUpload" name="filefield" accept="image/*"  
+                @change="onBGPhotoSelected" hidden>
+              <Button
+                text="Change Profile Background" classer="btn-color-02"
+                iconPrepend="camera.png" @click="onClickAddBGfiles"
+              />
             </div>
-            
-            <div class="grid sm-50">
 
+            <div class="grid sm-50">
               <FormGroup 
                 type="text" label="First name" 
                 classer="label-sm" wrapperClass="fgray" 
@@ -59,7 +58,6 @@
                 classer="label-sm" wrapperClass="fgray" 
                 :value="dataset.username" @input="dataset.username = $event" 
               />
-            
             </div>
             <div class="grid sm-50">
               <FormGroup 
@@ -76,14 +74,13 @@
               />
             </div>
             <div class="grid sm-50">
-                  <FormGroup 
-                    type="select" label="Where do you live?" :required="true" placeholder="Select Here" 
-                    :value="dataset.state" 
-                    @input="dataset.state = $event"
-                    :options="states"
-                  />
-                </div>
-             
+              <FormGroup 
+                type="select" label="Where do you live?" :required="true" 
+                placeholder="Select One" wrapperClass="fgray" 
+                :value="dataset.state" @input="dataset.state = $event" 
+                :options="states"
+              />
+            </div>
             <div class="grid sm-100">
               <SelectTag 
                 label="What are you interested in?" classer="label-sm" wrapperClass="fgray" 
@@ -124,6 +121,7 @@ export default {
   },
   data() {
     return {
+      bannerActiveIndex: 99,
       dataset: {
         firstname: '',
         lastname: '',
@@ -151,8 +149,7 @@ export default {
     this.dataset.interests = this.user.interests;
     this.dataset.avatar = this.user.avatar;
     this.dataset.background = this.user.background;
-  }
-  ,
+  },
   computed: {
     ...mapGetters({
       user: 'authentication/user',

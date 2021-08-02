@@ -29,8 +29,27 @@
     </div>
 
     <div class="middle-container">
-      <PostNew @on-post="(post) => createPost(post)" />
-      <PostMultiple ref="posts" :typePost="false"/>
+      <div class="box-container full bshadow m-0">
+        <h4 class="fw-600 color-01">About</h4>
+        <p class="mt-4">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi et quam vitae erat 
+          efficitur suscipit id non lorem. Maecenas eu felis quis sapien porttitor interdum. 
+          Sed sit amet ex sapien. Quisque sed suscipit lectus. Suspendisse ac ante sit amet 
+          mi mattis sagittis ac nec neque. Cras nec enim id eros porttitor luctus. Nunc tempor 
+          mollis dolor, gravida consectetur velit. Sed ullamcorper, lectus et elementum molestie, 
+          enim leo varius lacus, ut congue urna nulla non nibh. Nullam sed aliquet mi, et 
+          tincidunt quam. Nulla sed orci metus.
+        </p>
+        <p class="mt-4">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi et quam vitae erat 
+          efficitur suscipit id non lorem. Maecenas eu felis quis sapien porttitor interdum. 
+          Sed sit amet ex sapien. Quisque sed suscipit lectus. Suspendisse ac ante sit amet 
+          mi mattis sagittis ac nec neque. Cras nec enim id eros porttitor luctus. Nunc tempor 
+          mollis dolor, gravida consectetur velit. Sed ullamcorper, lectus et elementum molestie, 
+          enim leo varius lacus, ut congue urna nulla non nibh. Nullam sed aliquet mi, et 
+          tincidunt quam. Nulla sed orci metus.
+        </p>
+      </div>
     </div>
 
   </div>
@@ -40,23 +59,19 @@
 import { onMounted } from '../../helpers/frontend';
 import TopNav from '../../components/TopNav';
 import LeftNav from '../../components/LeftNav';
-import PostNew from '../../components/PostNew';
-import PostMultiple from '../../components/PostMultiple';
 import Banner from '../../components/Banner';
 import SectionInfo from '../../components/SectionInfo';
 import SectionPhotos from '../../components/SectionPhotos';
 import SectionFriends from '../../components/SectionFriends';
 import SectionInterested from '../../components/SectionInterested';
 import SectionLive from '../../components/SectionLive';
-import {mapGetters, mapActions, mapState, mapMutations} from "vuex"
+import {mapGetters, mapActions, mapState, mapMutations} from "vuex";
 
 export default {
-  name: 'UserProfilePage',
+  name: 'UserProfileAboutPage',
   components: {
     TopNav,
     LeftNav,
-    PostNew,
-    PostMultiple,
     Banner,
     SectionInfo,
     SectionPhotos,
@@ -66,16 +81,11 @@ export default {
   },
   data() {
     return {
-      bannerActiveIndex: 1,
+      bannerActiveIndex: 0,
       rightContainerClass: ''
-    }
-  },
-  async created() {
-    await this.clearPost();
-    await this.fetchPostOwner();
+    };
   },
   mounted() {
-    onMounted();
     this.onScroll();
     window.addEventListener('scroll', this.onScroll);
   },
@@ -88,21 +98,7 @@ export default {
         if(window.scrollY < 448) this.rightContainerClass = '';
         else this.rightContainerClass = 'sticky';
       }
-    },
-    createPost(post) {
-      this.$refs['posts'].createPost(post);
-    },
-    onClickTab(tab) {
-      if(tab.link=='javascript:'){
-        this.$refs['posts'].updateCategory(tab);
-      }else{
-        window.location.href = tab.link;
-      }
-    },
-    ...mapActions({
-      fetchPostOwner:'post/fetchPostOwner',
-      clearPost: 'post/clearPost'
-    })
+    }
   }
 }
 </script>

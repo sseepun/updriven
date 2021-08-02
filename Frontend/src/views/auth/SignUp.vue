@@ -10,7 +10,12 @@
               Your Dream Job
             </h2>
             <div class="btns mt-4" data-aos="fade-up" data-aos-delay="450">
-              <Button href="#" classer="btn-color-02 btn-sm btn-mw fw-600" text="LEARN MORE" />
+              <a 
+                href="https://updriven.com/learner-overview" target="_blank" 
+                class="btn btn-action btn-color-02 btn-sm btn-mw fw-600"
+              >
+                LEARN MORE
+              </a>
             </div>
           </div>
           <div class="hero-container" data-aos="fade-left" data-aos-delay="600">
@@ -63,9 +68,9 @@
                 <div class="grid sm-100">
                   <CheckBoxSmall
                     text="Creating an account means you’re okay with our 
-                      <a class='color-01 h-color-black' href='#'>Terms of Service</a>, 
-                      <a class='color-01 h-color-black' href='#'>Privacy Policy</a>, and our default 
-                      <a class='color-01 h-color-black' href='#'>Notification Settings</a>."
+                      <a class='color-01 h-color-black' target='_blank' href='https://updriven.com/terms'>Terms of Service</a>, 
+                      <a class='color-01 h-color-black' target='_blank' href='https://updriven.com/privacypolicy'>Privacy Policy</a>, and our default 
+                      <a class='color-01 h-color-black' target='_blank' href='https://updriven.com/notifications'>Notification Settings</a>."
                     :required="true"
                   />
                 </div>
@@ -73,7 +78,6 @@
                   <Button 
                     type="submit" text="CREATE ACCOUNT" 
                     classer="d-block btn-color-03 w-full" 
-                  
                   />
                 </div>
               </div>

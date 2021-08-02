@@ -20,7 +20,10 @@
         v-if="selfPost.image[0].type == 'video/mp4' || selfPost.image[0].path.indexOf('.mp4') > -1" 
         class="ss-img video-view no-hover"
       >
-        <video ref="videoPlayer" class="img-bg w-full h-full" border="0" controls>
+        <video 
+          ref="videoPlayer" class="img-bg w-full h-full" border="0" controls 
+          oncontextmenu="return false;"
+        >
           <source
             :src="selfPost.image[0].path"
             :type="selfPost.image[0].type"
@@ -74,7 +77,7 @@
           </a>
           <div class="popup-options bshadow" :class="{ 'active': isActivePopup }">
             <div class="wrapper">
-              <div class="menu-container">
+              <!-- <div class="menu-container">
                 <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/bell-02.png" alt="Image Icon" />
@@ -87,32 +90,32 @@
                   </div>
                   <div class="text">Embed</div>
                 </a>
-              </div>
+              </div> -->
               <div class="menu-container">
-                <a class="menu color-gray h-color-01" href="javascript:">
+                <!-- <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/drag.png" alt="Image Icon" />
                   </div>
                   <div class="text">Hide Post</div>
-                </a>
-                <a class="menu color-gray h-color-01" href="javascript:">
+                </a> -->
+                <!-- <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/clock.png" alt="Image Icon" />
                   </div>
                   <div class="text">Snooze Derrick Sheril for 30 days</div>
-                </a>
+                </a> -->
                 <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/unfollow.png" alt="Image Icon" />
                   </div>
-                  <div class="text">Unfollow Derrick Sheril</div>
+                  <div class="text">Follow Mentor</div>
                 </a>
-                <a class="menu color-gray h-color-01" href="javascript:">
+                <!-- <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/report.png" alt="Image Icon" />
                   </div>
                   <div class="text">Find suport or report post</div>
-                </a>
+                </a> -->
               </div>
               <div class="menu-container" v-if="selfPost.sharedUser == user.id || selfPost.user.id == user.id">
                 <a 
@@ -163,13 +166,13 @@
         >
           <img src="/assets/img/icon/share.png" alt="Image Icon" />
         </a>
-        <a 
+        <!-- <a 
           class="post-icon" href="javascript:" 
           :class="{ 'active': selfPost.actions.followed  }" 
           @click="selfPost.actions.followed = !selfPost.actions.followed"
         >
           <img src="/assets/img/icon/ribbon.png" alt="Image Icon">
-        </a>
+        </a> -->
       </div>
 
       <form @submit.prevent="commentOnPost()">
@@ -296,7 +299,7 @@ export default {
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
     formatDate(value) {
-      return moment(String(value)).format('MM/DD/YYYY');
+      return moment(String(value)).format('MM/DD/YYYY HH:mm:ss');
     },
 
     togglePostLike() {

@@ -38,19 +38,17 @@
 }
 .app-container > .right-container > .wrapper{padding:0 1rem 1rem 1rem;}
 .app-container > .middle-container{
-    display:block; width:calc(100% - 36rem - 2rem); margin:0 auto; padding:0 0 1rem 0;
+    display:block; width:calc(100% - 36rem - 2rem); margin:0 auto;
+    padding:0 0 1rem 0; min-height:100vh;
 }
 .app-container > .middle-container.full{width:calc(100% - 18rem - 1rem); margin:0 0 0 auto;}
 .app-container > .banner-container{
     display:block; width:calc(100% - 18rem - 1rem); margin:0 0 1rem auto;
 }
 
-.app-container > .banner-container + .right-container{
-    position:absolute; top:unset; right:0; width:20rem;
-}
-.app-container > .banner-container + .right-container > .wrapper{
-    height:unset; max-height:unset; overflow:hidden;
-}
+.app-container > .banner-container + .right-container{position:absolute; right:0; width:20rem;}
+.app-container > .banner-container + .right-container:not(.sticky){top:unset;}
+.app-container > .banner-container + .right-container.sticky{position:fixed;}
 
 .banner-container > .img-bg{
     display:block; width:100%; padding:34% 0 0 0; background-size:cover;
@@ -151,9 +149,8 @@
 
 
 /* Box Container */
-.box-container{
-    display:block; width:100%; max-width:44rem; margin:2rem auto; padding:2rem;
-}
+.box-container{display:block; width:100%; max-width:44rem; margin:2rem auto; padding:2rem;}
+.box-container.full{max-width:100%;}
 @media screen and (max-width:1199.98px){
     .box-container{margin:1.75rem auto; padding:1.75rem;}
 }

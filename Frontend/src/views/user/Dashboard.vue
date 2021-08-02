@@ -13,9 +13,6 @@
         <div>
           <SectionSponsored />
         </div>
-        <div class="mt-6">
-          <SectionLive />
-        </div>
       </div>
     </div>
 

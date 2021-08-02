@@ -27,18 +27,36 @@
           v-if="tab.children && tab.children.length" 
           class="submenu-container" v-show="tab.status" 
         >
-          <div 
-            v-for="(subtab, j) in tab.children" :key="j" class="submenu" 
-            :class="{ 'w-full': !subtab.type || subtab.type != 'avatar' }"
-          >
-            <a v-if="subtab.type == 'avatar'" :href="subtab.link" @click="onClick(subtab)">
-              <Avatar :avatar="subtab.title" />
-            </a>
-            <a v-else :href="subtab.link" @click="onClick(subtab)">
-              {{subtab.title}}
-            </a>
+          <div class="wrapper" data-simplebar>
+            <div 
+              v-for="(subtab, j) in tab.children" :key="j" class="submenu" 
+              :class="{ 'w-full': !subtab.type || subtab.type != 'avatar' }"
+            >
+              <a v-if="subtab.type == 'avatar'" :href="subtab.link" @click="onClick(subtab)">
+                <Avatar :avatar="subtab.title" />
+              </a>
+              <a v-else :href="subtab.link" @click="onClick(subtab)">
+                {{subtab.title}}
+              </a>
+            </div>
           </div>
         </div>
+      </div>
+      
+      <div class="menu mt-2">
+        <a href="https://updriven.com/privacypolicy" target="_blank">
+          Privacy Policy
+        </a>
+      </div>
+      <div class="menu">
+        <a href="https://updriven.com/support" target="_blank">
+          Support
+        </a>
+      </div>
+      <div class="menu">
+        <a href="https://updriven.com/contact" target="_blank">
+          Contact Us
+        </a>
       </div>
       
     </div>
@@ -60,33 +78,33 @@ export default {
           icon: '/assets/img/profile/03.jpg',
           children: []
         },
-        {
-          status: false,
-          title: 'Groups', link: 'javascript:',
-          children: [
-            { type: 'avatar', title: '/assets/img/profile/05.jpg', link: '#' },
-            { type: 'avatar', title: '/assets/img/profile/06.jpg', link: '#' },
-            { type: 'avatar', title: '/assets/img/profile/07.jpg', link: '#' },
-            { type: 'avatar', title: '/assets/img/profile/08.jpg', link: '#' },
-            { type: 'avatar', title: '/assets/img/profile/09.jpg', link: '#' }
-          ]
-        },
-        { 
-          status: false,
-          title: 'Events', link: '#'
-        },
-        { 
-          status: false,
-          title: 'Reports', link: '#' 
-        },
-        { 
-          status: false,
-          title: 'Time tracking', link: '#'
-        },
-        { 
-          status: false,
-          title: 'Settings', link: '#'
-        }
+        // {
+        //   status: false,
+        //   title: 'Groups', link: 'javascript:',
+        //   children: [
+        //     { type: 'avatar', title: '/assets/img/profile/05.jpg', link: '#' },
+        //     { type: 'avatar', title: '/assets/img/profile/06.jpg', link: '#' },
+        //     { type: 'avatar', title: '/assets/img/profile/07.jpg', link: '#' },
+        //     { type: 'avatar', title: '/assets/img/profile/08.jpg', link: '#' },
+        //     { type: 'avatar', title: '/assets/img/profile/09.jpg', link: '#' }
+        //   ]
+        // },
+        // { 
+        //   status: false,
+        //   title: 'Events', link: '#'
+        // },
+        // { 
+        //   status: false,
+        //   title: 'Reports', link: '#' 
+        // },
+        // { 
+        //   status: false,
+        //   title: 'Time tracking', link: '#'
+        // },
+        // { 
+        //   status: false,
+        //   title: 'Settings', link: '#'
+        // }
       ]
     }
   },
