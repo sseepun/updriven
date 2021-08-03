@@ -143,8 +143,6 @@
           {{selfPost.desc}}
         </p>
       </template>
-
-      {{selfPost.counts.comments}}
       
       <div class="toolbar mt-3">
         <div class="post-icon color-gray mr-4">

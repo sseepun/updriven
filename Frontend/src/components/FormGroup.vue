@@ -49,6 +49,62 @@
     </div>
   </div>
 
+  <div v-else-if="type === 'country'" class="form-group" :class="classer">
+    <label v-if="label" class="p" :class="{ 'focused': isFocused }">
+      {{label}} <div v-if="errorText" class="error">{{errorText}}</div>
+    </label>
+    <div :class="wrapperClass">
+      <select 
+        :name="name" 
+        v-model="value" 
+        @input="(event)=>$emit('input', event.target.value)" 
+        @focusin="isFocused = true" @focusout="isFocused = false" 
+        :required="required? true: false"
+        :readonly="readonly? true: false"
+        :disabled="disabled? true: false"
+      >
+        <option v-if="placeholder" value="" disabled selected>
+          {{placeholder}}
+        </option>
+        <option v-for="option in options" :value="option.numeric_code" 
+        :selected="option.numeric_code == value || option.name == value" :key="option.numeric_code">
+          {{option.name}}
+        </option>
+      </select>
+      <div v-if="icon" class="icon">
+        <img :src="'/assets/img/icon/'+icon" alt="Image Icon" />
+      </div>
+    </div>
+  </div>
+
+ <div v-else-if="type === 'state'" class="form-group" :class="classer">
+    <label v-if="label" class="p" :class="{ 'focused': isFocused }">
+      {{label}} <div v-if="errorText" class="error">{{errorText}}</div>
+    </label>
+    <div :class="wrapperClass">
+      <select 
+        :name="name" 
+        v-model="value" 
+        @input="(event)=>$emit('input', event.target.value)" 
+        @focusin="isFocused = true" @focusout="isFocused = false" 
+        :required="required? true: false"
+        :readonly="readonly? true: false"
+        :disabled="disabled? true: false"
+      >
+        <option v-if="placeholder" value="" disabled selected>
+          {{placeholder}}
+        </option>
+        <option v-for="option in options" :value="option.state_code" 
+        :selected="option.state_code == value || option.name == value" :key="option.state_code">
+          {{option.name}}
+        </option>
+      </select>
+      <div v-if="icon" class="icon">
+        <img :src="'/assets/img/icon/'+icon" alt="Image Icon" />
+      </div>
+    </div>
+  </div>
+
   <div v-else-if="type == 'plain'" class="form-group" :class="classer">
     <label v-if="label" class="p">
       {{label}} <div v-if="errorText" class="error">{{errorText}}</div>

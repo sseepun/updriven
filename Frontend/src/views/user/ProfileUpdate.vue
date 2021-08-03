@@ -54,13 +54,6 @@
             
             <div class="grid sm-50">
               <FormGroup 
-                type="text" label="Username" :required="true" :disabled = "true" 
-                classer="label-sm" wrapperClass="fgray" 
-                :value="dataset.username" @input="dataset.username = $event" 
-              />
-            </div>
-            <div class="grid sm-50">
-              <FormGroup 
                 type="email" label="Email" :required="true" 
                 classer="label-sm" wrapperClass="fgray" 
                 :value="dataset.email" @input="dataset.email = $event" 
@@ -75,12 +68,25 @@
             </div>
             <div class="grid sm-50">
               <FormGroup 
-                type="select" label="Where do you live?" :required="true" 
+                type="country" label="what is your country?" :required="true" 
                 placeholder="Select One" wrapperClass="fgray" 
-                :value="dataset.state" @input="dataset.state = $event" 
-                :options="states"
+                :value="dataset.country" @input="dataset.country = $event" 
+                :options="countryStore"
+                v-on:change.enter="FilterCountry(dataset.country)"
               />
             </div>
+
+            <div class="grid sm-50" v-if="(stateStore.length != 0)? true: false">
+              <FormGroup
+                type="state" label="what is your state?" :required="true" 
+                placeholder="Select One" wrapperClass="fgray" 
+                :value="(stateStore.length != 0)? dataset.state: '-'" @input="dataset.state = $event" 
+                :options="stateStore"
+                v-on:change.enter="FilterState(dataset.state)"
+              />
+            </div>
+            
+
             <div class="grid sm-100">
               <SelectTag 
                 label="What are you interested in?" classer="label-sm" wrapperClass="fgray" 
@@ -89,6 +95,7 @@
               />
             </div>
           </div>
+
           <div class="btns">
             <Button 
               type="submit" text="SAVE INFORMATION" 
@@ -110,6 +117,7 @@ import Banner from '../../components/Banner';
 import {mapGetters, mapActions, mapState, mapMutations} from "vuex";
 import json from '../../assets/state.json'
 import onlystate from '../../assets/onlystate.json'
+import csc from '../../assets/country-state-city'
 import axios from 'axios'
 
 export default {
@@ -128,17 +136,19 @@ export default {
         username: '',
         email: '',
         organization: '',
+        country: '',
         state: '',
+        city: '',
         interests: [],
         avatar: "",
         background: "",
       },
       states : [],
+      country : [],
       uploadPercentage: 0,
     };
   },
   created(){
-    this.states = json
     this.dataset.firstname = this.user.firstname;
     this.dataset.lastname = this.user.lastname;
     this.dataset.email = this.user.email;
@@ -149,11 +159,18 @@ export default {
     this.dataset.interests = this.user.interests;
     this.dataset.avatar = this.user.avatar;
     this.dataset.background = this.user.background;
+    this.dataset.country = this.user.country_id;
+    if(this.dataset.country){
+      this.assignCountry(this.dataset.country)
+    }
   },
   computed: {
     ...mapGetters({
       user: 'authentication/user',
-    })
+      countryStore: 'csc/countrys',
+      stateStore: 'csc/states',
+      cityStore: 'csc/citys',
+    }),
   },
   methods: {
     ...mapActions({
@@ -161,12 +178,12 @@ export default {
       editProfileImage: 'authentication/editProfileImage',
       editProfileBackground: 'authentication/editProfileBackground',
       assign: 'alert/assign',
+      assignCountry: 'csc/assignCountry',
     }),
     onPhotoSelected(event) {  
       this.dataset.avatar  = event.target.files
       var formData1 = new FormData();
       formData1.append("media", this.dataset.avatar[0])
-      // this.editProfileImage(formData1)
       var sizeInMB = (this.dataset.avatar[0].size / (1024*1024)).toFixed(2);
       if(sizeInMB < 5) {
         axios.post('user/edit_profile_image',
@@ -219,13 +236,27 @@ export default {
       document.getElementById('backgroundUpload').click()
       
     },
-    onClickSubmitEditProfile(){
+    onClickSubmitEditProfile(e){
       var formData = new FormData();
+      console.log(this.dataset.state)
       formData.append("firstname", this.dataset.firstname);
       formData.append("lastname", this.dataset.lastname);
       formData.append("state_id", this.dataset.state);
       formData.append("organization", this.dataset.organization);
+      formData.append("country_id", this.dataset.country);
       this.editProfile(formData)
+    },
+    FilterCountry(country){
+      this.assignCountry(country).then( response => {
+         if(this.stateStore.length == 0){
+          this.dataset.state = "-"
+        }
+      })
+      console.log(country)
+    },
+    FilterState(state){
+      
+      console.log(state)
     }
   }
 }

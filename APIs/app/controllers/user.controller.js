@@ -10,10 +10,13 @@ const Notification = db.notification;
 
 exports.editInfo = async (req, res) => {
     try {
+        console.log(req.body)
         const user = await User.findById(req.userId).populate('user_detail')
         user.user_detail[0].firstname = req.body.firstname;
         user.user_detail[0].lastname = req.body.lastname;
         user.user_detail[0].state_id = req.body.state_id;
+        user.user_detail[0].country_id = req.body.country_id;
+        console.log(user.user_detail[0])
         const organization = await Organization.findOne({ name: req.body.organization })
         if (user.user_detail[0].organization.length > 0) {
             user.user_detail[0].organization = []

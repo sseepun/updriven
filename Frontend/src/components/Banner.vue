@@ -11,7 +11,7 @@
             {{user.firstname}} {{user.lastname}}
           </h6>
           <p class="xxs fw-500 color-gray">
-            Learner, {{ user.state_id }}
+            Learner, {{countryFullName}}, {{stateFullName}}
           </p>
         </div>
       </div>
@@ -61,6 +61,8 @@ export default {
   computed: {
     ...mapGetters({
       user: 'authentication/user',
+      countryFullName: 'csc/countryFullName',
+      stateFullName: 'csc/stateFullName',
     })
   },
 }
