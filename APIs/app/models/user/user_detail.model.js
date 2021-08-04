@@ -11,6 +11,8 @@ const User_detail = mongoose.model(
             }]
         ,
         prefix: { type: String, default: '-' },
+        interests: { type: Array, default: [] },
+        about_us: { type: String, default: '-' },
         firstname: { type: String, default: '-' },
         lastname: { type: String, default: '-' },
         phone: { type: String, default: '-' },

@@ -37,6 +37,8 @@ export const authentication = {
               response.user_detail[0].organization,
             )
             resUser.country_id = response.user_detail[0].country_id
+            resUser.about = response.user_detail[0].about_us
+            resUser.interests = response.user_detail[0].interests
 
             commit('signinSuccess', resUser);
             dispatch('csc/mapFullName',{"country_code":response.user_detail[0].country_id , "states_code":response.user_detail[0].state_id}, { root: true })
@@ -213,6 +215,8 @@ export const authentication = {
           response.user_detail[0].organization,
         )
         resUser.country_id = response.user_detail[0].country_id
+        resUser.about = response.user_detail[0].about_us
+        resUser.interests = response.user_detail[0].interests
         commit('signinSuccess', resUser);
         dispatch('alert/assign', { type: 'Success', message: 'Edit Image Successfully.' }, { root: true })
         resolve(response)
@@ -232,7 +236,8 @@ export const authentication = {
           response.user_detail[0].organization,
         )
         resUser.country_id = response.user_detail[0].country_id
-        
+        resUser.about = response.user_detail[0].about_us
+        resUser.interests = response.user_detail[0].interests
         commit('signinSuccess', resUser);
         dispatch('alert/assign', { type: 'Success', message: 'Edit Background Successfully.' }, { root: true })
         resolve(response)
@@ -242,6 +247,7 @@ export const authentication = {
       return new Promise((resolve, reject) => {   
       userService.getProfile().then(
         response => {
+          console.log( 'response :', response.user_detail[0].interests)
           var resUser = new User(
             response._id,
             response.user_detail[0].firstname,
@@ -254,6 +260,8 @@ export const authentication = {
             response.user_detail[0].organization,
           )
           resUser.country_id = response.user_detail[0].country_id
+          resUser.about = response.user_detail[0].about_us
+          resUser.interests = response.user_detail[0].interests
           dispatch('csc/mapFullName',{"country_code":response.user_detail[0].country_id , "states_code":response.user_detail[0].state_id}, { root: true })
           commit('signinSuccess', resUser);
           resolve()
