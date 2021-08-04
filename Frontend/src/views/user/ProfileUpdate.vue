@@ -111,8 +111,8 @@
                 <label class="p">What are you interested in?</label>
                 <div class="fgray">
                   <Multiselect 
-                    v-model="dataset.dataset" :options="keywords" 
-                    @change="(value) => dataset.dataset = value" 
+                    v-model="dataset.interests" :options="keywords" 
+                    @change="(value) => dataset.interests = value" 
                     :searchable="true" mode="tags" :createTag="false" 
                   />
                 </div>
@@ -123,7 +123,7 @@
               <FormGroup 
                 type="textarea" label="Tell us about yourself" 
                 classer="label-sm" wrapperClass="fgray" 
-                :value="dataset.about" @input="dataset.country = $about"
+                :value="dataset.about" @input="dataset.about = $event"
               />
             </div>
           </div>
@@ -199,6 +199,7 @@ export default {
     this.dataset.avatar = this.user.avatar;
     this.dataset.background = this.user.background;
     this.dataset.country = this.user.country_id;
+    this.dataset.about = this.user.about;
     if(this.dataset.country){
       this.assignCountry(this.dataset.country)
     }
@@ -280,12 +281,13 @@ export default {
 
     onClickSubmitEditProfile(e){
       var formData = new FormData();
-      console.log(this.dataset.state)
       formData.append("firstname", this.dataset.firstname);
       formData.append("lastname", this.dataset.lastname);
       formData.append("state_id", this.dataset.state);
       formData.append("organization", this.dataset.organization);
       formData.append("country_id", this.dataset.country);
+      formData.append("interests", this.dataset.interests);
+      formData.append("about", this.dataset.about);
       this.editProfile(formData)
     },
     FilterCountry(country){
