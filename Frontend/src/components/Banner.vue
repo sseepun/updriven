@@ -1,5 +1,5 @@
 <template>
-  <div v-if="user" class="banner-container bshadow ovf-hidden">
+  <div v-if="user" ref="bannerContainer" class="banner-container bshadow ovf-hidden">
     <div class="img-bg" :style="'background-image:url(\''+user.background+'\');'"></div>
     <div class="content-container">
       <div class="top-container">
@@ -11,7 +11,11 @@
             {{user.firstname}} {{user.lastname}}
           </h6>
           <p class="xxs fw-500 color-gray">
-            Learner, {{countryFullName}}, {{stateFullName}}
+            Learner: 
+            {{stateFullName && stateFullName!='-'? stateFullName: ''}}{{
+              stateFullName && stateFullName!='-' && countryFullName
+                ? ', '+countryFullName: countryFullName
+            }}
           </p>
         </div>
       </div>
@@ -65,5 +69,14 @@ export default {
       stateFullName: 'csc/stateFullName',
     })
   },
+  methods: {
+    getHeight() {
+      if(this.$refs.bannerContainer) {
+        return this.$refs.bannerContainer.clientHeight;
+      } else {
+        return 0;
+      }
+    }
+  }
 }
 </script>

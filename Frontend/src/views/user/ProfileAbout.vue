@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <Banner :activeIndex="bannerActiveIndex" />
+    <Banner ref="bannerContainer" :activeIndex="bannerActiveIndex" />
     
     <div ref="rightContainer" class="right-container" :class="rightContainerClass">
       <div class="wrapper" data-simplebar>
@@ -94,11 +94,14 @@ export default {
   },
   methods: {
     onScroll() {
-      if(this.$refs.rightContainer) {
-        if(window.scrollY < 448) this.rightContainerClass = '';
-        else this.rightContainerClass = 'sticky';
+      if(this.$refs.rightContainer && this.$refs.bannerContainer) {
+        if(window.scrollY < this.$refs.bannerContainer.getHeight()+16) {
+          this.rightContainerClass = '';
+        } else {
+          this.rightContainerClass = 'sticky';
+        }
       }
-    }
+    },
   }
 }
 </script>

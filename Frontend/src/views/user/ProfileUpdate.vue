@@ -16,26 +16,44 @@
         <h4 class="fw-600 color-01">Edit Profile</h4>
         <form @submit.prevent="onClickSubmitEditProfile">
           <div class="grids">
-          <div class="grid sm-50">
-          <input 
-              type="file" id="avatarUpload" name="filefield" accept="image/*"  
-              @change="onPhotoSelected" hidden>
-            <Button
-              text="Change Profile Avatar" classer="btn-color-02"
-              iconPrepend="camera.png" @click="onClickAddfiles"
-            />
-            {{uploadPercentage}} %
+
+            <div class="grid sm-50">
+              <input 
+                type="file" id="avatarUpload" name="filefield" accept="image/*"  
+                @change="onPhotoSelected" hidden
+              >
+              <Button
+                text="Change Profile Avatar" classer="d-block btn-color-02"
+                iconPrepend="camera.png" @click="onClickAddfiles"
+              />
+              <div v-if="avatarUploadProgress > 0" class="mt-1">
+                <div class="progress-status">
+                  <div class="progress">
+                    <div class="bar" :style="'--percent:'+avatarUploadProgress+'%;'"></div>
+                  </div>
+                  <div class="text">{{avatarUploadProgress}}%</div>
+                </div>
+              </div>
             </div>
-          
             <div class="grid sm-50">
               <input 
                 type="file" id="backgroundUpload" name="filefield" accept="image/*"  
-                @change="onBGPhotoSelected" hidden>
+                @change="onBGPhotoSelected" hidden
+              >
               <Button
-                text="Change Profile Background" classer="btn-color-02"
+                text="Change Profile Background" classer="d-block btn-color-02"
                 iconPrepend="camera.png" @click="onClickAddBGfiles"
               />
+              <div v-if="bgUploadProgress > 0" class="mt-1">
+                <div class="progress-status">
+                  <div class="progress">
+                    <div class="bar" :style="'--percent:'+bgUploadProgress+'%;'"></div>
+                  </div>
+                  <div class="text">{{bgUploadProgress}}%</div>
+                </div>
+              </div>
             </div>
+            <div class="sep"></div>
 
             <div class="grid sm-50">
               <FormGroup 
@@ -51,6 +69,7 @@
                 :value="dataset.lastname" @input="dataset.lastname = $event" 
               />
             </div>
+            <div class="sep"></div>
             
             <div class="grid sm-50">
               <FormGroup 
@@ -66,6 +85,8 @@
                 :value="dataset.organization" @input="dataset.organization = $event" 
               />
             </div>
+            <div class="sep"></div>
+
             <div class="grid sm-50">
               <FormGroup 
                 type="country" label="what is your country?" :required="true" 
@@ -75,7 +96,6 @@
                 v-on:change.enter="FilterCountry(dataset.country)"
               />
             </div>
-
             <div class="grid sm-50" v-if="(stateStore.length != 0)? true: false">
               <FormGroup
                 type="state" label="what is your state?" :required="true" 
@@ -86,12 +106,24 @@
               />
             </div>
             
-
             <div class="grid sm-100">
-              <SelectTag 
-                label="What are you interested in?" classer="label-sm" wrapperClass="fgray" 
-                :value="dataset.interests" 
-                :options="[ 'Choice 1', 'Choice 2', 'Choice 3', 'Choice 4' ]" 
+              <div class="form-group label-sm">
+                <label class="p">What are you interested in?</label>
+                <div class="fgray">
+                  <Multiselect 
+                    v-model="dataset.dataset" :options="keywords" 
+                    @change="(value) => dataset.dataset = value" 
+                    :searchable="true" mode="tags" :createTag="false" 
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <div class="grid sm-100">
+              <FormGroup 
+                type="textarea" label="Tell us about yourself" 
+                classer="label-sm" wrapperClass="fgray" 
+                :value="dataset.about" @input="dataset.country = $about"
               />
             </div>
           </div>
@@ -109,23 +141,27 @@
   </div>
 </template>
 
+<style src="@vueform/multiselect/themes/default.css"></style>
+
 <script>
-import { onMounted } from '../../helpers/frontend';
+import { categoryService } from '../../services'
 import TopNav from '../../components/TopNav';
 import LeftNav from '../../components/LeftNav';
 import Banner from '../../components/Banner';
-import {mapGetters, mapActions, mapState, mapMutations} from "vuex";
-import json from '../../assets/state.json'
-import onlystate from '../../assets/onlystate.json'
-import csc from '../../assets/country-state-city'
-import axios from 'axios'
+import Multiselect from '@vueform/multiselect';
+import {mapGetters, mapActions, mapState, mapMutations} from 'vuex';
+// import json from '../../assets/state.json';
+// import onlystate from '../../assets/onlystate.json';
+// import csc from '../../assets/country-state-city';
+import axios from 'axios';
 
 export default {
   name: 'UserProfileUpdatePage',
   components: {
     TopNav,
     LeftNav,
-    Banner
+    Banner,
+    Multiselect
   },
   data() {
     return {
@@ -140,12 +176,15 @@ export default {
         state: '',
         city: '',
         interests: [],
-        avatar: "",
-        background: "",
+        avatar: '',
+        background: '',
+        about: ''
       },
-      states : [],
-      country : [],
-      uploadPercentage: 0,
+      states: [],
+      country: [],
+      keywords: [],
+      avatarUploadProgress: 0,
+      bgUploadProgress: 0
     };
   },
   created(){
@@ -163,6 +202,16 @@ export default {
     if(this.dataset.country){
       this.assignCountry(this.dataset.country)
     }
+    
+    var that = this;
+    categoryService._list().then(data => {
+      data.map(d => {
+        that.keywords = [...that.keywords, ...d.keyword];
+      });
+      that.keywords = that.keywords.filter((val, index, self) => {
+        return self.indexOf(val) == index;
+      });
+    });
   },
   computed: {
     ...mapGetters({
@@ -180,6 +229,7 @@ export default {
       assign: 'alert/assign',
       assignCountry: 'csc/assignCountry',
     }),
+
     onPhotoSelected(event) {  
       this.dataset.avatar  = event.target.files
       var formData1 = new FormData();
@@ -187,55 +237,47 @@ export default {
       var sizeInMB = (this.dataset.avatar[0].size / (1024*1024)).toFixed(2);
       if(sizeInMB < 5) {
         axios.post('user/edit_profile_image',
-            formData1,
-            {
-              onUploadProgress: function (progressEvent) {
-                this.uploadPercentage = parseInt(Math.round((progressEvent.loaded / progressEvent.total) * 100));
-              }.bind(this)
-            }
+          formData1, {
+            onUploadProgress: function (progressEvent) {
+              this.avatarUploadProgress = parseInt(Math.round((progressEvent.loaded / progressEvent.total) * 100));
+            }.bind(this)
+          }
         ).then(response => {
-
-          this.editProfileImage(response.data).then(this.uploadPercentage = 0)
-        })
+          this.editProfileImage(response.data).then(this.avatarUploadProgress = 0)
+        });
       }
       else{
         this.assign({ type: 'Warning', message: "You cannot upload files exceeding 5mbs" }, { root: true })
-
       }
-      
     },
     onBGPhotoSelected(event) {  
       this.dataset.background  = event.target.files
       var formData2 = new FormData();
       
       formData2.append("media", this.dataset.background[0])
-      //this.editProfileBackground(formData2)
       var sizeInMB = (this.dataset.background[0].size / (1024*1024)).toFixed(2);
       if(sizeInMB < 5) {
         axios.post(`user/edit_background_image`,
-            formData2,
-            {
-              onUploadProgress: function (progressEvent) {
-                this.uploadPercentage = parseInt(Math.round((progressEvent.loaded / progressEvent.total) * 100));
-              }.bind(this)
-            }
+          formData2, {
+            onUploadProgress: function (progressEvent) {
+              this.bgUploadProgress = parseInt(Math.round((progressEvent.loaded / progressEvent.total) * 100));
+            }.bind(this)
+          }
         ).then(response => {
-
-          this.editProfileBackground(response.data).then(this.uploadPercentage = 0)
-        })
+          this.editProfileBackground(response.data).then(this.bgUploadProgress = 0)
+        });
       }
       else{
-          this.assign({ type: 'Warning', message: "You cannot upload files exceeding 5mbs" }, { root: true })
+        this.assign({ type: 'Warning', message: "You cannot upload files exceeding 5mbs" }, { root: true })
       }
     },
     onClickAddfiles() {
       document.getElementById('avatarUpload').click()
-      
     },
     onClickAddBGfiles() {
       document.getElementById('backgroundUpload').click()
-      
     },
+
     onClickSubmitEditProfile(e){
       var formData = new FormData();
       console.log(this.dataset.state)
@@ -247,16 +289,15 @@ export default {
       this.editProfile(formData)
     },
     FilterCountry(country){
-      this.assignCountry(country).then( response => {
+      this.assignCountry(country).then(response => {
          if(this.stateStore.length == 0){
           this.dataset.state = "-"
         }
-      })
-      console.log(country)
+      });
+      console.log(country);
     },
     FilterState(state){
-      
-      console.log(state)
+      console.log(state);
     }
   }
 }

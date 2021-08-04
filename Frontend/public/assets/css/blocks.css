@@ -48,7 +48,9 @@
 
 .app-container > .banner-container + .right-container{position:absolute; right:0; width:20rem;}
 .app-container > .banner-container + .right-container:not(.sticky){top:unset;}
-.app-container > .banner-container + .right-container.sticky{position:fixed;}
+.app-container > .banner-container + .right-container.sticky{
+    position:fixed; right:calc(50vw - 700px - .5rem);
+}
 
 .banner-container > .img-bg{
     display:block; width:100%; padding:34% 0 0 0; background-size:cover;
@@ -68,6 +70,7 @@
 
 @media screen and (max-width:1399.98px){
     .app-container > .right-container{right:1rem;}
+    .app-container > .banner-container + .right-container.sticky{right:0;}
 }
 @media screen and (max-width:1199.98px){
     .app-container > .right-container{display:none;}

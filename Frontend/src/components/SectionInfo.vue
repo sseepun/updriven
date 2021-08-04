@@ -16,7 +16,13 @@
           <img src="/assets/img/icon/pin.png" alt="Image Icon" />
         </div>
         <p class="xs fw-500 color-gray">
-          Lives in <span class="color-dark">{{countryFullName}}, {{stateFullName}}</span>
+          Lives in 
+          <span class="color-dark">
+            {{stateFullName && stateFullName!='-'? stateFullName: ''}}{{
+              stateFullName && stateFullName!='-' && countryFullName
+                ? ', '+countryFullName: countryFullName
+            }}
+          </span>
         </p>
       </div>
       <div class="info">
