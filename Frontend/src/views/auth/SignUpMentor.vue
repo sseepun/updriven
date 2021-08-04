@@ -6,12 +6,11 @@
         <div class="wrapper">
           <div class="hide-mobile">
             <h2 class="fw-500 color-white lh-2xs" data-aos="fade-up" data-aos-delay="300">
-              Find the Path to <br>
-              Your Dream Job
+              Share Your Knowledge
             </h2>
             <div class="btns mt-4" data-aos="fade-up" data-aos-delay="450">
               <a 
-                href="https://updriven.com/learner-overview" target="_blank" 
+                href="https://updriven.com/mentor-overview" target="_blank" 
                 class="btn btn-action btn-color-02 btn-sm btn-mw fw-600"
               >
                 LEARN MORE
@@ -50,12 +49,23 @@
                     :value="dataset.lastname" @input="dataset.lastname = $event" 
                   />
                 </div>
+                <div class="grid sm-50">
+                  <FormGroup 
+                    type="text" label="Organization Name" :required="true" 
+                    classer="label-sm" wrapperClass="fgray" 
+                  />
+                </div>
+                <div class="grid sm-50">
+                  <FormGroup 
+                    type="text" label="Occupation" :required="true" 
+                    classer="label-sm" wrapperClass="fgray" 
+                  />
+                </div>
                 <div class="grid sm-100">
                   <FormGroup 
                     type="email" label="Email" :required="true" 
                     classer="label-sm" wrapperClass="fgray" 
                     :value="dataset.email" @input="dataset.email = $event" 
-                    
                   />
                 </div>
                 <div class="grid sm-100">
@@ -134,7 +144,7 @@ import RegisUser from '../../models/regis_user.js';
 import { mapState, mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: 'AuthSignUpPage',
+  name: 'AuthSignUpMentorPage',
   components: {
     Button,
     FormGroup,

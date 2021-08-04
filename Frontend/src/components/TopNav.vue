@@ -44,7 +44,6 @@
             </div>
           </div>
 
-
           <!-- <div class="option" :class="{ 'active': isActiveMsg }">
             <router-link to="/user/chat" class="icon" @click="isActiveMsg = !isActiveMsg">
               <img src="/assets/img/icon/message.png" alt="Message Icon" />

@@ -387,6 +387,8 @@ select{padding:.5625rem .875rem .4375rem .875rem;}
 .pos-relative{position:relative!important;}
 .pos-absolute{position:absolute!important;}
 
+.cursor-pointer{cursor:pointer;}
+
 @media screen and (max-width:1199.98px){
     .lg-no-br > br{display:none;}
 }

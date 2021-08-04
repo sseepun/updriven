@@ -44,6 +44,15 @@ const routes = [
     component: () => import('../views/auth/verifyTokenRegister.vue')
   },
 
+  // Auth Mentor Pages
+  {
+    path: '/auth/signup-mentor',
+    name: 'AuthSignUpMentorPage',
+    component: () => import('../views/auth/SignUpMentor.vue')
+  },
+
+
+
   // User Pages
   {
     path: '/user/dashboard/:username?',

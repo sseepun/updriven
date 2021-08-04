@@ -1,4 +1,5 @@
 <template>
+
   <div v-if="user" class="post bshadow">
     <div class="p-3" v-if="selfPost.shared">     
       <p class="xs fw-500">
@@ -7,6 +8,7 @@
         {{formatDate(selfPost.createdAt)}}
       </p>
     </div>
+
     <template v-if="selfPost.desc.indexOf('https://www.youtube.com/') > -1">
       <div class="ss-img video-view no-hover">
         <iframe 
@@ -24,18 +26,15 @@
           ref="videoPlayer" class="img-bg w-full h-full" border="0" controls 
           oncontextmenu="return false;"
         >
-          <source
-            :src="selfPost.image[0].path"
-            :type="selfPost.image[0].type"
-          />
+          <source :src="selfPost.image[0].path" :type="selfPost.image[0].type" />
         </video>
       </div>
-      <div v-else class="ss-img no-hover">
+      <div v-else class="ss-img no-hover cursor-pointer" @click="isActiveDetail = true">
         <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\');'"></div>
       </div>
     </template>
     <template v-else-if="selfPost.image.length == 2">
-      <div class="grids" style="--gs:0rem;">
+      <div class="grids cursor-pointer" style="--gs:0rem;" @click="isActiveDetail = true">
         <div class="grid sm-50">
           <div class="ss-img no-hover" style="border-top-right-radius:0;">
             <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\');'"></div>
@@ -49,7 +48,7 @@
       </div>
     </template>
     <template v-else-if="selfPost.image.length >= 3">
-      <div class="grids" style="--gs:0rem;">
+      <div class="grids cursor-pointer" style="--gs:0rem;" @click="isActiveDetail = true">
         <div class="grid sm-75">
           <div class="ss-img vertical-sm no-hover" style="border-top-right-radius:0;">
             <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\');'"></div>
@@ -229,6 +228,20 @@
       </div>
     </div>
   </div>
+
+  <!-- Popup Detail -->
+  <template v-if="user && isActiveDetail">
+    <template 
+      v-if="selfPost.image.length > 0 && selfPost.image[0].type != 'video/mp4' 
+        && selfPost.image[0].path.indexOf('.mp4') < 0" 
+    >
+      <PostSinglePopupDetail 
+        :images="selfPost.image" :isActive="isActiveDetail" 
+        @close="isActiveDetail = false"
+      />
+    </template>
+  </template>
+
 </template>
 
 <script>
@@ -236,11 +249,13 @@ import moment from 'moment';
 import {mapGetters, mapActions, mapMutations} from "vuex";
 import { _CommentPost } from '../models/post';
 import CommentPost from './CommentPost';
+import PostSinglePopupDetail from './PostSinglePopupDetail';
 
 export default {
   name: 'PostSingle',
   components: {
-    CommentPost
+    CommentPost,
+    PostSinglePopupDetail
   },
   props: {
     post: { type: Object, default: {} }
@@ -248,6 +263,7 @@ export default {
   data() {
     return {
       randomId: Math.round(Math.random() * 10000000),
+      isActiveDetail: false,
 
       selfPost: this.post,
       isActivePopup: false,
