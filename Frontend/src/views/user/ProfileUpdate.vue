@@ -123,7 +123,8 @@
               <FormGroup 
                 type="textarea" label="Tell us about yourself" 
                 classer="label-sm" wrapperClass="fgray" 
-                :value="dataset.about" @input="dataset.about = $event"
+                :value="dataset.about? dataset.about: ''"
+                @input="dataset.about = $event"
               />
             </div>
           </div>

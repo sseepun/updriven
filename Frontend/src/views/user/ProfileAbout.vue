@@ -32,22 +32,7 @@
       <div class="box-container full bshadow m-0">
         <h4 class="fw-600 color-01">About</h4>
         <p class="mt-4">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi et quam vitae erat 
-          efficitur suscipit id non lorem. Maecenas eu felis quis sapien porttitor interdum. 
-          Sed sit amet ex sapien. Quisque sed suscipit lectus. Suspendisse ac ante sit amet 
-          mi mattis sagittis ac nec neque. Cras nec enim id eros porttitor luctus. Nunc tempor 
-          mollis dolor, gravida consectetur velit. Sed ullamcorper, lectus et elementum molestie, 
-          enim leo varius lacus, ut congue urna nulla non nibh. Nullam sed aliquet mi, et 
-          tincidunt quam. Nulla sed orci metus.
-        </p>
-        <p class="mt-4">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi et quam vitae erat 
-          efficitur suscipit id non lorem. Maecenas eu felis quis sapien porttitor interdum. 
-          Sed sit amet ex sapien. Quisque sed suscipit lectus. Suspendisse ac ante sit amet 
-          mi mattis sagittis ac nec neque. Cras nec enim id eros porttitor luctus. Nunc tempor 
-          mollis dolor, gravida consectetur velit. Sed ullamcorper, lectus et elementum molestie, 
-          enim leo varius lacus, ut congue urna nulla non nibh. Nullam sed aliquet mi, et 
-          tincidunt quam. Nulla sed orci metus.
+          {{user.about? user.about: '-'}}
         </p>
       </div>
     </div>
@@ -91,6 +76,11 @@ export default {
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.onScroll);
+  },
+  computed: {
+    ...mapGetters({
+      user: 'authentication/user'
+    }),
   },
   methods: {
     onScroll() {
