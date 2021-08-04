@@ -196,9 +196,9 @@ select{padding:.5625rem .875rem .4375rem .875rem;}
 
 /* Progress Status */
 .progress-status{display:flex; align-items:center; width:100%;}
-.progress-status > .text{width:3.5rem; text-align:right;}
+.progress-status > .text{width:3.25rem; text-align:right;}
 .progress-status > .progress{
-    display:flex; width:calc(100% - 3.5rem); height:.5rem; border-radius:.125rem;
+    display:flex; width:calc(100% - 3.25rem); height:.5rem; border-radius:.125rem;
     overflow:hidden; background:rgba(22,108,116,.4);
 }
 .progress-status > .progress > .bar{
