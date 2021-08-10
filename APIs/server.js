@@ -42,16 +42,14 @@ app.use(multer({
 // CORS
 const cleintDomain = process.env.CLIENT_URL.replace(/http:\/\/|https:\/\/|\//g, '');
 const cleintDir = process.env.CLIENT_DIR.replace(/http:\/\/|https:\/\/|\//g, '');
-console.log(cleintDomain, cleintDir)
 const corsOptions = {
-    origin: [
-      new RegExp(`${cleintDomain}$`),
-      new RegExp(`${cleintDir}$`)
-    ], 
-    credentials: true,
-    // optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-  }
-
+  origin: [
+    new RegExp(`${cleintDomain}$`),
+    new RegExp(`${cleintDir}$`)
+  ], 
+  credentials: true,
+  // optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 app.use(cors( corsOptions )); // remove corsOptions to allow all origins
 
 // parse requests of content-type - application/json

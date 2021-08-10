@@ -5,7 +5,8 @@ const User_detail = db.user_detail;
 isLoggedIn = async (req, res, next) => {
     try {
         if (req.user) {
-            const user = await User.findOne({email: req.user}).populate({path:'user_detail', populate: 'organization'})
+            const user = await User.findOne({email: req.user}).populate({path:'user_detail', populate: 'organization'});
+            console.log(user)
             req.user = user
             req.userId = user._id;
             return next();
