@@ -51,7 +51,6 @@ module.exports = app => {
     router.post('/login', 
     passport.authenticate('local', { failureRedirect: '/apis/auth/failed' }),
     function(req, res) {
-        console.log('asdasdasd')
         res.redirect('/apis/auth/status')
     });
 

@@ -11,6 +11,7 @@ const sgMail = require('@sendgrid/mail')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 exports.logInStatus = (req, res) => {
+    console.log('Ye')
     res.status(200).send(req.user);
 };
 
