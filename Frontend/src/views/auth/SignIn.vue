@@ -31,7 +31,7 @@
           </div>
           <h4 class="fw-600 text-center pt-4 mt-6">
             Sign In
-          </h4>npm
+          </h4>
           <form @submit.prevent="handleSubmit">
             <div class="grids">
               <div class="grid sm-100">
