@@ -32,6 +32,7 @@
           <h4 class="fw-600 text-center pt-4 mt-6">
             Sign In
           </h4>
+          <p class="color-gray mt-3 text-center">We're so excited to see you again!</p>
           <form @submit.prevent="handleSubmit">
             <div class="grids">
               <div class="grid sm-100">
