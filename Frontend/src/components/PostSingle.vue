@@ -137,10 +137,22 @@
         <span class="dot"></span>
         {{formatDate(selfPost.createdAt)}}
       </p>
+
       <template v-if="selfPost.desc.indexOf('https://www.youtube.com/') < 0">
         <p class="sm fw-300 color-gray lh-xs mt-3">
           {{selfPost.desc}}
         </p>
+
+        <div v-for="(c, i) in listLink" :key="i">
+          <p class="sm fw-300 color-gray lh-xs mt-3" v-if="c.type == 'text'">
+            {{c.content}}
+          </p>
+
+          <p class="sm fw-300 color-gray lh-xs mt-3" v-if="c.type == 'link'">
+            <a :href="c.content" >{{c.content}}</a>
+          </p>
+        </div>
+
       </template>
       
       <div class="toolbar mt-3">
@@ -250,12 +262,13 @@ import {mapGetters, mapActions, mapMutations} from "vuex";
 import { _CommentPost } from '../models/post';
 import CommentPost from './CommentPost';
 import PostSinglePopupDetail from './PostSinglePopupDetail';
+import { postService } from '../services';
 
 export default {
   name: 'PostSingle',
   components: {
     CommentPost,
-    PostSinglePopupDetail
+    PostSinglePopupDetail,
   },
   props: {
     post: { type: Object, default: {} }
@@ -266,6 +279,7 @@ export default {
       isActiveDetail: false,
 
       selfPost: this.post,
+      listLink: [], // For display on single post
       isActivePopup: false,
       isActivePopupDelete: false,
       commentLimit: 1,
@@ -277,7 +291,8 @@ export default {
       _PostID: 0
     }
   },
-  created() {
+  async created() {
+    this.listLink = await this.formContent(this.selfPost.desc)
   },
   mounted: function() {
     // try{
@@ -425,6 +440,56 @@ export default {
     getYoutubeId(desc) {
       var temp = desc.split('?v=');
       return temp[1];
+    },
+
+    async formContent(desc) {
+      const URLMatcher = await /^(?:(?:https?):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i
+
+      const withLinks = await desc.replace(URLMatcher, match => `<a href="${desc}">${desc} </a>`)
+      const spiltText = await desc.split(' ');
+
+      const ListLink = await [];
+      
+      let spiltTextLength = 0;
+      let textTemporary = "";
+
+      await spiltText.forEach(function(entry) {
+        if (entry.match(new RegExp(URLMatcher))) {
+          if ( textTemporary != "") {
+            ListLink.push({
+              content: textTemporary,
+              type: 'text'
+            })
+
+            textTemporary = "";
+
+            // const dataLink = postService.previewLink(entry)
+          }
+
+          ListLink.push({
+            content: entry,
+            type: 'link'
+          });
+
+        } else {
+          textTemporary = textTemporary + ' ' + entry ;
+
+          if (spiltTextLength === (spiltText.length - 1)) {
+            ListLink.push({
+              content: textTemporary,
+              type: 'text'
+            })
+          }
+        }
+
+        spiltTextLength = spiltTextLength + 1;
+      });
+
+      return ListLink
+    },
+
+    handleClickLinkPrevuew(preview) {
+      console.log('click', preview.domain, preview.title, preview.description, preview.img)
     }
   }
 }

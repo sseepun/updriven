@@ -73,7 +73,7 @@
                   <div class="blocks no-padding">
                     <div class="block w-full">
                       <FormGroup 
-                        type="textarea" :value="createDetail.content" placeholder="Message" 
+                        type="textarea" :value="createDetail.content" placeholder="Content" 
                         :required="true" classer="w-full" :rows="5" 
                         @input="(event) => createDetail.content = event" 
                       />
