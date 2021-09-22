@@ -55,7 +55,7 @@ module.exports = app => {
     });
 
     router.get("/failed", (req, res) => {
-        res.status(401).send({message: 'login fail'})
+        res.status(401).send({message: 'Login failed. Please try again'})
     })
 
     router.get('/google',
