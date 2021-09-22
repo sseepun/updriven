@@ -11,7 +11,8 @@ export const postService = {
     rm_sentiment,
     commentOrReply,
     fetchPostAll,
-    sharePost
+    sharePost,
+    previewLink
 }
 
 function createPost(postDetail) {
@@ -183,4 +184,17 @@ function sharePost(post_id) {
       reject(err);
     });
   });
+}
+
+function previewLink(link) {
+  axios({
+    methods: 'POST',
+    url: 'http://api.linkpreview.net/?key=' + process.env.VUE_APP_KEY_LINKPREVIEW + '&q=' + link,
+    header: {
+      'Content-Type': 'application/json',
+    }
+  })
+  .then( (data) => {
+    console.log( data )
+  })
 }
