@@ -24,7 +24,7 @@ export const post = {
         /**
          * Change category post
          */
-         async changeCategoryPost({ state, commit, dispatch }, newcategory) {
+        async changeCategoryPost({ state, commit, dispatch }, newcategory) {
             state.Post = []
             state.StatusPost = initial_StatusPost;
             state.category = newcategory;
@@ -60,12 +60,11 @@ export const post = {
         /**
          * fetch all posts to display on dashboard page
          */
-         async fetchPostAll({ state, commit, dispatch }) {
+        async fetchPostAll({ state, commit, dispatch }) {
             await commit('updateStatusLoading', true)
             return await new Promise((resolve, reject) => {
                 postService.fetchPostAll(state.StatusPost, state.category)
                 .then( res => {
-
                     // update status 
                     const statusPost = new StatusPost(res.hasNext, res.hasPrevious, res.next, res.previous);
                     commit('updateStatusPost', statusPost)
@@ -154,7 +153,7 @@ export const post = {
         /**
          * Delete post
          */
-         delete({ commit, dispatch }, id) {
+        delete({ commit, dispatch }, id) {
             return new Promise((resolve, reject) => {
                 postService.deletePost(id)
                 .then( res => {
@@ -218,6 +217,11 @@ export const post = {
                     reject(err)
                 })
             })
+        },
+        async clearPost({ state }) {
+            state.Post = await []
+            state.StatusPost = await initial_StatusPost;
+            state.category = await null;
         }
     },
     mutations: {
@@ -233,13 +237,6 @@ export const post = {
         updateStatusLoading(state, statusLoading) {
             state.loading = statusLoading
         },
-
-        clearPost(state) {
-            state.Post = []
-            state.StatusPost = initial_StatusPost;
-            state.category = null;
-        },
-
         clear_create(state) {
             state._create = new _create();
         },

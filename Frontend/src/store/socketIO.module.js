@@ -24,7 +24,7 @@ export const socketIO = {
             return state.socket
         },
     
-      },
+    },
     actions: {
         getAllNotify({ commit , dispatch }) {
             return new Promise((resolve, reject) => {        
@@ -61,7 +61,10 @@ export const socketIO = {
         fetchContents(state, input) {
             state.contents = []
             input.forEach(notification => {
-                const [yyyy,mm,dd,hh,mi]=notification.createdAt.split(/[/:\-T]/)
+                const offset = new Date().getTimezoneOffset();
+                // const [yyyy,mm,dd,hh,mi]=notification.createdAt.split(/[/:\-T]/)
+                let createtimestamp = new Date( new Date( notification.createdAt ) - offset )
+                const [mm,dd,yyyy,,hh,mi,ss] =createtimestamp.toLocaleString().split(/[/:\-T, ]/)
                 state.contents.push({
                     _id: notification._id,
                     action_type: notification.action_on,
@@ -69,18 +72,16 @@ export const socketIO = {
                     user_id: notification.action_by.user_detail[0]._id,
                     user_like_post_firstname: notification.action_by.user_detail[0].firstname,
                     user_like_post_lastname: notification.action_by.user_detail[0].lastname,
-                    createdAt: `${dd}-${mm}-${yyyy} ${hh}:${mi}`,
+                    createdAt: `${dd}-${mm}-${yyyy} ${hh}:${mi}:${ss}`,
                 })
             });           
         },
         addNotification(state,input) {
             state.contents.push(input)
-        }
-        ,
+        },
         removeAllNotification(state) {
             state.contents = []
-        }
-        ,
+        },
         InitialInfo(state, input) {
             state.roomid = input.roomid
             state.userid = input.userid

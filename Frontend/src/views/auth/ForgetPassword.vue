@@ -10,7 +10,12 @@
               Career Exploration
             </h2>
             <div class="btns mt-4" data-aos="fade-up" data-aos-delay="450">
-              <Button href="#" classer="btn-color-02 btn-sm btn-mw fw-600" text="LEARN MORE" />
+              <a 
+                href="https://updriven.com/learner-overview" target="_blank" 
+                class="btn btn-action btn-color-02 btn-sm btn-mw fw-600"
+              >
+                LEARN MORE
+              </a>
             </div>
           </div>
           <div class="hero-container bottom-right" data-aos="fade-left" data-aos-delay="600">

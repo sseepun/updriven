@@ -13,7 +13,10 @@
         <PostSingle :post="post"/>
       </div>
     </div>
-    <div class="h5 fw-600 color-mgray text-center pt-6 pb-2 text-center">
+    <div 
+      class="h5 fw-600 color-mgray text-center text-center" 
+      style="padding:2rem 0 2.5rem 0;"
+    >
       <div ref="lazyLoadPosts">Loading...</div>
     </div>
   </div>

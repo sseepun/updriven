@@ -40,14 +40,16 @@ app.use(multer({
 }).array('media'));
 
 // CORS
-const CLIENT_URL_REGEX = new RegExp(process.env.CLIENT_REGEX)
-const DOMAIN_URL_REGEX = new RegExp(process.env.DOMAIN)
+const cleintDomain = process.env.CLIENT_URL.replace(/http:\/\/|https:\/\/|\//g, '');
+const cleintDir = process.env.CLIENT_DIR.replace(/http:\/\/|https:\/\/|\//g, '');
 const corsOptions = {
-    origin: [CLIENT_URL_REGEX, DOMAIN_URL_REGEX], // น้ำตาจะไหล ลืมใส่ regex
-    credentials: true,
-    // optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-  }
-
+  origin: [
+    new RegExp(`${cleintDomain}$`),
+    new RegExp(`${cleintDir}$`)
+  ], 
+  credentials: true,
+  // optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 app.use(cors( corsOptions )); // remove corsOptions to allow all origins
 
 // parse requests of content-type - application/json

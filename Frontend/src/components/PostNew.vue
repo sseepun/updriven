@@ -2,7 +2,7 @@
   <div v-if="user" class="new-post bshadow" @click="isActivePopup = !isActivePopup">
     <Avatar :avatar="user.avatar" />
     <FormGroup
-      type="text" placeholder="What would you like to share about?" wrapperClass="fgray"
+      type="text" placeholder="Share Your Knowledge." wrapperClass="fgray"
     />
     <div class="btns">
       <Button href="javascript:" classer="d-block btn-color-01 pl-4 pr-4" text="CREATE POST" />
@@ -73,13 +73,13 @@
                   <div class="blocks no-padding">
                     <div class="block w-full">
                       <FormGroup 
-                        type="textarea" :value="createDetail.content" placeholder="Message" 
+                        type="textarea" :value="createDetail.content" placeholder="Content" 
                         :required="true" classer="w-full" :rows="5" 
                         @input="(event) => createDetail.content = event" 
                       />
                     </div>
                   </div>
-                  <div class="blocks no-padding">
+                  <!-- <div class="blocks no-padding">
                     <div class="block w-full">
                       <FormGroup 
                         type="select" classer="w-full" 
@@ -91,7 +91,7 @@
                         @input="createDetail.visible_to = $event" 
                       />
                     </div>
-                  </div>
+                  </div> -->
                   <div class="blocks fw-wrap">
                     <div class="block">
                       <div class="btns mr-2">
@@ -109,10 +109,10 @@
                         <input 
                           type="file" id="fileUpload" name="filefield" multiple="multiple" 
                           @change="onFileSelected" hidden>
-                        <Button
+                        <!-- <Button
                           text="Attached file" classer="btn-color-02"
                           iconPrepend="attach.png" @click="onClickAddfiles('fileUpload')"
-                        />
+                        /> -->
                         <!-- <Button
                           text="Attached file" classer="btn-color-02" href="javascript:" 
                           iconPrepend="attach.png"

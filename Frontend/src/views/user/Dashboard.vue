@@ -13,9 +13,6 @@
         <div>
           <SectionSponsored />
         </div>
-        <div class="mt-6">
-          <SectionLive />
-        </div>
       </div>
     </div>
 
@@ -46,9 +43,9 @@ export default {
     SectionSponsored,
     SectionLive
   },
-  created() {
-    this.clearPost()
-    this.fetchPostAll();
+  async created() {
+    await this.clearPost();
+    await this.fetchPostAll();
   },
   mounted() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
@@ -65,10 +62,8 @@ export default {
       }
     },
     ...mapActions({
-      fetchPostAll:'post/fetchPostAll'
-    }),
-    ...mapMutations({
-      clearPost:'post/clearPost'
+      fetchPostAll:'post/fetchPostAll',
+      clearPost: 'post/clearPost'
     })
   }
 }

@@ -83,6 +83,10 @@ input[type=file]:focus, select:focus, textarea:focus{border-color:#166c74!import
 .popup-comment .menu{color:#212121;}
 .popup-comment .menu:hover, .popup-comment .menu.active{color:#166c74;}
 
+/* Popup Post Detail */
+.popup-post-detail .content{background:#ffffff;}
+.popup-post-detail .arrow{border-color:#ffffff; background:#ffffff;}
+
 /* Popup Options */
 .popup-options{background:#ffffff; border-color:#dddddd;}
 .popup-options .menu-container{border-color:#dddddd;}

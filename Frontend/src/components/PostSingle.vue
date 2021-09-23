@@ -1,4 +1,5 @@
 <template>
+
   <div v-if="user" class="post bshadow">
     <div class="p-3" v-if="selfPost.shared">     
       <p class="xs fw-500">
@@ -7,6 +8,7 @@
         {{formatDate(selfPost.createdAt)}}
       </p>
     </div>
+
     <template v-if="selfPost.desc.indexOf('https://www.youtube.com/') > -1">
       <div class="ss-img video-view no-hover">
         <iframe 
@@ -20,19 +22,19 @@
         v-if="selfPost.image[0].type == 'video/mp4' || selfPost.image[0].path.indexOf('.mp4') > -1" 
         class="ss-img video-view no-hover"
       >
-        <video ref="videoPlayer" class="img-bg w-full h-full" border="0" controls>
-          <source
-            :src="selfPost.image[0].path"
-            :type="selfPost.image[0].type"
-          />
+        <video 
+          ref="videoPlayer" class="img-bg w-full h-full" border="0" controls 
+          oncontextmenu="return false;"
+        >
+          <source :src="selfPost.image[0].path" :type="selfPost.image[0].type" />
         </video>
       </div>
-      <div v-else class="ss-img no-hover">
+      <div v-else class="ss-img no-hover cursor-pointer" @click="isActiveDetail = true">
         <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\');'"></div>
       </div>
     </template>
     <template v-else-if="selfPost.image.length == 2">
-      <div class="grids" style="--gs:0rem;">
+      <div class="grids cursor-pointer" style="--gs:0rem;" @click="isActiveDetail = true">
         <div class="grid sm-50">
           <div class="ss-img no-hover" style="border-top-right-radius:0;">
             <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\');'"></div>
@@ -46,7 +48,7 @@
       </div>
     </template>
     <template v-else-if="selfPost.image.length >= 3">
-      <div class="grids" style="--gs:0rem;">
+      <div class="grids cursor-pointer" style="--gs:0rem;" @click="isActiveDetail = true">
         <div class="grid sm-75">
           <div class="ss-img vertical-sm no-hover" style="border-top-right-radius:0;">
             <div class="img-bg" :style="'background-image:url(\''+selfPost.image[0].path+'\');'"></div>
@@ -74,7 +76,7 @@
           </a>
           <div class="popup-options bshadow" :class="{ 'active': isActivePopup }">
             <div class="wrapper">
-              <div class="menu-container">
+              <!-- <div class="menu-container">
                 <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/bell-02.png" alt="Image Icon" />
@@ -87,32 +89,32 @@
                   </div>
                   <div class="text">Embed</div>
                 </a>
-              </div>
+              </div> -->
               <div class="menu-container">
-                <a class="menu color-gray h-color-01" href="javascript:">
+                <!-- <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/drag.png" alt="Image Icon" />
                   </div>
                   <div class="text">Hide Post</div>
-                </a>
-                <a class="menu color-gray h-color-01" href="javascript:">
+                </a> -->
+                <!-- <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/clock.png" alt="Image Icon" />
                   </div>
                   <div class="text">Snooze Derrick Sheril for 30 days</div>
-                </a>
+                </a> -->
                 <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/unfollow.png" alt="Image Icon" />
                   </div>
-                  <div class="text">Unfollow Derrick Sheril</div>
+                  <div class="text">Follow Mentor</div>
                 </a>
-                <a class="menu color-gray h-color-01" href="javascript:">
+                <!-- <a class="menu color-gray h-color-01" href="javascript:">
                   <div class="icon">
                     <img src="/assets/img/icon/report.png" alt="Image Icon" />
                   </div>
                   <div class="text">Find suport or report post</div>
-                </a>
+                </a> -->
               </div>
               <div class="menu-container" v-if="selfPost.sharedUser == user.id || selfPost.user.id == user.id">
                 <a 
@@ -135,13 +137,23 @@
         <span class="dot"></span>
         {{formatDate(selfPost.createdAt)}}
       </p>
+
       <template v-if="selfPost.desc.indexOf('https://www.youtube.com/') < 0">
         <p class="sm fw-300 color-gray lh-xs mt-3">
           {{selfPost.desc}}
         </p>
-      </template>
 
-      {{selfPost.counts.comments}}
+        <div v-for="(c, i) in listLink" :key="i">
+          <p class="sm fw-300 color-gray lh-xs mt-3" v-if="c.type == 'text'">
+            {{c.content}}
+          </p>
+
+          <p class="sm fw-300 color-gray lh-xs mt-3" v-if="c.type == 'link'">
+            <a :href="c.content" >{{c.content}}</a>
+          </p>
+        </div>
+
+      </template>
       
       <div class="toolbar mt-3">
         <div class="post-icon color-gray mr-4">
@@ -163,13 +175,13 @@
         >
           <img src="/assets/img/icon/share.png" alt="Image Icon" />
         </a>
-        <a 
+        <!-- <a 
           class="post-icon" href="javascript:" 
           :class="{ 'active': selfPost.actions.followed  }" 
           @click="selfPost.actions.followed = !selfPost.actions.followed"
         >
           <img src="/assets/img/icon/ribbon.png" alt="Image Icon">
-        </a>
+        </a> -->
       </div>
 
       <form @submit.prevent="commentOnPost()">
@@ -228,6 +240,20 @@
       </div>
     </div>
   </div>
+
+  <!-- Popup Detail -->
+  <template v-if="user && isActiveDetail">
+    <template 
+      v-if="selfPost.image.length > 0 && selfPost.image[0].type != 'video/mp4' 
+        && selfPost.image[0].path.indexOf('.mp4') < 0" 
+    >
+      <PostSinglePopupDetail 
+        :images="selfPost.image" :isActive="isActiveDetail" 
+        @close="isActiveDetail = false"
+      />
+    </template>
+  </template>
+
 </template>
 
 <script>
@@ -235,11 +261,14 @@ import moment from 'moment';
 import {mapGetters, mapActions, mapMutations} from "vuex";
 import { _CommentPost } from '../models/post';
 import CommentPost from './CommentPost';
+import PostSinglePopupDetail from './PostSinglePopupDetail';
+import { postService } from '../services';
 
 export default {
   name: 'PostSingle',
   components: {
-    CommentPost
+    CommentPost,
+    PostSinglePopupDetail,
   },
   props: {
     post: { type: Object, default: {} }
@@ -247,8 +276,10 @@ export default {
   data() {
     return {
       randomId: Math.round(Math.random() * 10000000),
+      isActiveDetail: false,
 
       selfPost: this.post,
+      listLink: [], // For display on single post
       isActivePopup: false,
       isActivePopupDelete: false,
       commentLimit: 1,
@@ -260,7 +291,8 @@ export default {
       _PostID: 0
     }
   },
-  created() {
+  async created() {
+    this.listLink = await this.formContent(this.selfPost.desc)
   },
   mounted: function() {
     // try{
@@ -296,7 +328,7 @@ export default {
       return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
     formatDate(value) {
-      return moment(String(value)).format('MM/DD/YYYY');
+      return moment(String(value)).format('MM/DD/YYYY HH:mm:ss');
     },
 
     togglePostLike() {
@@ -408,6 +440,56 @@ export default {
     getYoutubeId(desc) {
       var temp = desc.split('?v=');
       return temp[1];
+    },
+
+    async formContent(desc) {
+      const URLMatcher = await /^(?:(?:https?):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i
+
+      const withLinks = await desc.replace(URLMatcher, match => `<a href="${desc}">${desc} </a>`)
+      const spiltText = await desc.split(' ');
+
+      const ListLink = await [];
+      
+      let spiltTextLength = 0;
+      let textTemporary = "";
+
+      await spiltText.forEach(function(entry) {
+        if (entry.match(new RegExp(URLMatcher))) {
+          if ( textTemporary != "") {
+            ListLink.push({
+              content: textTemporary,
+              type: 'text'
+            })
+
+            textTemporary = "";
+
+            // const dataLink = postService.previewLink(entry)
+          }
+
+          ListLink.push({
+            content: entry,
+            type: 'link'
+          });
+
+        } else {
+          textTemporary = textTemporary + ' ' + entry ;
+
+          if (spiltTextLength === (spiltText.length - 1)) {
+            ListLink.push({
+              content: textTemporary,
+              type: 'text'
+            })
+          }
+        }
+
+        spiltTextLength = spiltTextLength + 1;
+      });
+
+      return ListLink
+    },
+
+    handleClickLinkPrevuew(preview) {
+      console.log('click', preview.domain, preview.title, preview.description, preview.img)
     }
   }
 }

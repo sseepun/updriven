@@ -26,11 +26,11 @@ module.exports = app => {
         authController.verifyEmail
     );
 
-		router.get("/forgot/:email",
+    router.get("/forgot/:email",
       authController.generateForgotPwdLink
   	);
 
- 		router.get("/reset/:token",
+    router.get("/reset/:token",
       authController.resetPwd
   	);
 

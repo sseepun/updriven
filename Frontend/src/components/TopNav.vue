@@ -30,17 +30,21 @@
                     <img src="/assets/img/icon/alert.svg" alt="Image Icon" />
                   </div>
                   <div class="text-container">
-                    <div class="date">12/07/2021</div>
-                    <div class="title">{{content.user_like_post_firstname}} {{content.user_like_post_lastname}} Give Reaction To Your {{ content.action_type }}</div>
-                    <div class="desc">{{content.action_to}}</div>
+                    <div class="date">
+                      {{formatDate(content.createdAt)}}
+                    </div>
+                    <div class="title">
+                      {{content.user_like_post_firstname}} {{content.user_like_post_lastname}} 
+                      Reacted to your Post. 
+                    </div>
+                    <!-- <div class="desc">{{content.action_to}}</div> -->
                   </div>
                 </a>
               </div>
             </div>
           </div>
 
-
-          <div class="option" :class="{ 'active': isActiveMsg }">
+          <!-- <div class="option" :class="{ 'active': isActiveMsg }">
             <router-link to="/user/chat" class="icon" @click="isActiveMsg = !isActiveMsg">
               <img src="/assets/img/icon/message.png" alt="Message Icon" />
             </router-link>
@@ -49,7 +53,7 @@
             <a class="icon" href="javascript:" @click="isActiveAdd = !isActiveAdd">
               <img src="/assets/img/icon/plus-circle.png" alt="Plus Circle Icon" />
             </a>
-          </div>
+          </div> -->
           <div class="option-profile" :class="{ 'active': isActiveProfile }">
             <a href="javascript:" @click="isActiveProfile = !isActiveProfile">
               <Avatar :avatar="user.avatar" classer="border-3 bcolor-01" />
@@ -81,6 +85,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import {mapGetters, mapActions, mapState} from "vuex"
 
 export default {
@@ -108,7 +113,6 @@ export default {
     this.getSocketID.on('get-count-notify', (data) => {
       this.getAllNotify()
     });
-
   },
   computed: {
     ...mapGetters({
@@ -123,8 +127,11 @@ export default {
       signout: 'authentication/signout',
       removeNotification: 'socketIO/removeNotification',
       getAllNotify: 'socketIO/getAllNotify',
-
     }),
+    
+    formatDate(value) {
+      return moment(String(value)).format('MM/DD/YYYY HH:mm:ss');
+    },
     signOut() {
       this.signout().then(
         () => {

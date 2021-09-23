@@ -6,6 +6,8 @@ import { post } from './post.module';
 import { category } from './category.module';
 import { alert } from './alert.module';
 import { socketIO } from './socketIO.module';
+import { axios } from './axios.module'
+import { csc } from './csc.module'
 
 const store = createStore({
   modules: {
@@ -14,6 +16,8 @@ const store = createStore({
     category,
     alert,
     socketIO,
+    axios,
+    csc
   }
 })
 

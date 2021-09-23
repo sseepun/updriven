@@ -24,21 +24,26 @@ export const authentication = {
     async signin({ dispatch, commit }, { authen, password }) {
       return await new Promise((resolve, reject) => {        
          authenService.signin( authen, password ).then(
-          res => {
+          response => {
             var resUser = new User(
-              res._id,
-              res.user_detail[0].firstname,
-              res.user_detail[0].lastname,
-              res.user_detail[0].profile_pic,
-              res.user_detail[0].background_pic,
-              res.user_detail[0].state_id,
-              res.user_detail[0].province,
-              res.email,
-              res.user_detail[0].organization,
+              response._id,
+              response.user_detail[0].firstname,
+              response.user_detail[0].lastname,
+              response.user_detail[0].profile_pic,
+              response.user_detail[0].background_pic,
+              response.user_detail[0].state_id,
+              response.user_detail[0].province,
+              response.email,
+              response.user_detail[0].organization,
             )
+            resUser.country_id = response.user_detail[0].country_id
+            resUser.about = response.user_detail[0].about_us
+            resUser.interests = response.user_detail[0].interests
+
             commit('signinSuccess', resUser);
-            //dispatch('alert/assign', { type: 'Success', message: 'Sign in successful' }, { root: true })
-            resolve(res)
+            dispatch('csc/mapFullName',{"country_code":response.user_detail[0].country_id , "states_code":response.user_detail[0].state_id}, { root: true })
+            dispatch('alert/assign', { type: 'Success', message: 'Sign In Successful' }, { root: true })
+            resolve(response)
           },
           error => {
             commit('signinFailed');
@@ -56,7 +61,7 @@ export const authentication = {
         authenService.logout().then(
           response => {
             commit('signout');
-            dispatch('alert/assign', { type: 'Success', message: 'Sign out successful' }, { root: true })
+            dispatch('alert/assign', { type: 'Success', message: 'Sign Out Successful' }, { root: true })
             resolve(response)
           }).catch(err => {
             reject(err)
@@ -67,7 +72,7 @@ export const authentication = {
       return new Promise((resolve, reject) => {   
       authenService.register(regisuser).then(
         response => {
-          dispatch('alert/assign', { type: 'Success', message: 'Sign up successful' }, { root: true })
+          dispatch('alert/assign', { type: 'Success', message: 'Sign Up Successful' }, { root: true })
           
           resolve(response)
         },
@@ -86,7 +91,7 @@ export const authentication = {
       return new Promise((resolve, reject) => {   
       authenService.verifyEmailRegister(token).then(
         response => {
-          dispatch('alert/assign', { type: 'Success', message: 'Verify email successful' }, { root: true })
+          dispatch('alert/assign', { type: 'Success', message: 'Verify Email Successful' }, { root: true })
           
           resolve(response.data)
         },
@@ -162,8 +167,11 @@ export const authentication = {
               response.user_detail[0].background_pic,
             )
             resUser.email = response.email
+            resUser.country_id = response.user_detail[0].country_id
+            resUser.state_id = response.user_detail[0].state_id
+            dispatch('csc/mapFullName',{"country_code":response.user_detail[0].country_id , "states_code":response.user_detail[0].state_id}, { root: true })
             commit('signinSuccess', resUser);
-            dispatch('alert/assign', { type: 'Success', message: 'Sign in successful' }, { root: true })
+            dispatch('alert/assign', { type: 'Success', message: 'Sign In Successful' }, { root: true })
             resolve(response)
           },
           error => {
@@ -182,7 +190,7 @@ export const authentication = {
         
         response => {
           dispatch( 'getProfile' )
-          dispatch('alert/assign', { type: 'Success', message: 'Edit profile successful' }, { root: true })
+          dispatch('alert/assign', { type: 'Success', message: 'Edit Profile Successful' }, { root: true })
           resolve(response)
         },
         error => {
@@ -206,8 +214,11 @@ export const authentication = {
           response.email,
           response.user_detail[0].organization,
         )
+        resUser.country_id = response.user_detail[0].country_id
+        resUser.about = response.user_detail[0].about_us
+        resUser.interests = response.user_detail[0].interests
         commit('signinSuccess', resUser);
-        dispatch('alert/assign', { type: 'Success', message: 'Edit image successfully.' }, { root: true })
+        dispatch('alert/assign', { type: 'Success', message: 'Edit Image Successfully.' }, { root: true })
         resolve(response)
     })
     },  
@@ -224,15 +235,19 @@ export const authentication = {
           response.email,
           response.user_detail[0].organization,
         )
+        resUser.country_id = response.user_detail[0].country_id
+        resUser.about = response.user_detail[0].about_us
+        resUser.interests = response.user_detail[0].interests
         commit('signinSuccess', resUser);
-        dispatch('alert/assign', { type: 'Success', message: 'Edit Background successfully.' }, { root: true })
+        dispatch('alert/assign', { type: 'Success', message: 'Edit Background Successfully.' }, { root: true })
         resolve(response)
     })
     },
-    getProfile({ commit }) {
+    getProfile({ commit , dispatch}) {
       return new Promise((resolve, reject) => {   
       userService.getProfile().then(
         response => {
+          console.log( 'response :', response.user_detail[0].interests)
           var resUser = new User(
             response._id,
             response.user_detail[0].firstname,
@@ -244,6 +259,10 @@ export const authentication = {
             response.email,
             response.user_detail[0].organization,
           )
+          resUser.country_id = response.user_detail[0].country_id
+          resUser.about = response.user_detail[0].about_us
+          resUser.interests = response.user_detail[0].interests
+          dispatch('csc/mapFullName',{"country_code":response.user_detail[0].country_id , "states_code":response.user_detail[0].state_id}, { root: true })
           commit('signinSuccess', resUser);
           resolve()
         },
@@ -260,17 +279,20 @@ export const authentication = {
   // Synchronous
   mutations: {
     signinSuccess(state, user) {
+      
       localStorage.setItem(`${process.env.VUE_APP_API_URL}_USER`, JSON.stringify(user));
       state.user = user;
       state.authenticated = true
     },
     signinFailed(state) {
       localStorage.removeItem(`${process.env.VUE_APP_API_URL}_USER`);
+      localStorage.removeItem(`${process.env.VUE_APP_API_URL}_CSC`);
       state.user = null;
       state.authenticated = false
     },
     async signout(state) {
       await localStorage.removeItem(`${process.env.VUE_APP_API_URL}_USER`);
+      localStorage.removeItem(`${process.env.VUE_APP_API_URL}_CSC`);
       state.user = null;
       state.authenticated = false
     }

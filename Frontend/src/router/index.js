@@ -44,16 +44,20 @@ const routes = [
     component: () => import('../views/auth/verifyTokenRegister.vue')
   },
 
+  // Auth Mentor Pages
+  {
+    path: '/auth/signup-mentor',
+    name: 'AuthSignUpMentorPage',
+    component: () => import('../views/auth/SignUpMentor.vue')
+  },
+
+
+
   // User Pages
   {
     path: '/user/dashboard/:username?',
     name: 'UserDashboardPage',
     component: () => import('../views/user/Dashboard.vue')
-  },
-  {
-    path: '/user/profile',
-    name: 'UserProfilePage',
-    component: () => import('../views/user/Profile.vue')
   },
   {
     path: '/user/chat',
@@ -62,11 +66,27 @@ const routes = [
   },
   
   {
+    path: '/user/profile',
+    name: 'UserProfilePage',
+    component: () => import('../views/user/Profile.vue')
+  },
+  {
+    path: '/user/profile/about',
+    name: 'UserProfileAboutPage',
+    component: () => import('../views/user/ProfileAbout.vue')
+  },
+  {
     path: '/user/profile/update',
     name: 'UserProfileUpdatePage',
     component: () => import('../views/user/ProfileUpdate.vue')
   },
 
+  // Page Not Found
+  {
+    path: '/:catchAll(.*)',
+    name: 'NotFound',
+    component: () => import('../components/PageNotFound.vue')
+  }
 ]
 
 const router = createRouter({
@@ -76,6 +96,7 @@ const router = createRouter({
 
 
 router.beforeEach((to, from, next) => {
+  store.dispatch('axios/cancelPendingRequests');
   if (!(to.path.includes('/auth') || to.name == 'Home') && !store.getters['authentication/isAuthenticated']) next({ name: 'Home' })
   else next()
 });

@@ -2,8 +2,8 @@
   <div v-if="user">
     <h6 class="fw-600 color-01">About</h6>
     <div class="personal-info">
-      <div class="info">
-        <p class="xs fw-500 color-gray" v-if="user.organization[0]">
+      <div class="info" >
+        <p class="xs fw-500 color-gray" v-if="false">
         <div class="icon">
           <img src="/assets/img/icon/education.png" alt="Image Icon" />
         </div>
@@ -16,7 +16,13 @@
           <img src="/assets/img/icon/pin.png" alt="Image Icon" />
         </div>
         <p class="xs fw-500 color-gray">
-          Lives in <span class="color-dark">{{user.province}}, {{user.state_id}}</span>
+          Lives in 
+          <span class="color-dark">
+            {{stateFullName && stateFullName!='-'? stateFullName: ''}}{{
+              stateFullName && stateFullName!='-' && countryFullName
+                ? ', '+countryFullName: countryFullName
+            }}
+          </span>
         </p>
       </div>
       <div class="info">
@@ -35,7 +41,7 @@
           Followed by <span class="color-dark">125 people</span>
         </p>
       </div>
-      <div class="info">
+      <div class="info" v-if="false">
         <div class="icon">
           <img src="/assets/img/icon/star.png" alt="Image Icon" />
         </div>
@@ -63,6 +69,8 @@ export default {
    computed: {
     ...mapGetters({
       user: 'authentication/user',
+      countryFullName: 'csc/countryFullName',
+      stateFullName: 'csc/stateFullName',
     })
   },
   created() {
