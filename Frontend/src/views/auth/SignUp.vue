@@ -103,6 +103,11 @@
                   Already a member? Sign in
                 </router-link>
               </div>
+              <div class="grid sm-100 mt-0">
+                <router-link to="/auth/signup-mentor" class="p xs color-01 h-color-black">
+                  Become a Mentor
+                </router-link>
+              </div>
             </div>
           </div>
           
