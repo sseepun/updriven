@@ -31,6 +31,7 @@
                   </div>
                   <div class="text-container">
                     <div class="date">
+                      
                       {{formatDate(content.createdAt)}}
                     </div>
                     <div class="title">
@@ -87,6 +88,9 @@
 <script>
 import moment from 'moment';
 import {mapGetters, mapActions, mapState} from "vuex"
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
+
 
 export default {
   name: 'TopNav',
@@ -113,6 +117,7 @@ export default {
     this.getSocketID.on('get-count-notify', (data) => {
       this.getAllNotify()
     });
+
   },
   computed: {
     ...mapGetters({
@@ -130,7 +135,12 @@ export default {
     }),
     
     formatDate(value) {
-      return moment(String(value)).format('MM/DD/YYYY HH:mm:ss');
+      const split = String(value).split('-');
+      var offset = -(new Date().getTimezoneOffset()/60);
+      console.log(offset)
+      const momentValue = moment.utc([split[1], split[0], split[2]].join('-')).utcOffset(offset)
+      console.log(momentValue.fromNow())
+      return momentValue.fromNow()
     },
     signOut() {
       this.signout().then(
