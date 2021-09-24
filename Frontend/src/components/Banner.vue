@@ -11,12 +11,15 @@
             {{user.firstname}} {{user.lastname}}
           </h6>
           <p class="xxs fw-500 color-gray">
-            Learner: 
-            {{stateFullName && stateFullName!='-'? stateFullName: ''}}{{
+            Role : Learner
+            
+          </p>
+          <p class="xxs fw-500 color-gray">
+          {{stateFullName && stateFullName!='-'? stateFullName: ''}}{{
               stateFullName && stateFullName!='-' && countryFullName
                 ? ', '+countryFullName: countryFullName
             }}
-          </p>
+            </p>
         </div>
       </div>
       <div class="d-flex ai-center jc-space-between fw-wrap mt-3">
