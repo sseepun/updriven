@@ -76,6 +76,16 @@ const routes = [
     component: () => import('../views/user/ProfileAbout.vue')
   },
   {
+    path: '/user/profile/following',
+    name: 'UserProfileFollowingPage',
+    component: () => import('../views/user/ProfileFollowing.vue')
+  },
+  {
+    path: '/user/profile/image',
+    name: 'UserProfileImagePage',
+    component: () => import('../views/user/ProfileImage.vue')
+  },
+  {
     path: '/user/profile/update',
     name: 'UserProfileUpdatePage',
     component: () => import('../views/user/ProfileUpdate.vue')
