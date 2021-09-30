@@ -34,6 +34,7 @@
         <p class="mt-4">
           {{user.about? user.about: '-'}}
         </p>
+        
       </div>
     </div>
 
