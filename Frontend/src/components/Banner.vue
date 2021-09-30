@@ -34,8 +34,12 @@
           >Post</router-link>
           <router-link 
             class="tab" :class="activeIndex==2? 'active': ''" 
-            to="#"
+            to="/user/profile/following"
           >Following</router-link>
+          <router-link 
+            class="tab" :class="activeIndex==3? 'active': ''" 
+            to="/user/profile/image"
+          >Image</router-link>
         </div>
         <div class="btn d-flex">
           <Button 

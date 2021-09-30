@@ -11,10 +11,12 @@
     "@vueform/multiselect": "^2.1.0",
     "axios": "^0.21.1",
     "core-js": "^3.11.2",
+    "javascript-time-ago": "^2.3.9",
     "js-cookie": "^2.2.1",
     "moment": "^2.29.1",
     "v-calendar": "^3.0.0-alpha.5",
     "vue": "^3.0.0",
+    "vue-my-photos": "^3.0.1",
     "vue-router": "^4.0.6",
     "vuex": "^4.0.1"
   },
