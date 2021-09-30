@@ -27,7 +27,6 @@ module.exports = app => {
     ),
 
     router.get('/category',
-        auth.isLoggedIn,
         feedController.getCategory
     ),
 

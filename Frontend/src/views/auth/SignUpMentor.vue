@@ -1,16 +1,20 @@
 <template>
   <section class="auth-01">
     <div class="wrapper">
-
       <div class="bg-container">
         <div class="wrapper">
           <div class="hide-mobile">
-            <h2 class="fw-500 color-white lh-2xs" data-aos="fade-up" data-aos-delay="300">
+            <h2
+              class="fw-500 color-white lh-2xs"
+              data-aos="fade-up"
+              data-aos-delay="300"
+            >
               Share Your Knowledge
             </h2>
             <div class="btns mt-4" data-aos="fade-up" data-aos-delay="450">
-              <a 
-                href="https://updriven.com/mentor-overview" target="_blank" 
+              <a
+                href="https://updriven.com/mentor-overview"
+                target="_blank"
                 class="btn btn-action btn-color-02 btn-sm btn-mw fw-600"
               >
                 LEARN MORE
@@ -25,54 +29,89 @@
 
       <div class="auth-container">
         <div class="auth-wrapper">
-
           <div v-if="step == 0" data-aos="fade-up" data-aos-delay="0">
             <div class="logo">
               <img src="/assets/img/logo.png" alt="Image Logo" />
             </div>
-            <h4 class="fw-600 text-center pt-4 mt-6">
-              Sign Up
-            </h4>
+            <h4 class="fw-600 text-center pt-4 mt-6">Sign Up</h4>
             <form @submit.prevent="handleRegister">
               <div class="grids">
                 <div class="grid sm-50">
-                  <FormGroup 
-                    type="text" label="First Name" :required="true" 
-                    classer="label-sm" wrapperClass="fgray" 
-                    :value="dataset.firstname" @input="dataset.firstname = $event" 
+                  <FormGroup
+                    type="text"
+                    label="First Name"
+                    :required="true"
+                    classer="label-sm"
+                    wrapperClass="fgray"
+                    :value="dataset.firstname"
+                    @input="dataset.firstname = $event"
                   />
                 </div>
                 <div class="grid sm-50">
-                  <FormGroup 
-                    type="text" label="Last Name" :required="true" 
-                    classer="label-sm" wrapperClass="fgray" 
-                    :value="dataset.lastname" @input="dataset.lastname = $event" 
+                  <FormGroup
+                    type="text"
+                    label="Last Name"
+                    :required="true"
+                    classer="label-sm"
+                    wrapperClass="fgray"
+                    :value="dataset.lastname"
+                    @input="dataset.lastname = $event"
                   />
                 </div>
                 <div class="grid sm-50">
-                  <FormGroup 
-                    type="text" label="Organization Name" :required="true" 
-                    classer="label-sm" wrapperClass="fgray" 
+                  <FormGroup
+                    type="text"
+                    label="Organization Name"
+                    :required="true"
+                    classer="label-sm"
+                    wrapperClass="fgray"
+                    :value="dataset.organization"
+                    @input="dataset.organization = $event"
                   />
                 </div>
                 <div class="grid sm-50">
-                  <FormGroup 
-                    type="text" label="Occupation" :required="true" 
-                    classer="label-sm" wrapperClass="fgray" 
+                  <FormGroup
+                    type="text"
+                    label="Occupation"
+                    :required="true"
+                    classer="label-sm"
+                    wrapperClass="fgray"
+                    :value="dataset.occupation"
+                    @input="dataset.occupation = $event"
                   />
                 </div>
                 <div class="grid sm-100">
-                  <FormGroup 
-                    type="email" label="Email" :required="true" 
-                    classer="label-sm" wrapperClass="fgray" 
-                    :value="dataset.email" @input="dataset.email = $event" 
+                  <FormGroup
+                    type="select"
+                    label="What are you providing ?"
+                    :required="true"
+                    classer="label-sm"
+                    wrapperClass="fgray"
+                    :options="optionList"
+                    :value="dataset.providing"
+                    @input="dataset.providing = $event"
                   />
                 </div>
                 <div class="grid sm-100">
-                  <FormGroup 
-                    type="password" label="Password" :required="true" 
-                    classer="label-sm" wrapperClass="fgray" 
-                    :value="dataset.password" @input="dataset.password = $event" 
+                  <FormGroup
+                    type="email"
+                    label="Email"
+                    :required="true"
+                    classer="label-sm"
+                    wrapperClass="fgray"
+                    :value="dataset.email"
+                    @input="dataset.email = $event"
+                  />
+                </div>
+                <div class="grid sm-100">
+                  <FormGroup
+                    type="password"
+                    label="Password"
+                    :required="true"
+                    classer="label-sm"
+                    wrapperClass="fgray"
+                    :value="dataset.password"
+                    @input="dataset.password = $event"
                   />
                 </div>
                 <div class="grid sm-100">
@@ -85,9 +124,10 @@
                   />
                 </div>
                 <div class="grid sm-100">
-                  <Button 
-                    type="submit" text="CREATE ACCOUNT" 
-                    classer="d-block btn-color-03 w-full" 
+                  <Button
+                    type="submit"
+                    text="CREATE ACCOUNT"
+                    classer="d-block btn-color-03 w-full"
                   />
                 </div>
               </div>
@@ -97,103 +137,132 @@
             </div>
             <div class="grids mt-4">
               <div class="grid sm-100">
-                <Button 
-                  type="Social Google" text="Continue with Google" 
-                  classer="d-block btn-color-04 w-full" href="/user/dashboard" 
+                <Button
+                  type="Social Google"
+                  text="Continue with Google"
+                  classer="d-block btn-color-04 w-full"
+                  href="/user/dashboard"
                 />
               </div>
               <div class="grid sm-100">
-                <Button 
-                  type="Social Facebook" text="Continue with Facebook" 
-                  classer="d-block btn-color-04 w-full" href="/user/dashboard" 
+                <Button
+                  type="Social Facebook"
+                  text="Continue with Facebook"
+                  classer="d-block btn-color-04 w-full"
+                  href="/user/dashboard"
                 />
               </div>
               <div class="grid sm-100">
-                <router-link to="/auth/signin" class="p xs color-01 h-color-black">
+                <router-link
+                  to="/auth/signin"
+                  class="p xs color-01 h-color-black"
+                >
                   Already a member? Sign in
                 </router-link>
               </div>
             </div>
           </div>
-          
+
           <div v-if="step == 1" data-aos="fade-up" data-aos-delay="0">
             <div class="logo">
               <img src="/assets/img/logo.png" alt="Image Logo" />
             </div>
-            <h4 class="fw-600 text-center pt-4 mt-4">
-              Sign Up Successful
-            </h4>
+            <h4 class="fw-600 text-center pt-4 mt-4">Sign Up Successful</h4>
             <p class="lg text-center mt-2">
-              Please check your email and follow our verification process. Thank you!
+              Please check your email and follow our verification process. Thank
+              you!
             </p>
           </div>
-
         </div>
       </div>
-
     </div>
   </section>
 </template>
 
 <script>
-import { onMounted } from '../../helpers/frontend';
-import Button from '../../components/Button';
-import FormGroup from '../../components/FormGroup';
-import CheckBoxSmall from '../../components/CheckBoxSmall';
-import RegisUser from '../../models/regis_user.js';
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { onMounted } from "../../helpers/frontend";
+import Button from "../../components/Button";
+import FormGroup from "../../components/FormGroup";
+import CheckBoxSmall from "../../components/CheckBoxSmall";
+import RegisUser from "../../models/regis_user.js";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
-  name: 'AuthSignUpMentorPage',
+  name: "AuthSignUpMentorPage",
   components: {
     Button,
     FormGroup,
-    CheckBoxSmall
+    CheckBoxSmall,
   },
-  created() { onMounted(); },
+  created() {
+    onMounted();
+    this.get_list()
+  },
   data() {
     return {
       step: 0,
       alert: {},
       dataset: {
-        firstname: '',
-        lastname: '',
-        email: '',
-        password: '',
-      }
-    }
+        firstname: "",
+        lastname: "",
+        organization: "",
+        occupation: "",
+        providing: "",
+        email: "",
+        password: "",
+      },
+    };
   },
-  methods:{
+  computed: {
+    ...mapGetters({
+      optionList: "category/option_ilst",
+    }),
+  },
+  methods: {
     ...mapActions({
-      register: 'authentication/register',
-      
+      get_list: 'category/get_list',
+      register: "authentication/register",
     }),
     handleRegister(e) {
-        let regisUser = new RegisUser(
-          this.dataset.password,
-          this.dataset.email,
-          this.dataset.firstname,
-          this.dataset.lastname
-        )
-        if (this.dataset.firstname && this.dataset.email && this.dataset.lastname && this.dataset.password) {
-          this.register(regisUser).then(
-            response => {
-              this.alert = { type: 'Success', message: 'Signed up successfully.' };
-              this.step = 1;
-              // this.$router.push('/');
-            },
-            error => {
-              this.message =
-                (error.response && error.response.data) ||
-                error.message ||
-                error.toString();
-              this.dataset.email = "";
-              this.alert = { type: 'Warning', message: error.response.data.message };
-            }
-          );
-        }
-        this.isValidated = true;
-    }
-  }
-}
+      let regisUser = new RegisUser(
+        this.dataset.password,
+        this.dataset.email,
+        this.dataset.organization,
+        this.dataset.occupation,
+        this.dataset.providing,
+        this.dataset.firstname,
+        this.dataset.lastname
+      );
+      if (
+        this.dataset.firstname &&
+        this.dataset.email &&
+        this.dataset.lastname &&
+        this.dataset.password
+      ) {
+        this.register(regisUser).then(
+          (response) => {
+            this.alert = {
+              type: "Success",
+              message: "Signed up successfully.",
+            };
+            this.step = 1;
+            // this.$router.push('/');
+          },
+          (error) => {
+            this.message =
+              (error.response && error.response.data) ||
+              error.message ||
+              error.toString();
+            this.dataset.email = "";
+            this.alert = {
+              type: "Warning",
+              message: error.response.data.message,
+            };
+          }
+        );
+      }
+      this.isValidated = true;
+    },
+  },
+};
 </script>
