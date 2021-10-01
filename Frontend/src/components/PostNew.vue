@@ -110,7 +110,7 @@
                   </div>-->
                 <template v-if="previewImage.length == 1">
                   <div
-                    class="ss-img no-hover cursor-pointer p-1"
+                    class="ss-img no-hover cursor-pointer"
                     @click="isActiveDetail = true"
                   >
                     <div
