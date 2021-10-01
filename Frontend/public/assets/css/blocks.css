@@ -181,6 +181,7 @@
 .new-post > *{pointer-events:none;}
 .new-post > .btns{width:8.5rem; margin:0;}
 .new-post > .form-group{width:calc(100% - 8.5rem - 2.25rem); padding:0 .5rem;}
+.img-bg > .img-icon{position: absolute;right: 0;margin: 1rem;z-index: 100;}
 
 
 /* Popup Container */

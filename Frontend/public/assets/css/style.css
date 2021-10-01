@@ -235,6 +235,9 @@ select{padding:.5625rem .875rem .4375rem .875rem;}
     position:absolute; top:0; bottom:0; left:0; right:0; display:flex; align-items:center;
     justify-content:center;
 }
+.popup-post-detail .img-container .img-icon{
+    top: 0; right: 0; position: absolute
+}
 .popup-post-detail .img-container img{
     display:block; width:auto; max-width:100%; height:auto; max-height:100%;
 }
@@ -540,3 +543,7 @@ select{padding:.5625rem .875rem .4375rem .875rem;}
 .p-4{padding:1rem!important;}
 .p-5{padding:1.25rem!important;}
 .p-6{padding:1.5rem!important;}
+
+
+/*z-index*/
+.z-100{z-index: 100;}
