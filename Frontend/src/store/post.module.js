@@ -36,19 +36,19 @@ export const post = {
             await commit('updateStatusLoading', true)
             return await new Promise((resolve, reject) => {
                 postService.fetchPostOwner(state.StatusPost)
-                .then( res => {
+                .then( async (res) => {
                     // update status 
-                    const statusPost = new StatusPost(res.hasNext, res.hasPrevious, res.next, res.previous);
-                    commit('updateStatusPost', statusPost)
+                    const statusPost = await new StatusPost(res.hasNext, res.hasPrevious, res.next, res.previous);
+                    await commit('updateStatusPost', statusPost)
 
                     // fetch all post
-                    const posts = changeStructurePost(res.results);
-                    commit('updatePost', posts)
+                    const posts = await changeStructurePost(res.results);
+                    await commit('updatePost', posts)
 
                     // fetch comment each postID
-                    res.results.map( x => { dispatch('post/fetchComment', x._id, { root: true }) })
+                    await res.results.map( x => { dispatch('post/fetchComment', x._id, { root: true }) })
 
-                    commit('updateStatusLoading', false)
+                    await commit('updateStatusLoading', false)
                     resolve(res)
                 })
                 .catch( err => {
@@ -64,19 +64,19 @@ export const post = {
             await commit('updateStatusLoading', true)
             return await new Promise((resolve, reject) => {
                 postService.fetchPostAll(state.StatusPost, state.category)
-                .then( res => {
+                .then( async (res) => {
                     // update status 
-                    const statusPost = new StatusPost(res.hasNext, res.hasPrevious, res.next, res.previous);
-                    commit('updateStatusPost', statusPost)
+                    const statusPost = await new StatusPost(res.hasNext, res.hasPrevious, res.next, res.previous);
+                    await commit('updateStatusPost', statusPost)
 
                     // fetch all post
-                    const posts = changeStructurePost(res.results);
-                    commit('updatePost', posts)
+                    const posts = await changeStructurePost(res.results);
+                    await commit('updatePost', posts)
 
                     // fetch comment each postID
-                    res.results.map( x => { dispatch('post/fetchComment', x._id, { root: true }) })
+                    await res.results.map( x => { dispatch('post/fetchComment', x._id, { root: true }) })
 
-                    commit('updateStatusLoading', false)
+                    await commit('updateStatusLoading', false)
                     resolve(res)
                 })
                 .catch( err => {
