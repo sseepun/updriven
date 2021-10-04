@@ -210,3 +210,51 @@ exports.getSentiments = async (req, res) => {
         return res.status(500).send({message: err})
     }
 }
+
+exports.search = async (req, res) => {
+    try {
+        if (req.body.category) {
+            const category = await Category.findById(sanitize(req.body.category))
+            console.log(category)
+            const result = await Post.paginate({
+                query: {
+                    category: [category._id],
+                    $or: [
+                        {
+                            content: { "$regex": req.body.search, "$options": "i" }
+                        },
+                        {
+                            subject: { "$regex": req.body.search, "$options": "i" }
+                        }
+                    ]
+                },
+                limit: 5,
+                next: req.body.next,
+                previous: req.body.previous,
+                paginatedField: 'Orderable'
+            })
+            return res.status(200).send(result)
+        }
+        const result = await Post.paginate({
+            query: {
+                $or: [
+                    {
+                        content: { "$regex": req.body.search, "$options": "i" }
+                    },
+                    {
+                        subject: { "$regex": req.body.search, "$options": "i" }
+                    }
+                ]
+            },
+            limit: 5,
+            next: req.body.next,
+            previous: req.body.previous,
+            paginatedField: 'Orderable'
+        })
+        return res.status(200).send(result)
+    }
+    catch (err) {
+    console.log(err)
+        return res.status(500).send({message: err})
+    }
+}

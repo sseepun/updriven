@@ -16,6 +16,11 @@ module.exports = app => {
         feedController.getComments
     );
 
+    router.post("/search",
+        auth.isLoggedIn,
+        feedController.search
+    );
+
     router.post("/post",
         auth.isLoggedIn,
         feedController.getPosts
