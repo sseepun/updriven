@@ -7,6 +7,7 @@ const Comment = db.comment;
 const Sentiment = db.sentiment;
 const Share = db.share;
 const Notification = db.notification;
+const Media = db.media
 
 exports.createPost = async (req, res) => {
     try {
@@ -19,8 +20,16 @@ exports.createPost = async (req, res) => {
         });
         await post.save();
         if (req.files) {
-            req.files.forEach((item, index) => {
-                post.media.push({index: index, type: item.mimetype, path: item.location });
+            req.files.forEach(async (item, index) => {
+                const media = new Media({
+                    user: req.userId,
+                    post: post,
+                    index: index,
+                    type: item.mimetype,
+                    path: item.location
+                })
+                post.media.push(media._id)
+                await media.save()
             });
         }
         const category = await Category.findOne({ category_name: sanitize(req.body.category)} );
@@ -48,6 +57,7 @@ exports.createPost = async (req, res) => {
         res.status(200).send({post: post});
     }
     catch (err) {
+        console.log(err)
         return res.status(500).send({message: err});
     }
 };

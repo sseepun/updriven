@@ -4,8 +4,6 @@ const sanitizerPlugin = require('mongoose-sanitizer-plugin');
 const Role = mongoose.model(
   "Role",
   new mongoose.Schema({
-    name: String,
-    title : String,
     is_mentor : Boolean,
     is_admin : Boolean,
     is_learner : Boolean,

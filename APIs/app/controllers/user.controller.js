@@ -1,3 +1,4 @@
+const global_functions = require("./modules/global_function");
 const db = require("../models");
 const sanitize = require('mongo-sanitize');
 const { rawListeners } = require("../models/log/log.model");
@@ -7,6 +8,8 @@ const Post = db.post;
 const Organization = db.organization;
 const Sentiment = db.sentiment;
 const Notification = db.notification;
+const Media = db.media;
+const Follow = db.follow;
 
 exports.editInfo = async (req, res) => {
     try {
@@ -24,7 +27,7 @@ exports.editInfo = async (req, res) => {
         if (user.user_detail[0].organization.length > 0) {
             user.user_detail[0].organization = []
         }
-        if (!(organization === null)) {
+        if (organization) {
             user.user_detail[0].organization.push(organization._id)
             await user.user_detail[0].save();
             res.status(200).send({message: 'edit info successful'});
@@ -34,7 +37,6 @@ exports.editInfo = async (req, res) => {
                 name: req.body.organization,
                 type: "School"
             });
-            organization.user_detail.push(user.user_detail[0]._id);
             await organization.save();
             user.user_detail[0].organization.push(organization._id)
             await user.user_detail[0].save();
@@ -42,6 +44,18 @@ exports.editInfo = async (req, res) => {
         }
     }
     catch (err) {
+        return res.status(500).send({message: err})
+    }
+}
+
+exports.viewOtherUserInfo = async (req, res) => {
+    try {
+        const user = await User.findById(sanitize(req.params.userID)).populate('user_detail')
+        console.log(user.user_detail)
+        return res.status(200).send(user.user_detail);
+    }
+    catch (err) {
+        console.log(err)
         return res.status(500).send({message: err})
     }
 }
@@ -82,73 +96,134 @@ exports.updateBackground = async (req, res) => {
 
 exports.posts = async (req, res) => {
     try {
+        const post_data = await global_functions.getPost(req)
+        return res.status(200).send(post_data)
+    }
+    catch (err) {
+        return res.status(500).send({message: err})
+    }
+}
+
+exports.otherUserPosts = async (req, res) => {
+    try {
+        const post_data = await global_functions.getPost(req, sanitize(req.body.userID))
+        return res.status(200).send(post_data)
+    }
+    catch (err) {
+        return res.status(500).send({message: err})
+    }
+}
+
+exports.imageList = async (req, res) => {
+    try {
+        image_list = await global_functions.getImage(req)
+        return res.status(200).send(image_list)
+    }
+    catch (err) {
+        console.log(err)
+        return res.status(500).send({message: err})
+    }
+}
+
+exports.otherUserimageList = async (req, res) => {
+    try {
+        image_list = await global_functions.getImage(req, sanitize(req.body.userID))
+        return res.status(200).send(image_list)
+    }
+    catch (err) {
+        console.log(err)
+        return res.status(500).send({message: err})
+    }
+}
+
+exports.follow = async (req, res) => {
+    try {
         const user = await User.findById(req.userId)
-        const post_list = await Post.paginate({
+        const user_to_follow = await User.findById(sanitize(req.body.userID))
+        const check_followed = await Follow.findOne({user: user, follow: user_to_follow})
+        if (user.equals(user_to_follow)) {
+            return res.status(403).send({message: "cannot follow yourself"})
+        }
+        if (check_followed) {
+            return res.status(403).send({message: "already follow"})
+        }
+        const follow_data = new Follow({
+            user: user,
+            follow: user_to_follow
+        });
+        await follow_data.save()
+        if (!user.following) {
+            user.following = 0;
+        }
+        if (!user_to_follow.Followed) {
+            user_to_follow.Followed = 0;
+        }
+        user.following += 1;
+        user_to_follow.Followed += 1;
+        await user.save()
+        await user_to_follow.save()
+        return res.status(200).send({message: "Follow successful"})
+    }
+    catch (err) {
+        console.log(err)
+        return res.status(500).send({message: err})
+    }
+}
+
+exports.unfollow = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId)
+        const user_to_unfollow = await User.findById(sanitize(req.body.userID))
+        const check_followed = await Follow.findOne({user: user, follow: user_to_unfollow})
+        if (user.equals(user_to_unfollow)) {
+            return res.status(403).send({message: "cannot unfollow yourself"})
+        }
+        if (!check_followed) {
+            return res.status(403).send({message: "not follow"})
+        }
+        await Follow.deleteOne({user: user, follow: user_to_unfollow})
+        user.following -= 1;
+        user_to_unfollow.Followed -= 1;
+        await user.save()
+        await user_to_unfollow.save()
+        return res.status(200).send({message: "Unfollow successful"})
+    }
+    catch (err) {
+        console.log(err)
+        return res.status(500).send({message: err})
+    }
+}
+
+exports.following_list = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId)
+        const following_list = await Follow.paginate({
             query: {
                 user: user._id
             },
-            limit: 5,
+            limit: 10,
             next: req.body.next,
             previous: req.body.previous,
             paginatedField: 'Orderable'
         })
-        await Post.populate(post_list,
+        await Follow.populate(following_list,
             [
                 {
-                    path: 'results.user', 
+                    path: 'results.follow', 
                     model: 'User', 
                     select: 'user_detail', 
                     populate: 
                     {
                         path: 'user_detail', 
-                        select: ['firstname', 'lastname']
+                        select: ['firstname', 'lastname', 'state_id', 'country_id']
                     }
                 },
-                {
-                    path: 'results.category', 
-                    model: 'Category', 
-                    select: 'category_name'
-                },
-                {
-                    path: 'results.share', 
-                    model: 'Share', 
-                    select: 'post',
-                    populate:
-                    {
-                        path: 'post',
-                        populate: 
-                        [
-                            { 
-                                path:'category', 
-                                select: 'category_name' 
-                            }, 
-                            { 
-                                path: 'user', 
-                                select: 'user_detail', 
-                                populate: 
-                                { 
-                                    path: 'user_detail', 
-                                    select: ['firstname', 'lastname']
-                                }
-                            }
-                        ]
-                    }
-                }
-                
             ]
         );
-        for (let i = 0; i < post_list.results.length; i++) {
-            const is_sentiment_post = await Sentiment.findOne({sentiment: post_list.results[i], user: req.user})
-            if (is_sentiment_post) {
-                post_list.results[i].is_sentiment = true
-            }
-            else {
-                post_list.results[i].is_sentiment = false
-            }
-        }
-        res.status(200).send(post_list)
+        return res.status(200).send(following_list)
     }
     catch (err) {
+        console.log(err)
         return res.status(500).send({message: err})
     }
 }

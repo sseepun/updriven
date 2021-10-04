@@ -16,9 +16,39 @@ module.exports = app => {
         userController.posts
     );
 
+    router.post('/other_user_post',
+        auth.isLoggedIn,
+        userController.otherUserPosts
+    );
+
     router.post('/edit_info',
         auth.isLoggedIn,
         userController.editInfo
+    );
+
+    router.post('/image_list',
+        auth.isLoggedIn,
+        userController.imageList
+    );
+
+    router.post('/follow',
+        auth.isLoggedIn,
+        userController.follow
+    );
+
+    router.post('/unfollow',
+        auth.isLoggedIn,
+        userController.unfollow
+    );
+
+    router.post('/following_list',
+        auth.isLoggedIn,
+        userController.following_list
+    );
+
+    router.post('/other_user_image_list',
+        auth.isLoggedIn,
+        userController.otherUserimageList
     );
 
     router.post('/edit_profile_image',
@@ -39,6 +69,11 @@ module.exports = app => {
     router.post('/clear_notification',
         auth.isLoggedIn,
         userController.deleteNotification
+    );
+
+    router.get('/profile/:userID',
+        auth.isLoggedIn,
+        userController.viewOtherUserInfo
     );
 
     app.use('/apis/user', router);

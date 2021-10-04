@@ -1,6 +1,6 @@
 const db = require("../models");
 const sanitize = require('mongo-sanitize');
-const User = require("../models/user/user.model");
+const User = db.user;
 const Post = db.post;
 const Category = db.category;
 const Comment = db.comment;
@@ -110,6 +110,11 @@ exports.getPosts = async (req, res) => {
                         path: 'user_detail', 
                         select: ['firstname', 'lastname']
                     }
+                },
+                {
+                    path: 'results.media', 
+                    model: 'Media',
+                    select: ['index', 'type', 'path'] 
                 },
                 {
                     path: 'results.category', 

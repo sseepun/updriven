@@ -11,6 +11,8 @@ const User = mongoose.model(
     google_id : String,
     status: Boolean,
     notification: { type: Number, default: 0 },
+    following: { type: Number, default: 0 },
+    Followed: { type: Number, default: 0 },
     role:
         [{
             type: mongoose.Schema.Types.ObjectId,
