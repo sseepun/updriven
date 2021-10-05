@@ -19,8 +19,22 @@ isLoggedIn = async (req, res, next) => {
     }
 }
 
+isAdmin = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.user).populate('role')
+        if (user.role[0].is_admin) {
+            return next();
+        }
+        return res.status(403).send({message: "Permission deined"});
+    }
+    catch (err) {
+        return res.status(500).send({message: err});
+    }
+}
+
 const oauth = {
-    isLoggedIn
+    isLoggedIn,
+    isAdmin
 };
 
 module.exports = oauth;
