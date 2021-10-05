@@ -73,6 +73,7 @@ exports.deletePost = async (req, res) => {
         if (post.user[0].equals(req.userId)) {
             await Post.deleteOne( {_id: post })
             await Comment.deleteMany( { post_id: sanitize(req.body.post_id) })
+            await Media.deleteMany( { post: sanitize(req.body.post_id) })
             const share_holder = await Share.find({post: post})
             await Share.deleteMany({post: post})
             if (share_holder.length > 0) {
