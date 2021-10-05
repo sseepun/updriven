@@ -1,5 +1,5 @@
 export default class User {
-    constructor(id = null, firstname = null, lastname = null, avatar = null, background = null, state_id=null, province=null, email=null, organization = [], interests = null ,country_id=null, about=null) {
+    constructor(id = null, firstname = null, lastname = null, avatar = null, background = null, state_id=null, province=null, email=null, organization = [], interests = null ,country_id=null, about=null,  followings=[], images=[] ) {
       this.id = id;
       this.firstname = firstname;
       this.lastname = lastname;
@@ -12,5 +12,7 @@ export default class User {
       this.interests = interests;
       this.country_id = country_id;
       this.about = about;
+      this.followings = followings;
+      this.images = images;
     }
 }
