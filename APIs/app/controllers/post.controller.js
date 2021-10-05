@@ -51,7 +51,12 @@ exports.createPost = async (req, res) => {
                     path: 'category', 
                     model: 'Category', 
                     select: 'category_name'
-                }
+                },
+                {
+                    path: 'media', 
+                    model: 'Media',
+                    select: ['index', 'type', 'path'] 
+                },
             ]
         );
         res.status(200).send({post: post});
