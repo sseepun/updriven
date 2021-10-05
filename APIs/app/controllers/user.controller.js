@@ -212,11 +212,15 @@ exports.following_list = async (req, res) => {
                     path: 'results.follow', 
                     model: 'User', 
                     select: 'user_detail', 
-                    populate: 
-                    {
-                        path: 'user_detail', 
-                        select: ['firstname', 'lastname', 'state_id', 'country_id']
-                    }
+                    populate: [
+                        {
+                            path: 'role'
+                        },
+                        {
+                            path: 'user_detail', 
+                            select: ['firstname', 'lastname', 'state_id', 'country_id']
+                        }
+                    ]
                 },
             ]
         );
