@@ -135,9 +135,7 @@ export default {
     }),
     
     formatDate(value) {
-      // const moment = require('moment-timezone');
-      const split = String(value).split('-');
-      const momentValue = moment([split[1], split[0], split[2]].join('-'))
+      const momentValue = moment(value, 'DD-MM-YYYY HH:mm:ssZ')
       return momentValue.fromNow()
     },
     signOut() {
