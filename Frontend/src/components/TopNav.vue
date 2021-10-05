@@ -135,11 +135,9 @@ export default {
     }),
     
     formatDate(value) {
+      // const moment = require('moment-timezone');
       const split = String(value).split('-');
-      var offset = -(new Date().getTimezoneOffset()/60);
-      console.log(offset)
-      const momentValue = moment.utc([split[1], split[0], split[2]].join('-')).utcOffset(offset)
-      console.log(momentValue.fromNow())
+      const momentValue = moment([split[1], split[0], split[2]].join('-'))
       return momentValue.fromNow()
     },
     signOut() {
