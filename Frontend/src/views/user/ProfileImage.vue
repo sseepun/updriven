@@ -31,27 +31,39 @@
     <div class="middle-container">
       <div class="box-container full bshadow m-0">
         <h4 class="fw-600 color-01" :style="'margin-bottom :20px;'">Images</h4>
-       
-         <div v-if="user">
+         <div v-if="user.images.length > 0">
           <div class="gallery-grids grid-round mt-1" style="--ggs:.125rem;">
-            <div v-for="(photo, i) in photos" :key="i" class="grid sm-1-3">
-              <a class="ss-img square" @click="showLightbox(photo.name)"  >
-                <div class="img-bg" :style="'background-image:url(\''+photo.image+'\');'"></div>
+            <div v-for="(image, i) in user.images" :key="i" class="grid sm-1-3">
+              <a class="ss-img square" @click="showLightbox(image.name)"  >
+                <div class="img-bg" :style="'background-image:url(\''+image.path+'\');'"></div>
               </a>
+              <lightbox id="mylightbox" 
+                ref="lightbox"
+                :images="photos"
+                :directory="thumbnailDir"
+                :timeout-duration=5000
+                :close-on-backdrop-click=true
+              />
             </div>
           </div>
-          
+        </div>
+
+        <div v-else>
+           <p class="mt-4">
+            <div  class=" ovf-hidden">
+              <div class="content-container"  >
+                <div  :style="' padding: 10px;width:100%; display:flex; align-items:center; text-align: center;'" >
+                  <div class="text">
+                  You have no image
+                  </div>
+                </div>   
+              </div>
+            </div>
+          </p>
         </div>
       </div>
     </div>
-    <lightbox id="mylightbox" 
-      ref="lightbox"
-      :images="photos"
-      :directory="thumbnailDir"
-      :timeout-duration=5000
-      :close-on-backdrop-click=true
-  />
-
+    
     
 
   </div>
@@ -85,13 +97,17 @@ export default {
       bannerActiveIndex: 3,
       rightContainerClass: '',
       photos: [],
-      thumbnailDir: '/assets/img/profile/',
+      thumbnailDir: '',
     };
   },
   mounted() {
     this.onScroll();
     window.addEventListener('scroll', this.onScroll);
-    this.loadData(12);
+    this.photos = this.user.images
+    if(this.user.images.length > 0){
+      this.thumbnailDir = this.user.images[0].hostPath
+    }
+
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.onScroll);
@@ -111,20 +127,13 @@ export default {
         }
       }
     },
-    loadData(num) {
-      for(var i=0; i<num; i++){
-        var id = this.photos.length + i + 1;
-        this.photos.push({
-          id: id,
-          image: `/assets/img/profile/0${id%9+1}.jpg`,
-          name:`0${id%9+1}.jpg`,
-        });
-      }
-    },
+    
     showLightbox: function(imageName) {
-      console.log(imageName)
       this.$refs.lightbox.show(imageName);
     },
+    ...mapActions({
+      getImages: 'authentication/getImages'
+    }),
   }
 }
 </script>

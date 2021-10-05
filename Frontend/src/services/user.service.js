@@ -8,7 +8,8 @@ export  const userService = {
   clear_notify,
   editPictureProfile,
   editBackgroundProfile,
-  
+  getFollowing,
+  getImages
 };
 
 function editPictureProfile(input) {
@@ -107,6 +108,37 @@ function clear_notify(input) {
       method: 'POST',
       url: `/user/clear_notification`,
       data: input,
+    })
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    });
+});
+}
+
+function getFollowing() {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'POST',
+      url: `/user/following_list`,
+      headers: authHeader()
+    })
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    });
+});
+}
+function getImages() {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'POST',
+      url: `/user/image_list`,
+      headers: authHeader()
     })
     .then(res => {
       resolve(res);

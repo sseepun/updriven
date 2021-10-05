@@ -297,10 +297,8 @@ export default {
           this.dataset.state = "-"
         }
       });
-      console.log(country);
     },
     FilterState(state){
-      console.log(state);
     }
   }
 }
