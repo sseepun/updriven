@@ -18,7 +18,10 @@ const Post = mongoose.model(
             }], 
         subject:  String,
         content:  String,
-        media: Array,
+        media: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Media"
+        }],
         sentiment_count: { type: Number, default: 0 },
         comment_count: { type: Number, default: 0 },
         visible_to: { type: Number },

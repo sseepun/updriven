@@ -30,13 +30,41 @@
 
     <div class="middle-container">
       <div class="box-container full bshadow m-0">
-        <h4 class="fw-600 color-01">About</h4>
-        <p class="mt-4">
-          {{user.about? user.about: '-'}}
-        </p>
-        
+        <h4 class="fw-600 color-01" :style="'margin-bottom :20px;'">Images</h4>
+         <div v-if="user.images.length > 0">
+          <div class="gallery-grids grid-round mt-1" style="--ggs:.125rem;">
+            <div v-for="(image, i) in user.images" :key="i" class="grid sm-1-3">
+              <a class="ss-img square" @click="showLightbox(image.name)"  >
+                <div class="img-bg" :style="'background-image:url(\''+image.path+'\');'"></div>
+              </a>
+              <lightbox id="mylightbox" 
+                ref="lightbox"
+                :images="photos"
+                :directory="thumbnailDir"
+                :timeout-duration=5000
+                :close-on-backdrop-click=true
+              />
+            </div>
+          </div>
+        </div>
+
+        <div v-else>
+           <p class="mt-4">
+            <div  class=" ovf-hidden">
+              <div class="content-container"  >
+                <div  :style="' padding: 10px;width:100%; display:flex; align-items:center; text-align: center;'" >
+                  <div class="text">
+                  You have no image
+                  </div>
+                </div>   
+              </div>
+            </div>
+          </p>
+        </div>
       </div>
     </div>
+    
+    
 
   </div>
 </template>
@@ -52,9 +80,8 @@ import SectionFriends from '../../components/SectionFriends';
 import SectionInterested from '../../components/SectionInterested';
 import SectionLive from '../../components/SectionLive';
 import {mapGetters, mapActions, mapState, mapMutations} from "vuex";
-
 export default {
-  name: 'UserProfileAboutPage',
+  name: 'UserProfileImagePage',
   components: {
     TopNav,
     LeftNav,
@@ -67,13 +94,20 @@ export default {
   },
   data() {
     return {
-      bannerActiveIndex: 0,
-      rightContainerClass: ''
+      bannerActiveIndex: 3,
+      rightContainerClass: '',
+      photos: [],
+      thumbnailDir: '',
     };
   },
   mounted() {
     this.onScroll();
     window.addEventListener('scroll', this.onScroll);
+    this.photos = this.user.images
+    if(this.user.images.length > 0){
+      this.thumbnailDir = this.user.images[0].hostPath
+    }
+
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.onScroll);
@@ -93,6 +127,13 @@ export default {
         }
       }
     },
+    
+    showLightbox: function(imageName) {
+      this.$refs.lightbox.show(imageName);
+    },
+    ...mapActions({
+      getImages: 'authentication/getImages'
+    }),
   }
 }
 </script>

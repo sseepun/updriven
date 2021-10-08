@@ -18,5 +18,7 @@ db.role = require('./user/role.model');
 db.user_detail = require("./user/user_detail.model");
 db.user = require("./user/user.model");
 db.notification = require("./user/notification.model");
+db.media = require("./post/media.model");
+db.ads = require("./config/ads.model")
 
 module.exports = db;

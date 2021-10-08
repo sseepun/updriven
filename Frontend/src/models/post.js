@@ -1,3 +1,5 @@
+import { postService } from '../services';
+
 export class StatusPost {
     constructor(
         hasNext,
@@ -48,7 +50,58 @@ export class _CommentPost {
     }
 }
 
-export function changeStructurePost(posts) {
+export async function formContent(desc) {
+    const URLMatcher = /^(?:(?:https?):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i
+    const listContent = [];
+
+    let textTemporary = "";
+
+    const spiltText = await desc.split(' ');
+
+    for(let lengthEachWord = 0; lengthEachWord < spiltText.length; lengthEachWord++) {
+        // console.log( spiltText[lengthEachWord], `length: ${lengthEachWord} == ${spiltText.length - 1}` )
+
+        if ((spiltText[lengthEachWord]).match(new RegExp(URLMatcher))) {
+            let dataLink = null
+            try{
+                dataLink = await postService.previewLink(spiltText[lengthEachWord])
+            } catch (err) {
+                
+            }
+
+            // console.log( 'dataLink :', dataLink)
+
+            if ( textTemporary != "" ) {
+                listContent.push({
+                    content: textTemporary,
+                    type: 'text'
+                })
+
+                textTemporary = "";
+            }
+
+            listContent.push({
+                content: spiltText[lengthEachWord],
+                dataLink: (dataLink == null? null: dataLink.data),
+                type: 'link'
+            });
+        }
+        else {
+            textTemporary = textTemporary + ' ' + spiltText[lengthEachWord] ;
+
+            if (lengthEachWord === (spiltText.length - 1)) {
+                listContent.push({
+                    content: textTemporary,
+                    type: 'text'
+                })
+            }
+        }
+    }
+
+    return listContent;
+}
+
+export async function changeStructurePost(posts) {
     let temp_array = []
     for(let i = 0; i < posts.length; i++){
         var temp_data = posts[i];
@@ -72,6 +125,16 @@ export function changeStructurePost(posts) {
             }
             temp_data = temp_data['share'][0]['post'][0]
         }
+
+        let content = []
+
+        if (!temp_data['content']) {
+            continue;
+        }
+        else {
+            content = await formContent(temp_data['content'])
+            // console.log( 'content :', content )
+        }
         
         temp_array.push({
             shared: shared,
@@ -79,7 +142,7 @@ export function changeStructurePost(posts) {
             id: shared? shared._id : temp_data['_id'],
             image: temp_data['media'],
             title: temp_data['subject'],
-            desc: temp_data['content'],
+            desc: content,
             createdAt: temp_data['createdAt'],
             user: {
                 id: temp_data['user'][0]['_id'],

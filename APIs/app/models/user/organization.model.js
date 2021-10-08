@@ -6,12 +6,6 @@ const Organization = mongoose.model(
   new mongoose.Schema({
     name : String,
     type : String,
-    user_detail:
-        [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User_detail"
-        }]
-    ,
   }, { timestamps: true }).plugin(sanitizerPlugin)
 );
 

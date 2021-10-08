@@ -7,7 +7,9 @@ const fs = require("fs");
 const User = db.user;
 const User_detail = db.user_detail;
 const bcrypt = require("bcryptjs");
-const sgMail = require('@sendgrid/mail')
+const sgMail = require('@sendgrid/mail');
+const Role = db.role;
+const Organization = db.organization;
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 exports.logInStatus = (req, res) => {
@@ -34,19 +36,66 @@ exports.checkLogIn = async (req, res) => {
 
 exports.signup = async (req, res) => {
     try {
-        const user = new User({
-            email: req.body.email,
-            password: bcrypt.hashSync(req.body.password, 8),
-            status: false,
-        });
-    
-        const user_detail = new User_detail({
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
-            profile_pic: process.env.DEFAULT_PROFILE_IMAGE,
-            background_pic: process.env.DEFAULT_BACKGROUND_IMAGE
-        });
-
+        let user;
+        let user_detail;
+        let role;
+        if (req.body.occupation && req.body.company && req.body.job_title && req.body.providing) {
+            role = new Role({
+                is_mentor: true,
+                is_admin: false,
+                is_learner: false,
+                is_corporate: false,
+            });
+            await role.save()
+            user = new User({
+                email: sanitize(req.body.email),
+                password: bcrypt.hashSync(req.body.password, 8),
+                role: role,
+                status: false,
+            });
+            user_detail = new User_detail({
+                firstname: sanitize(req.body.firstname),
+                lastname: sanitize(req.body.lastname),
+                occupation: sanitize(req.body.occupation),
+                job_title: sanitize(req.body.job_title),
+                providing: sanitize(req.body.providing),
+                profile_pic: process.env.DEFAULT_PROFILE_IMAGE,
+                background_pic: process.env.DEFAULT_BACKGROUND_IMAGE
+            });
+            const organization = await Organization.findOne({ name: req.body.company })
+            if (organization) {
+                user_detail.organization = organization
+            }
+            else {
+                const new_organization = new Organization({
+                    name: req.body.company,
+                    type: "Company"
+                });
+                await new_organization.save()
+                user_detail.organization = new_organization
+            }
+        }
+        else {
+            role = new Role({
+                is_mentor: true,
+                is_admin: false,
+                is_learner: true,
+                is_corporate: false,
+            });
+            await role.save()
+            user = new User({
+                email: req.body.email,
+                password: bcrypt.hashSync(req.body.password, 8),
+                role: role,
+                status: false,
+            });
+            user_detail = new User_detail({
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                profile_pic: process.env.DEFAULT_PROFILE_IMAGE,
+                background_pic: process.env.DEFAULT_BACKGROUND_IMAGE
+            });
+        }
         await user.save()
         user_detail.username = user._id;
         await user_detail.save()
@@ -57,17 +106,17 @@ exports.signup = async (req, res) => {
         });
 
         // create email with verify link : /auth/verifyRegister/:token
-        const email_html = fs.readFileSync(path.join(__dirname, '../assets/fromEmail/register/index.html'), 'utf8')
-        let template =  handlebars.compile(email_html)
-        let replacements = { verifyLink: process.env.EMAIL_DOMAIN + 'auth/verify-token-register/' + token };
-        let complete_html = template(replacements);
-        const msg = {
-            to: user.email,
-            from: process.env.EMAIL_FROM,
-            subject: "UpDriven Account Verification",
-            html: complete_html
-          }
-        const response = await sgMail.send(msg)
+        // const email_html = fs.readFileSync(path.join(__dirname, '../assets/fromEmail/register/index.html'), 'utf8')
+        // let template =  handlebars.compile(email_html)
+        // let replacements = { verifyLink: process.env.EMAIL_DOMAIN + 'auth/verify-token-register/' + token };
+        // let complete_html = template(replacements);
+        // const msg = {
+        //     to: user.email,
+        //     from: process.env.EMAIL_FROM,
+        //     subject: "UpDriven Account Verification",
+        //     html: complete_html
+        //   }
+        // await sgMail.send(msg)
 
         res.status(200).send({token: token});
     }
@@ -154,4 +203,13 @@ exports.resetPwd = (req, res) => {
         return res.status(401).send({message: "Token expired"})
     }
 };
+
+exports.clearCookie = async (req, res) => {
+    try {
+        console.log(req.session)
+    }
+    catch (err) {
+
+    }
+}
 

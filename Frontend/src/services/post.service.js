@@ -2,6 +2,9 @@ import { setCookieBeforeAuth } from '../helpers/authHeader';
 import Cookie from 'js-cookie';
 const axios = require('axios');
 
+import httpClient from "@/services/httpClient";
+import { server } from "@/services/constants";
+
 export const postService = {
     createPost,
     fetchPostOwner,
@@ -17,9 +20,9 @@ export const postService = {
 
 function createPost(postDetail) {
     return new Promise((resolve, reject) => {
-        axios({
+      httpClient({
           method: 'POST',
-          url: `post/create`,
+          url: server.CREATE_POST_URL,
           data: postDetail,
           withCredentials: true,
         })
@@ -187,14 +190,21 @@ function sharePost(post_id) {
 }
 
 function previewLink(link) {
-  axios({
-    methods: 'POST',
-    url: 'http://api.linkpreview.net/?key=' + process.env.VUE_APP_KEY_LINKPREVIEW + '&q=' + link,
-    header: {
-      'Content-Type': 'application/json',
-    }
-  })
-  .then( (data) => {
-    console.log( data )
-  })
+
+  return new Promise((resolve, reject) => {
+    axios({
+      methods: 'POST',
+      url: 'http://api.linkpreview.net/?key=' + process.env.VUE_APP_KEY_LINKPREVIEW + '&q=' + link,
+      header: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: false,
+    })
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    });
+  });
 }

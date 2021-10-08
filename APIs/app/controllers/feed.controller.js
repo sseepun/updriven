@@ -1,6 +1,6 @@
 const db = require("../models");
 const sanitize = require('mongo-sanitize');
-const User = require("../models/user/user.model");
+const User = db.user;
 const Post = db.post;
 const Category = db.category;
 const Comment = db.comment;
@@ -112,6 +112,11 @@ exports.getPosts = async (req, res) => {
                     }
                 },
                 {
+                    path: 'results.media', 
+                    model: 'Media',
+                    select: ['index', 'type', 'path'] 
+                },
+                {
                     path: 'results.category', 
                     model: 'Category', 
                     select: 'category_name'
@@ -202,6 +207,54 @@ exports.getSentiments = async (req, res) => {
         res.status(200).send(sentiment_list)
     }
     catch (err) {
+        return res.status(500).send({message: err})
+    }
+}
+
+exports.search = async (req, res) => {
+    try {
+        if (req.body.category) {
+            const category = await Category.findById(sanitize(req.body.category))
+            console.log(category)
+            const result = await Post.paginate({
+                query: {
+                    category: [category._id],
+                    $or: [
+                        {
+                            content: { "$regex": req.body.search, "$options": "i" }
+                        },
+                        {
+                            subject: { "$regex": req.body.search, "$options": "i" }
+                        }
+                    ]
+                },
+                limit: 5,
+                next: req.body.next,
+                previous: req.body.previous,
+                paginatedField: 'Orderable'
+            })
+            return res.status(200).send(result)
+        }
+        const result = await Post.paginate({
+            query: {
+                $or: [
+                    {
+                        content: { "$regex": req.body.search, "$options": "i" }
+                    },
+                    {
+                        subject: { "$regex": req.body.search, "$options": "i" }
+                    }
+                ]
+            },
+            limit: 5,
+            next: req.body.next,
+            previous: req.body.previous,
+            paginatedField: 'Orderable'
+        })
+        return res.status(200).send(result)
+    }
+    catch (err) {
+    console.log(err)
         return res.status(500).send({message: err})
     }
 }

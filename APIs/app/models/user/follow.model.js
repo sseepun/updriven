@@ -1,31 +1,21 @@
 const mongoose = require("mongoose");
+const MongoPaging = require('mongo-cursor-pagination');
 const sanitizerPlugin = require('mongoose-sanitizer-plugin');
 
 const Follow = mongoose.model(
   "Follow",
   new mongoose.Schema({
-    title : String,
-    friend:
-        [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-        }],
-    follower:
-        [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-        }],
-    followed:
-        [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-        }],
     user:
-        [{
+        {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-        }],
-  }, { timestamps: true }).plugin(sanitizerPlugin)
+        },
+    follow:
+        {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+        },
+  }, { timestamps: true }).plugin(MongoPaging.mongoosePlugin).plugin(sanitizerPlugin)
 );
 
 module.exports = Follow;

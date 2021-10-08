@@ -3,7 +3,7 @@ import { userService } from '../services';
 import { checkCookie } from '../helpers/authHeader';
 import User from '../models/user.js';
 import router from '../router';
-
+import countrySC from '../assets/country-state-city'
 const user = JSON.parse(localStorage.getItem(`${process.env.VUE_APP_API_URL}_USER`));
 
 export const authentication = {
@@ -247,7 +247,6 @@ export const authentication = {
       return new Promise((resolve, reject) => {   
       userService.getProfile().then(
         response => {
-          console.log( 'response :', response.user_detail[0].interests)
           var resUser = new User(
             response._id,
             response.user_detail[0].firstname,
@@ -273,7 +272,68 @@ export const authentication = {
         
       })
     })
-    }
+    },
+    getFollowing({ commit , dispatch }) {
+      return new Promise((resolve, reject) => {        
+          userService.getFollowing().then(
+              response => {
+                let myFollowings = response.data.results
+                for (let i = 0; i < myFollowings.length; i++) { 
+                  if(myFollowings[i].follow.user_detail[0].country_id != "-"){
+                    var country = countrySC.find(function(item){
+                      if(item.numeric_code === myFollowings[i].follow.user_detail[0].country_id){
+                        return item;
+                      }})
+                    myFollowings[i].follow.user_detail[0].countryFullName = country.name
+                    if(myFollowings[i].follow.user_detail[0].state_id != "-" ){
+                      var states = country.states.find(function(item){
+                        if(item.state_code === myFollowings[i].follow.user_detail[0].state_id){
+                          return item;
+                        }})
+                      myFollowings[i].follow.user_detail[0].stateFullName = states.name
+                    }
+                    else{
+                      myFollowings[i].follow.user_detail[0].stateFullName = "-"
+                    }
+                  }
+                }
+                commit('setFollowing', myFollowings);
+                resolve(response)
+              },
+              error => {
+                  reject(error)
+              }
+          )
+      })
+    },
+    async removeAllNotification ({ commit, state } ) {
+        await commit('removeAllNotification')        
+    },
+    getImages({ commit , dispatch }) {
+      return new Promise((resolve, reject) => {        
+          userService.getImages().then(
+              response => {
+                let images = response.data.results
+                if(images.length > 0){
+                  for (let i = 0; i < images.length; i++) { 
+                    let pathList = images[i].path.split('/')
+                    const lastIndex = pathList.pop(pathList.length-1)
+                    const hostPath =  pathList.join('/')+"/"
+                    images[i].hostPath = hostPath
+                    images[i].name = lastIndex
+                    images[i].id = i
+                    images[i].image = images[i].path
+                  }
+                }
+                commit('setImages', images);
+                resolve(response)
+              },
+              error => {
+                  reject(error)
+              }
+          )
+      })
+    },
     
   },
   // Synchronous
@@ -295,6 +355,23 @@ export const authentication = {
       localStorage.removeItem(`${process.env.VUE_APP_API_URL}_CSC`);
       state.user = null;
       state.authenticated = false
-    }
+    },
+    setFollowing(state , myFollowings) {
+      let localUser = localStorage.getItem(`${process.env.VUE_APP_API_URL}_USER`);
+      
+      localUser = JSON.parse(localUser)
+      localUser.followings = myFollowings
+      state.user.followings = myFollowings
+      
+      localStorage.setItem(`${process.env.VUE_APP_API_URL}_USER`, JSON.stringify(localUser));
+    },
+    setImages(state , images) {
+      let localUser = localStorage.getItem(`${process.env.VUE_APP_API_URL}_USER`);
+      localUser = JSON.parse(localUser)
+      localUser.images = images
+      state.user.images = images
+      
+      localStorage.setItem(`${process.env.VUE_APP_API_URL}_USER`, JSON.stringify(localUser));
+    },
   }
 }

@@ -66,6 +66,7 @@ require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
 require("./app/routes/post.routes")(app);
 require("./app/routes/feed.routes")(app);
+require("./app/routes/admin.routes")(app);
 
 server = app.listen(port, () => console.log("server running on port " + port))
 
