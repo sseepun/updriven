@@ -286,6 +286,8 @@ select{padding:.5625rem .875rem .4375rem .875rem;}
 .ss-card-01:hover > .img-wrapper img{transform:scale(1.05);}
 .ss-card-01 > .text-container{display:block; width:100%; padding:1.125rem 1rem .75rem 1rem;}
 .ss-card-01 .btns{margin:0;}
+.ss-card-01 .post-icon{position: absolute;right: 0;bottom: 0;}
+.ss-card-01 .post-icon img{width: 1rem;filter: grayscale(100%);}
 
 /* Special Card 02 */
 .ss-card-02{display:flex; align-items:flex-start;}
