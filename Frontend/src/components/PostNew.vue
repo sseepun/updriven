@@ -447,17 +447,3 @@ export default {
   emits: ["on-post"],
 };
 </script>
-
-
-<style>
-.uploading-image {
-  display: flex;
-  width: 100%;
-}
-.img-preview {
-  max-height: 50vh;
-  overflow-y: scroll;
-}
-@media screen and (max-width: 1399.98px) {
-}
-</style>
