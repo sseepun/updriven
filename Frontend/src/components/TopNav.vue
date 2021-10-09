@@ -135,8 +135,7 @@ export default {
     }),
     
     formatDate(value) {
-      const momentValue = moment(value, 'DD-MM-YYYY HH:mm:ssZ')
-      return momentValue.fromNow()
+      return moment(value).fromNow()
     },
     signOut() {
       this.signout().then(
