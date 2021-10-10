@@ -10,6 +10,7 @@ export const authentication = {
   namespaced: true,
   state: {
       user: user,
+      otherUser: null,
       authenticated: user? true: false
   },
   getters: {

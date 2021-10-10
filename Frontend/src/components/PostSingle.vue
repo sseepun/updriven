@@ -133,7 +133,9 @@
       </div>
 
       <p class="stat xs fw-600 color-gray">
-        {{selfPost.user.firstname}} {{selfPost.user.lastname}}
+        <a :href="selfPost.user.profileLink">
+          {{selfPost.user.firstname}} {{selfPost.user.lastname}}
+        </a>
         <span class="dot"></span>
         {{formatDate(selfPost.createdAt)}}
       </p>
@@ -308,7 +310,7 @@ export default {
     }
   },
   created() {
-
+    console.log( this.selfPost )
   },
   mounted: function() {
     // try{

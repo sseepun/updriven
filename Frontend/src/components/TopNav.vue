@@ -67,7 +67,7 @@
             </a>
             <div class="dropdown bshadow" :class="{ 'active': isActiveProfile }">
               <div class="submenu">
-                <router-link to="/user/profile">
+                <router-link :to="user.profileLink">
                   My Profile
                 </router-link>
               </div>

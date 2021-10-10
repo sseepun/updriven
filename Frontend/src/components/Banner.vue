@@ -8,7 +8,12 @@
         </div>
         <div class="text">
           <h6 class="p lg fw-500">
-            {{user.firstname}} {{user.lastname}}
+            <div v-if="profileInfo.firstname != 'null'">
+              {{ profileInfo.firstname }} {{ profileInfo.lastname }}
+            </div>
+            <div v-else>
+              {{user.firstname}} {{user.lastname}}
+            </div>
           </h6>
           <p class="xxs fw-500 color-gray">
             Role : Learner
@@ -74,6 +79,7 @@ export default {
       user: 'authentication/user',
       countryFullName: 'csc/countryFullName',
       stateFullName: 'csc/stateFullName',
+      profileInfo: 'profile/information',
     })
   },
   methods: {

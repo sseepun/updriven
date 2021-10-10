@@ -2,8 +2,8 @@ import { setCookieBeforeAuth } from '../helpers/authHeader';
 import Cookie from 'js-cookie';
 const axios = require('axios');
 
-import httpClient from "@/services/httpClient";
-import { server } from "@/services/constants";
+// import httpClient from "@/services/httpClient";
+// import { server } from "@/services/constants";
 
 export const postService = {
     createPost,
@@ -14,15 +14,16 @@ export const postService = {
     rm_sentiment,
     commentOrReply,
     fetchPostAll,
+    fetchAllPostOfOtherUser,
     sharePost,
     previewLink
 }
 
 function createPost(postDetail) {
     return new Promise((resolve, reject) => {
-      httpClient({
+      axios({
           method: 'POST',
-          url: server.CREATE_POST_URL,
+          url: 'post/create',
           data: postDetail,
           withCredentials: true,
         })
@@ -121,6 +122,29 @@ function fetchPostAll(next_previous, category) {
       withCredentials: true,
     })
     .then(res => {
+      resolve(res.data);
+    })
+    .catch(err => {
+      reject(err);
+    });
+  })
+}
+
+function fetchAllPostOfOtherUser(options) {
+  console.log( 'options :', options )
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'POST',
+      url: `user/other_user_post`,
+      data: {
+        next: (options.statusPost.hasNext == true? options.statusPost.nextID : null),
+        previous: (options.statusPost.hasPrevious == true? options.statusPost.previousID : null),
+        userID: options.userId,
+      },
+      withCredentials: true,
+    })
+    .then(res => {
+      console.log( 'fetchAllPostOfOtherUser :', res.data )
       resolve(res.data);
     })
     .catch(err => {

@@ -9,7 +9,8 @@ export  const userService = {
   editPictureProfile,
   editBackgroundProfile,
   getFollowing,
-  getImages
+  getImages,
+  getOtherProfile
 };
 
 function editPictureProfile(input) {
@@ -28,7 +29,7 @@ function editPictureProfile(input) {
 
       reject(err);
     });
-});
+  });
 }
 
 function editBackgroundProfile(input) {
@@ -47,8 +48,9 @@ function editBackgroundProfile(input) {
 
       reject(err);
     });
-});
+  });
 }
+
 function editProfile(input) {
 
   return new Promise((resolve, reject) => {
@@ -83,7 +85,23 @@ function getProfile(input) {
     .catch(err => {
       reject(err);
     });
-});
+  });
+}
+
+function getOtherProfile(userID) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'GET',
+      url: `user/profile/${userID}`,
+      withCredentials: true,
+    })
+    .then(res => {
+      resolve(res.data);
+    })
+    .catch(err => {
+      reject(err);
+    });
+  });
 }
 
 function getAllNotify() {

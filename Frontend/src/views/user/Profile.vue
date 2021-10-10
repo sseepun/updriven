@@ -67,12 +67,16 @@ export default {
   data() {
     return {
       bannerActiveIndex: 1,
-      rightContainerClass: ''
+      rightContainerClass: '',
+      userId: ( this.$route.params.id === ''? null : this.$route.params.id )
     }
   },
-  async created() {
-    await this.clearPost();
-    await this.fetchPostOwner();
+  created() {
+    this.clearPost();
+    this.fetchPostOwner();
+    this.fechInfoProfile({
+      userId: this.userId
+    })
   },
   mounted() {
     onMounted();
@@ -81,6 +85,12 @@ export default {
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.onScroll);
+  },
+  computed: {
+    ...mapGetters({
+      user: 'authentication/user',
+      profileInfo: 'profile/information',
+    })
   },
   methods: {
     onScroll() {
@@ -104,7 +114,8 @@ export default {
     },
     ...mapActions({
       fetchPostOwner:'post/fetchPostOwner',
-      clearPost: 'post/clearPost'
+      fechInfoProfile: 'profile/fetchInfo',
+      clearPost: 'post/clearPost',
     })
   }
 }

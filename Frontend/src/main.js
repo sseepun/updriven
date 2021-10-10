@@ -1,3 +1,4 @@
+import devtools from '@vue/devtools'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -5,6 +6,7 @@ import store from './store'
 import axios from 'axios'
 import Lightbox from 'vue-my-photos'
 const app = createApp(App)
+app.config.performance = true;
 axios.defaults.baseURL = (process.env.VUE_APP_API_URL + '/apis')
 axios.defaults.withCredentials = true;
 

@@ -14,5 +14,6 @@ export default class User {
       this.about = about;
       this.followings = followings;
       this.images = images;
+      this.profileLink = `/user/profile/${id}`;
     }
 }
