@@ -4,10 +4,14 @@ const Ads = db.ads;
 
 exports.addAds = async (req, res) => {
     try {
+        const duplicate_title = await Ads.findOne({title: sanitize(req.body.title)})
+        if (duplicate_title) {
+            return res.status(403).send({message: "Duplicate ads title"})
+        }
         if (req.files) {
             console.log(req.files)
             const ads = new Ads({
-                title: req.body.title,
+                title: sanitize(req.body.title),
                 path: req.files[0].location
             })
             await ads.save()
@@ -34,3 +38,14 @@ exports.deleteAds = async (req, res) => {
         return res.status(500).send({message:err})
     }
 };
+
+exports.adsList = async (req, res) => {
+    try {
+        const result = await Ads.find()
+        return res.status(200).send(result)
+    }
+    catch (err) {
+        console.log(err)
+        return res.status(500).send({message:err})
+    }
+}
