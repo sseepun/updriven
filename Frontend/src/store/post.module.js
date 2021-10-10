@@ -37,49 +37,18 @@ export const post = {
             state.Post = [];
             state.StatusPost = initial_StatusPost;
             state.category = newcategory;
-        },
-        /**
-         * fetch post (owner's post)
-         */
-        async fetchPostOwner({ state, commit, dispatch }) {
-            await commit("updateStatusLoading", true);
-            return await new Promise((resolve, reject) => {
-                postService.fetchPostOwner(state.StatusPost)
-                .then(async (res) => {
-                    // update status
-                    const statusPost = await new StatusPost(
-                        res.hasNext,
-                        res.hasPrevious,
-                        res.next,
-                        res.previous
-                    );
-                    await commit("updateStatusPost", statusPost);
-
-                    // fetch all post
-                    const posts = await changeStructurePost(res.results);
-                    await commit("updatePost", posts);
-
-                    // fetch comment each postID
-                    await res.results.map((x) => {
-                        dispatch("post/fetchComment", x._id, { root: true });
-                    });
-
-                    await commit("updateStatusLoading", false);
-                    resolve(res);
-                })
-                .catch((err) => {
-                    commit("updateStatusLoading", false);
-                    reject(err);
-                });
-            });
+            commit("changeStatusFilter", 1)
         },
         /**
          * fetch all posts to display on dashboard page
          */
-        async fetchPostAll({ state, commit, dispatch }) {
+        async getFeed({ state, commit, dispatch }, option) {
             await commit("updateStatusLoading", true);
+
+            const newOption = await dispatch("addStatusPostToOption", option)
+
             return await new Promise((resolve, reject) => {
-                postService.fetchPostAll(state.StatusPost, state.category)
+                postService.fetchFeed(newOption)
                 .then(async (res) => {
                     // update status
                     const statusPost = await new StatusPost(
@@ -108,18 +77,16 @@ export const post = {
                 });
             });
         },
-
         /**
-         * fetch post from other user
+         * get post with user id param
          */
-         async fetchPostFromOtherUser({ state, commit, dispatch }, { userId }) {
+        async getPost({ state, commit, dispatch }, option) {
             await commit("updateStatusLoading", true);
+
+            const newOption = await dispatch("addStatusPostToOption", option)
+
             return await new Promise((resolve, reject) => {
-                postService.fetchAllPostOfOtherUser({
-                    statusPost: state.StatusPost,
-                    category: state.category,
-                    userId: userId,
-                })
+                postService.fetchPost(newOption)
                 .then(async (res) => {
                     // update status
                     const statusPost = await new StatusPost(
@@ -225,7 +192,6 @@ export const post = {
                     reject(err);
                 });
             });
-            //await dispatch('fetchPostOwner')
             return await promise;
         },
         /**
@@ -344,17 +310,43 @@ export const post = {
                 });
             });
         },
-        async clearPost({ state }) {
+        async clearPost({ state, commit }) {
             state.Post = await [];
             state.StatusPost = await initial_StatusPost;
             state.category = await null;
+            await commit("changeOptionType", 0);
+            await commit("changeStatusFilter", 0);
         },
+
+        addStatusPostToOption({ state }, option={}) {
+            console.log( 'old option :', option)
+
+            if ( state.StatusPost.hasNext === true ) {
+                option.next = state.StatusPost.nextID;
+            } 
+            
+            if ( state.category !== null ) {
+                option.category = state.category
+            }
+
+            console.log( 'new option :', option)
+
+            return option
+        },
+
+        searchPost({state}, option={}) {
+            console.log( 'Input :', option );
+        }
     },
     mutations: {
-        changeOptionType(state, newOption){
-            state.isDashboard = newOption.isDashboard;
-            state.haveFilter = newOption.haveFilter;
+        changeOptionType(state, newStatus) {
+            state.isDashboard = newStatus;
         },
+
+        changeStatusFilter(state, newStatus) {
+            state.haveFilter = newStatus;
+        },
+
         updatePost(state, newPosts) {
             state.Post = state.Post.concat(newPosts);
             // state.Post = [...state.Post, ...newPosts];
@@ -367,9 +359,11 @@ export const post = {
         updateStatusLoading(state, statusLoading) {
             state.loading = statusLoading;
         },
+
         clear_create(state) {
             state._create = new _create();
         },
+
         clearDeleted(state, id) {
             var i = 0;
             while (i < state.Post.length) {
@@ -380,6 +374,7 @@ export const post = {
                 }
             }
         },
+
         fetchCreated(state, newPost) {
             state.Post = newPost.concat(state.Post);
         },

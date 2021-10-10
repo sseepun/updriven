@@ -42,7 +42,10 @@ export default {
       user: 'authentication/user',
       getPost: 'post/getPost',
       getStatusPost: 'post/getStatusPost',
-      isLoading: 'post/isLoading'
+      isLoading: 'post/isLoading',
+      isDashboard: 'post/isDashboard',
+      haveFilter: 'post/haveFilter',
+      profileInfo: 'profile/information',
     })
   },
   methods: {
@@ -76,16 +79,20 @@ export default {
     },
     selectFetchOption() {
 
-      if (this.typePost == true ) {
-        this.fetchPostAll();
-      } else if (this.typePost == false) {
-        this.fetchPostOwner();
+      if ( this.isDashboard && !this.haveFilter ) {
+        console.log('condition pull feed')
+        this.pullFeed();
+      } else if ( !this.isDashboard && !this.haveFilter ) {
+        console.log('condition pull post')
+        this.pullPost({
+          userID: this.profileInfo.id
+        });
       }
 
     },
     ...mapActions({
-      fetchPostOwner:'post/fetchPostOwner',
-      fetchPostAll:'post/fetchPostAll'
+      pullFeed:'post/getFeed',
+      pullPost:'post/getPost',
     })
   },
   created() {

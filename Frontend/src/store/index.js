@@ -10,6 +10,7 @@ import { post } from './post.module';
 import { profile } from './profile.module';
 import { sponsor } from './sponsor.module';
 import { socketIO } from './socketIO.module';
+import { search } from './search.module';
 
 const store = createStore({
   modules: {
@@ -21,7 +22,8 @@ const store = createStore({
     post,
     profile,
     sponsor,
-    socketIO
+    socketIO,
+    search,
   }
 })
 

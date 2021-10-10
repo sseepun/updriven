@@ -11,7 +11,8 @@
           <form action="/" method="GET">
             <FormGroup
               placeholder="Search UpDriven" wrapperClass="append"
-              icon="search.png"
+              icon="search.png" :value="searchInput.input"
+              @input="searchInput.input = $event" 
             />
           </form>
         </div>
@@ -102,6 +103,11 @@ export default {
       isActiveAdd: false,
       isActiveProfile: false,
       amountNotify: 0,
+      searchInput: {
+        input: '',
+        keyword: '',
+        career: []
+      },
     }
   },
   created() {

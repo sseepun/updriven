@@ -19,18 +19,18 @@ export const profile = {
             if ( (OwnerUser.id !== userId) && userId ) {
                 console.log('user id not match with id param')
                 const userInfo = await profileService.fetchInfoProfile(userId);
+                console.log( 'userInfo :', userInfo)
                 await commit("createUserInfo", userInfo);
-                await dispatch("post/fetchPostFromOtherUser", { userId: userId }, { root: true })
             } else {
                 console.log('user id match with id param');
-                await commit("createUserInfo", OwnerUser);
+                await commit("temporaryCreateOwnerUserInfo", OwnerUser);
             }
         }
     },
     mutations: {
         createUserInfo( state, userInfo ) {
             state.userInfo = new User(
-                userInfo._id,
+                userInfo.username[0],
                 userInfo.firstname,
                 userInfo.lastname,
                 userInfo.profile_pic,

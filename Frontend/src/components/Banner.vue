@@ -35,7 +35,7 @@
           >About</router-link>
           <router-link 
             class="tab" :class="activeIndex==1? 'active': ''" 
-            to="/user/profile"
+            :to="profileInfo.profileLink"
           >Post</router-link>
           <router-link 
             class="tab" :class="activeIndex==2? 'active': ''" 

@@ -64,6 +64,11 @@ const routes = [
     name: 'UserChatPage',
     component: () => import('../views/user/Chat.vue')
   },
+  {
+    path: '/user/search',
+    name: 'SearchPage',
+    component: () => import('../views/user/Search.vue')
+  },
   
   {
     path: '/user/profile/:id?',

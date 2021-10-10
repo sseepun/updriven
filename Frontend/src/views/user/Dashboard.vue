@@ -43,12 +43,19 @@ export default {
     SectionSponsored,
     SectionLive
   },
-  async created() {
-    await this.clearPost();
-    await this.fetchPostAll();
+  created() {
+    this.clearPost();
+    this.changeOptionType({ isDashboard : 1 });
+    this.fetchPost()
   },
   mounted() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
+  },
+  computed: {
+    ...mapGetters({
+      isDashboard: 'post/isDashboard',
+      haveFilter: 'post/haveFilter',
+    })
   },
   methods: {
     createPost(post) {
@@ -61,9 +68,17 @@ export default {
         window.location.href = tab.link;
       }
     },
+    fetchPost() {
+      if ( this.isDashboard && !this.haveFilter ) {
+        this.getFeed();
+      }
+    },
     ...mapActions({
-      fetchPostAll:'post/fetchPostAll',
+      getFeed:'post/getFeed',
       clearPost: 'post/clearPost'
+    }),
+    ...mapMutations({
+      changeOptionType: 'post/changeOptionType'
     })
   }
 }

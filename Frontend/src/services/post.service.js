@@ -1,5 +1,6 @@
 import { setCookieBeforeAuth } from '../helpers/authHeader';
 import Cookie from 'js-cookie';
+import { authHeader } from '../helpers/authHeader';
 const axios = require('axios');
 
 // import httpClient from "@/services/httpClient";
@@ -7,14 +8,14 @@ const axios = require('axios');
 
 export const postService = {
     createPost,
-    fetchPostOwner,
+    fetchPost,
     fetchComment,
     deletePost,
     sentiment,
     rm_sentiment,
     commentOrReply,
-    fetchPostAll,
-    fetchAllPostOfOtherUser,
+    fetchFeed,
+    search,
     sharePost,
     previewLink
 }
@@ -89,15 +90,13 @@ function rm_sentiment(detail) {
     });
 }
 
-function fetchPostOwner(next_previous) {
+function fetchPost(options) {
+  console.log( 'option fetchPost :', options)
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
       url: `user/post`,
-      data: {
-        next: (next_previous.hasNext == true? next_previous.nextID: ''),
-        // previous: (next_previous.hasPrevious? '': '')
-      },
+      data: options,
       withCredentials: true,
     })
     .then(res => {
@@ -109,42 +108,18 @@ function fetchPostOwner(next_previous) {
   })
 }
 
-function fetchPostAll(next_previous, category) {
+function fetchFeed(options) {
+  console.log( 'option fetchPost :', options)
+
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
       url: `feed/post`,
-      data: {
-        next: (next_previous.hasNext == true? next_previous.nextID: ''),
-        // previous: (next_previous.hasPrevious? '': ''),
-        category: category
-      },
+      data: options,
       withCredentials: true,
+      headers: authHeader()
     })
     .then(res => {
-      resolve(res.data);
-    })
-    .catch(err => {
-      reject(err);
-    });
-  })
-}
-
-function fetchAllPostOfOtherUser(options) {
-  console.log( 'options :', options )
-  return new Promise((resolve, reject) => {
-    axios({
-      method: 'POST',
-      url: `user/other_user_post`,
-      data: {
-        next: (options.statusPost.hasNext == true? options.statusPost.nextID : null),
-        previous: (options.statusPost.hasPrevious == true? options.statusPost.previousID : null),
-        userID: options.userId,
-      },
-      withCredentials: true,
-    })
-    .then(res => {
-      console.log( 'fetchAllPostOfOtherUser :', res.data )
       resolve(res.data);
     })
     .catch(err => {
@@ -223,6 +198,25 @@ function previewLink(link) {
         'Content-Type': 'application/json',
       },
       withCredentials: false,
+    })
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    });
+  });
+}
+
+function search( option ) {
+  console.log( 'option :', option )
+
+  return new Promise((resolve, reject) => {
+    axios({
+      methods: 'POST',
+      url: `feed/search`,
+      data: option,
+      withCredentials: true,
     })
     .then(res => {
       resolve(res);

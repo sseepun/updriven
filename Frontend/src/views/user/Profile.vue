@@ -73,10 +73,9 @@ export default {
   },
   created() {
     this.clearPost();
-    this.fetchPostOwner();
-    this.fechInfoProfile({
-      userId: this.userId
-    })
+    this.changeOptionType({ isDashboard : 0 });
+    this.fetchInfoProfile({ userId: this.userId })
+    this.fetchPost()
   },
   mounted() {
     onMounted();
@@ -90,6 +89,8 @@ export default {
     ...mapGetters({
       user: 'authentication/user',
       profileInfo: 'profile/information',
+      isDashboard: 'post/isDashboard',
+      haveFilter: 'post/haveFilter',
     })
   },
   methods: {
@@ -112,10 +113,24 @@ export default {
         window.location.href = tab.link;
       }
     },
+    fetchPost() {
+      if ( !this.isDashboard && !this.haveFilter ) {
+        this.getPost({
+          userID: this.userId
+        });
+      } else {
+        this.getPost({
+          userID: this.userId
+        });
+      }
+    },
     ...mapActions({
-      fetchPostOwner:'post/fetchPostOwner',
-      fechInfoProfile: 'profile/fetchInfo',
+      getPost:'post/getPost',
+      fetchInfoProfile: 'profile/fetchInfo',
       clearPost: 'post/clearPost',
+    }),
+    ...mapMutations({
+      changeOptionType: 'post/changeOptionType'
     })
   }
 }
