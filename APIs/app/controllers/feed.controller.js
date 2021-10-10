@@ -1,3 +1,4 @@
+const global_functions = require("./modules/global_function");
 const db = require("../models");
 const sanitize = require('mongo-sanitize');
 const User = db.user;
@@ -78,85 +79,7 @@ exports.getComments = async (req, res) => {
 
 exports.getPosts = async (req, res) => {
     try {
-        let post_list;
-        if (req.body.category) {
-            const category = await Category.findOne({ category_name : req.body.category })
-            post_list = await Post.paginate({
-                query: {
-                    category: category._id
-                },
-                limit: 5,
-                next: req.body.next,
-                previous: req.body.previous,
-                paginatedField: 'Orderable'
-            })
-        }
-        else {
-            post_list = await Post.paginate({
-                limit: 5,
-                next: req.body.next,
-                previous: req.body.previous,
-                paginatedField: 'Orderable'
-            })
-        }
-        await Post.populate(post_list,
-            [
-                {
-                    path: 'results.user', 
-                    model: 'User', 
-                    select: 'user_detail', 
-                    populate: 
-                    {
-                        path: 'user_detail', 
-                        select: ['firstname', 'lastname']
-                    }
-                },
-                {
-                    path: 'results.media', 
-                    model: 'Media',
-                    select: ['index', 'type', 'path'] 
-                },
-                {
-                    path: 'results.category', 
-                    model: 'Category', 
-                    select: 'category_name'
-                },
-                {
-                    path: 'results.share', 
-                    model: 'Share', 
-                    select: 'post',
-                    populate:
-                    {
-                        path: 'post',
-                        populate: 
-                        [
-                            { 
-                                path:'category', 
-                                select: 'category_name' 
-                            }, 
-                            { 
-                                path: 'user', 
-                                select: 'user_detail', 
-                                populate: 
-                                { 
-                                    path: 'user_detail', 
-                                    select: ['firstname', 'lastname']
-                                }
-                            }
-                        ]
-                    }
-                }
-            ]
-        );
-        for (let i = 0; i < post_list.results.length; i++) {
-            const is_sentiment_post = await Sentiment.findOne({sentiment: post_list.results[i], user: req.user})
-            if (is_sentiment_post) {
-                post_list.results[i].is_sentiment = true
-            }
-            else {
-                post_list.results[i].is_sentiment = false
-            }
-        }
+        let post_list = await global_functions.getPost(req)
         res.status(200).send(post_list)
     }
     catch (err) {
@@ -213,45 +136,8 @@ exports.getSentiments = async (req, res) => {
 
 exports.search = async (req, res) => {
     try {
-        if (req.body.category) {
-            const category = await Category.findById(sanitize(req.body.category))
-            console.log(category)
-            const result = await Post.paginate({
-                query: {
-                    category: [category._id],
-                    $or: [
-                        {
-                            content: { "$regex": req.body.search, "$options": "i" }
-                        },
-                        {
-                            subject: { "$regex": req.body.search, "$options": "i" }
-                        }
-                    ]
-                },
-                limit: 5,
-                next: req.body.next,
-                previous: req.body.previous,
-                paginatedField: 'Orderable'
-            })
-            return res.status(200).send(result)
-        }
-        const result = await Post.paginate({
-            query: {
-                $or: [
-                    {
-                        content: { "$regex": req.body.search, "$options": "i" }
-                    },
-                    {
-                        subject: { "$regex": req.body.search, "$options": "i" }
-                    }
-                ]
-            },
-            limit: 5,
-            next: req.body.next,
-            previous: req.body.previous,
-            paginatedField: 'Orderable'
-        })
-        return res.status(200).send(result)
+        let post_list = await global_functions.getPost(req)
+        return res.status(200).send(post_list)
     }
     catch (err) {
     console.log(err)
