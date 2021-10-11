@@ -10,7 +10,7 @@
         </div>
 
         <div class="middle-container">
-
+            <PostMultiple ref="posts" :typePost="true"/>
         </div>
     </div>
 </template>
@@ -30,7 +30,7 @@ export default {
         }
     },
     created() {
-        this.searchPost()
+        // this.searchPost()
     },
     computed: {
         ...mapGetters({

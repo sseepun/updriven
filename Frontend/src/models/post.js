@@ -149,7 +149,7 @@ export async function changeStructurePost(posts) {
                 firstname: temp_data['user'][0]['user_detail'][0]['firstname'],
                 lastname: temp_data['user'][0]['user_detail'][0]['lastname'],
                 avatar: temp_data['user'][0]['_id'],
-                profileLink: process.env.VUE_APP_WEBSITE_URL + '/user/profile/' + temp_data['user'][0]['_id'],
+                profileLink: '/user/profile/' + temp_data['user'][0]['_id'],
             },
             counts: {
                 likes: shared ? shared.sentiment_count : temp_data['sentiment_count'],

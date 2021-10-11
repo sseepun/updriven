@@ -319,7 +319,7 @@ export const post = {
         },
 
         addStatusPostToOption({ state }, option={}) {
-            console.log( 'old option :', option)
+            // console.log( 'old option :', option)
 
             if ( state.StatusPost.hasNext === true ) {
                 option.next = state.StatusPost.nextID;
@@ -329,7 +329,7 @@ export const post = {
                 option.category = state.category
             }
 
-            console.log( 'new option :', option)
+            // console.log( 'new option :', option)
 
             return option
         },

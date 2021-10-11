@@ -71,11 +71,11 @@ export default {
       userId: ( this.$route.params.id === ''? null : this.$route.params.id )
     }
   },
-  created() {
-    this.clearPost();
-    this.changeOptionType({ isDashboard : 0 });
-    this.fetchInfoProfile({ userId: this.userId })
-    this.fetchPost()
+  async created() {
+    await this.clearPost();
+    await this.changeOptionType({ isDashboard : 0 });
+    await this.fetchInfoProfile({ userId: this.userId })
+    await this.fetchPost()
   },
   mounted() {
     onMounted();

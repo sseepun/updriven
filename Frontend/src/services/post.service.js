@@ -91,7 +91,6 @@ function rm_sentiment(detail) {
 }
 
 function fetchPost(options) {
-  console.log( 'option fetchPost :', options)
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
@@ -109,7 +108,6 @@ function fetchPost(options) {
 }
 
 function fetchFeed(options) {
-  console.log( 'option fetchPost :', options)
 
   return new Promise((resolve, reject) => {
     axios({

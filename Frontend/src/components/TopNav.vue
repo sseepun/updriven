@@ -8,7 +8,7 @@
       </div>
       <div class="right-container">
         <div class="search-container">
-          <form action="/" method="GET">
+          <form action="/user/search" @submit.prevent="onSubmitSearch" >
             <FormGroup
               placeholder="Search UpDriven" wrapperClass="append"
               icon="search.png" :value="searchInput.input"
@@ -123,7 +123,6 @@ export default {
     this.getSocketID.on('get-count-notify', (data) => {
       this.getAllNotify()
     });
-
   },
   computed: {
     ...mapGetters({
@@ -143,6 +142,7 @@ export default {
     formatDate(value) {
       return moment(value).fromNow()
     },
+
     signOut() {
       this.signout().then(
         () => {
@@ -152,12 +152,18 @@ export default {
         }
       )
     },
+
     onclickClearNotification(id) {
       this.removeNotification({"notification_id": id}).then(response => {
       })
     },
+
     onclickRemoveAllNotification() {
       this.isActiveNoti = !this.isActiveNoti
+    },
+
+    onSubmitSearch() {
+      
     }
 
   }

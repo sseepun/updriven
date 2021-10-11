@@ -135,9 +135,9 @@
       </div>
 
       <p class="stat xs fw-600 color-gray">
-        <a :href="selfPost.user.profileLink">
+        <router-link :to="selfPost.user.profileLink">
           {{selfPost.user.firstname}} {{selfPost.user.lastname}}
-        </a>
+        </router-link>
         <span class="dot"></span>
         {{formatDate(selfPost.createdAt)}}
       </p>

@@ -43,10 +43,10 @@ export default {
     SectionSponsored,
     SectionLive
   },
-  created() {
-    this.clearPost();
-    this.changeOptionType({ isDashboard : 1 });
-    this.fetchPost()
+  async created() {
+    await this.clearPost();
+    await this.changeOptionType({ isDashboard : 1 });
+    await this.fetchPost()
   },
   mounted() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
