@@ -12,7 +12,7 @@
 
         <div class="mt-2">
           <router-link class="p xxs fw-600 color-gray h-color-01" :class="activeIndex==3? 'active': ''" 
-                to="/user/profile/image"
+                :to="'/user/profile/image/' + this.$route.params.id"
               >Load More
           </router-link>
         </div>
@@ -33,36 +33,36 @@ export default {
   data() {
     return {
       // user: this.$store.getters.user,
-      photos: []
+      photos: [],
+      userId: ( this.$route.params.id === ''? this.user.id : this.$route.params.id )
     }
   },
   computed: {
     ...mapGetters({
       user: 'authentication/user',
+      profile: 'profile/information'
     })
   },
-  mounted() {
-    this.getImages().then(
-      response => {
-         if(this.user.images.length > 9){
-            for (let i = 0; i < 9; i++) { 
-              this.photos.push(this.user.images[i]) 
-            }
-          }
-          else if(this.user.images.length > 0 && this.user.images.length < 9){
-            for (let i = 0; i < this.user.images.length; i++) { 
-              this.photos.push(this.user.images[i]) 
-            }
-          }
+  async mounted() {
+    await this.getImages({ userId: this.userId })
+    if(this.profile.images.length > 9){
+      for (let i = 0; i < 9; i++) { 
+        this.photos.push(this.profile.images[i]) 
       }
-    )
+    }
+    else if(this.profile.images.length > 0 && this.profile.images.length < 9){
+      for (let i = 0; i < this.profile.images.length; i++) { 
+        this.photos.push(this.profile.images[i]) 
+      }
+    }
+      
    
 
 
   },
   methods: {
     ...mapActions({
-      getImages: 'authentication/getImages'
+      getImages: 'profile/getImages'
     }),
   }
 }

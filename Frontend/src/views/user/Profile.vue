@@ -68,7 +68,8 @@ export default {
     return {
       bannerActiveIndex: 1,
       rightContainerClass: '',
-      userId: ( this.$route.params.id === ''? null : this.$route.params.id )
+      userId: ( this.$route.params.id === ''? this.user.id : this.$route.params.id ),
+      following:[],
     }
   },
   async created() {
@@ -76,8 +77,10 @@ export default {
     await this.changeOptionType({ isDashboard : 0 });
     await this.fetchInfoProfile({ userId: this.userId })
     await this.fetchPost()
+    
   },
   mounted() {
+    console.log(this.profileInfo)
     onMounted();
     this.onScroll();
     window.addEventListener('scroll', this.onScroll);

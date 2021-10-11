@@ -9,8 +9,9 @@ export  const userService = {
   editPictureProfile,
   editBackgroundProfile,
   getFollowing,
-  getImages,
-  getOtherProfile
+  getOtherProfile,
+  toFollow,
+  toUnFollow
 };
 
 function editPictureProfile(input) {
@@ -136,11 +137,12 @@ function clear_notify(input) {
 });
 }
 
-function getFollowing() {
+function getFollowing(input) {
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
       url: `/user/following_list`,
+      data: input,
       headers: authHeader()
     })
     .then(res => {
@@ -151,11 +153,30 @@ function getFollowing() {
     });
 });
 }
-function getImages() {
+
+function toFollow(input) {
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
-      url: `/user/image_list`,
+      url: `/user/follow`,
+      data: input,
+      headers: authHeader()
+    })
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    });
+});
+}
+
+function toUnFollow(input) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'POST',
+      url: `/user/unfollow`,
+      data: input,
       headers: authHeader()
     })
     .then(res => {

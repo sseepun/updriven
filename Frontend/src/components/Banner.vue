@@ -31,7 +31,8 @@
         <div class="tabs">
           <router-link 
             class="tab" :class="activeIndex==0? 'active': ''" 
-            to="/user/profile/about"
+            :to="'/user/profile/about/' + this.$route.params.id"
+
           >About</router-link>
           <router-link 
             class="tab" :class="activeIndex==1? 'active': ''" 
@@ -39,18 +40,24 @@
           >Post</router-link>
           <router-link 
             class="tab" :class="activeIndex==2? 'active': ''" 
-            to="/user/profile/following"
+            :to="'/user/profile/following/' + this.$route.params.id"
           >Following</router-link>
           <router-link 
             class="tab" :class="activeIndex==3? 'active': ''" 
-            to="/user/profile/image"
+            :to="'/user/profile/image/' + this.$route.params.id"
           >Image</router-link>
         </div>
         <div class="btn d-flex">
-          <Button 
-            href="#" text="FOLLOW" 
-            classer="d-block btn-color-03 btn-sm pl-4 pr-4 mr-2" 
-          />
+          <div  v-if="checkNotSelf">
+            <Button  v-if="!checkFollow"
+              text="FOLLOW" v-on:click="followMethod(profile.id)" 
+              classer="d-block btn-color-03 btn-sm pl-4 pr-4 mr-2" 
+            />
+            <Button  v-else
+              text="UNFOLLOW" v-on:click="unFollowMethod(profile.id)" 
+              classer="d-block btn-color-03 btn-sm pl-4 pr-4 mr-2" 
+            />
+          </div>
           <Button 
             href="/user/profile/update" text="EDIT PROFILE" 
             classer="d-block btn-color-03 btn-sm pl-4 pr-4" 
@@ -72,16 +79,36 @@ export default {
   data() {
     return {
       // user: this.user
+      following:[],
+      checkFollow:false,
+      checkNotSelf:false
     }
   },
+  async mounted() {
+    this.getFollowing({ userId: this.user.id }).then(response => {
+      for(let i = 0; i < this.user.followings.length; i++){
+        this.following.push(this.user.followings[i].follow._id)
+      }
+      console.log(this.$route.params.id , this.user.id)
+      if(!(this.$route.params.id === this.user.id )){
+        this.checkNotSelf = true
+      }
+      if(this.following.includes(this.profile.id) ){
+        this.checkFollow = true
+      }
+    })
+  },
+
   computed: {
     ...mapGetters({
       user: 'authentication/user',
       countryFullName: 'csc/countryFullName',
       stateFullName: 'csc/stateFullName',
       profileInfo: 'profile/information',
+      profile: 'profile/information',
     })
   },
+
   methods: {
     getHeight() {
       if(this.$refs.bannerContainer) {
@@ -89,7 +116,21 @@ export default {
       } else {
         return 0;
       }
-    }
+    },
+    followMethod(id){
+      this.follow({userId: id})
+      this.checkFollow = true
+    },
+    unFollowMethod(id){
+      this.unFollow({userId: id})
+      this.checkFollow = false
+    },
+    ...mapActions({
+      getFollowing: 'authentication/getFollowing',
+      follow: 'authentication/follow',
+      unFollow: 'authentication/unFollow',
+
+    }),
   }
 }
 </script>
