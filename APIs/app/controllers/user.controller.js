@@ -199,7 +199,7 @@ exports.following_list = async (req, res) => {
                         },
                         {
                             path: 'user_detail', 
-                            select: ['firstname', 'lastname', 'state_id', 'country_id']
+                            select: ['firstname', 'lastname', 'state_id', 'country_id' , 'profile_pic']
                         }
                     ]
                 },
