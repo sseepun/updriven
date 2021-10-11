@@ -2,7 +2,9 @@
     <TopNav />
     <div class="app-container">
         <div class="left-container">
-            <LeftNav @on-click="(tab) => onClickTab(tab)" />
+            <div class="wrapper" data-simplebar>
+                <LeftNav @on-click="(tab) => onClickTab(tab)" />
+            </div>
         </div>
 
         <div class="right-container">
@@ -11,7 +13,7 @@
         </div>
 
         <div class="middle-container">
-            <SearchResult ref="posts" :typePost="true"/>
+            <SearchResult ref="search"/>
         </div>
     </div>
 </template>
@@ -51,7 +53,7 @@ export default {
 
         onClickTab(tab) {
             if ( tab.link=='javascript:' ) {
-                this.$refs['posts'].updateCategory(tab);
+                this.$refs['search'].updateCategory(tab);
             } else {
                 window.location.href = tab.link;
             }

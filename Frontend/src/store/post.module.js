@@ -319,17 +319,12 @@ export const post = {
         },
 
         addStatusPostToOption({ state }, option={}) {
-            // console.log( 'old option :', option)
+            console.log( 'old option :', option)
 
-            if ( state.StatusPost.hasNext === true ) {
-                option.next = state.StatusPost.nextID;
-            }
-            
-            if ( state.category !== null ) {
-                option.category = state.category
-            }
+            if ( state.StatusPost.hasNext === true ) option.next = state.StatusPost.nextID
+            // if ( state.category !== null ) option.category = state.category
 
-            // console.log( 'new option :', option)
+            console.log( 'new option :', option)
 
             return option
         },
@@ -340,6 +335,7 @@ export const post = {
     },
     mutations: {
         changeOptionType(state, newStatus) {
+            console.log( 'changeOptionType :', newStatus )
             state.isDashboard = newStatus;
         },
 
@@ -358,6 +354,10 @@ export const post = {
 
         updateStatusLoading(state, statusLoading) {
             state.loading = statusLoading;
+        },
+
+        updateCareers( state, input ) {
+            state.category = input;
         },
 
         clear_create(state) {

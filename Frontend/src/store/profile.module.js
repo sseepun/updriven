@@ -44,45 +44,45 @@ export const profile = {
             }
             }
             commit('setImages', images);
-          },
+        },
 
-          getFollowing({ commit , dispatch }, {userId}) {
+        getFollowing({ commit , dispatch }, {userId}) {
             return new Promise((resolve, reject) => {    
-              var formData = new FormData();
-              formData.append( 'userID' , userId);
-              profileService.getFollowing(formData).then(
-                    response => {
-                      
-                      let myFollowings = response.data.results
-                      for (let i = 0; i < myFollowings.length; i++) { 
-                        if(myFollowings[i].follow.user_detail[0].country_id != "-"){
-                          var country = countrySC.find(function(item){
-                            if(item.numeric_code === myFollowings[i].follow.user_detail[0].country_id){
-                              return item;
-                            }})
-                          myFollowings[i].follow.user_detail[0].countryFullName = country.name
-                          if(myFollowings[i].follow.user_detail[0].state_id != "-" ){
-                            var states = country.states.find(function(item){
-                              if(item.state_code === myFollowings[i].follow.user_detail[0].state_id){
-                                return item;
-                              }})
-                            myFollowings[i].follow.user_detail[0].stateFullName = states.name
-                          }
-                          else{
-                            myFollowings[i].follow.user_detail[0].stateFullName = "-"
-                          }
+                var formData = new FormData();
+                formData.append( 'userID' , userId);
+                profileService.getFollowing(formData).then(
+                        response => {
+                        
+                        let myFollowings = response.data.results
+                        for (let i = 0; i < myFollowings.length; i++) { 
+                            if(myFollowings[i].follow.user_detail[0].country_id != "-"){
+                            var country = countrySC.find(function(item){
+                                if(item.numeric_code === myFollowings[i].follow.user_detail[0].country_id){
+                                    return item;
+                                }})
+                            myFollowings[i].follow.user_detail[0].countryFullName = country.name
+                            if(myFollowings[i].follow.user_detail[0].state_id != "-" ){
+                                var states = country.states.find(function(item){
+                                if(item.state_code === myFollowings[i].follow.user_detail[0].state_id){
+                                    return item;
+                                }})
+                                myFollowings[i].follow.user_detail[0].stateFullName = states.name
+                            }
+                            else{
+                                myFollowings[i].follow.user_detail[0].stateFullName = "-"
+                            }
+                            }
                         }
-                      }
-                      console.log(myFollowings)
-                      commit('setFollowing', myFollowings);
-                      resolve(response)
+                        console.log(myFollowings)
+                        commit('setFollowing', myFollowings);
+                        resolve(response)
                     },
                     error => {
                         reject(error)
                     }
                 )
             })
-          },
+        },
     },
     mutations: {
         createUserInfo( state, userInfo ) {

@@ -18,6 +18,7 @@ export const authentication = {
     user: state => state.user,
     isSignedin: state => state.user? true: false,
     isAdmin: state => state.user && state.user.is_admin,
+    // isAdmin: state => 1,
     isUser: state => state.user,
     isAuthenticated: state => state.authenticated
   },

@@ -12,12 +12,25 @@
             <FormGroup
               placeholder="Search UpDriven" wrapperClass="append"
               icon="search.png" :value="getSearchSentance"
-              @input="updateSentance($event)" 
+              @input="updateSentance($event)"
             />
+
+            <div v-if="isAdmin" >
+              <FormGroup
+                type="select"
+                label="Careers"
+                placeholder="Select Careers"
+                classer="label-sm"
+                wrapperClass="fgray"
+                :options="optionList"
+                :value="getSearchcareers"
+                @input="updateCareer($event)"
+              />
+            </div>
           </form>
         </div>
-        <div class="option-container">
 
+        <div class="option-container">
           <div class="option" :class="{ 'active': isActiveNoti }">
             <a class="icon icon-alert" href="javascript:" @click="onclickRemoveAllNotification()">
               <img src="/assets/img/icon/bell.png" alt="Bell Icon" />
@@ -88,6 +101,7 @@
 <script>
 import moment from 'moment';
 import {mapGetters, mapActions, mapMutations, mapState} from "vuex"
+import { categoryService } from '../services/index'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 
@@ -102,6 +116,14 @@ export default {
       isActiveAdd: false,
       isActiveProfile: false,
       amountNotify: 0,
+      menuCategory: [
+        {
+          status: true,
+          title: 'Careers', link: 'javascript:',
+          icon: '/assets/img/profile/03.jpg',
+          children: []
+        } 
+      ]
     }
   },
   created() {
@@ -109,22 +131,22 @@ export default {
     this.getAllNotify()
   },
   mounted() {
-    this.getSocketID.on('receive-notify', (data) => {
-        });
 
-    this.getSocketID.on('get-count-notify', (data) => {
-      this.getAllNotify()
-    });
+    this.getSocketID.on('receive-notify', (data) => { });
+
+    this.getSocketID.on('get-count-notify', (data) => { this.getAllNotify() });
   },
   computed: {
     ...mapGetters({
       user: 'authentication/user',
+      isAdmin: 'authentication/isAdmin',
       getSocketID: 'socketIO/getSocketID',
       getAmount: 'socketIO/getAmount',
       getContents: 'socketIO/getContents',
       getSearchSentance: 'search/getSearchSentance',
       getSearchKeyword: 'search/getSearchKeyword',
       getSearchcareers: 'search/getSearchcareers',
+      optionList: "category/option_ilst",
     })
   },
   methods: {
