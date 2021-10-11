@@ -31,9 +31,9 @@
     <div class="middle-container">
       <div class="box-container full bshadow m-0">
         <h4 class="fw-600 color-01" :style="'margin-bottom :20px;'">Images</h4>
-         <div v-if="user.images.length > 0">
+         <div v-if="profile.images.length > 0">
           <div class="gallery-grids grid-round mt-1" style="--ggs:.125rem;">
-            <div v-for="(image, i) in user.images" :key="i" class="grid sm-1-3">
+            <div v-for="(image, i) in profile.images" :key="i" class="grid sm-1-3">
               <a class="ss-img square" @click="showLightbox(image.name)"  >
                 <div class="img-bg" :style="'background-image:url(\''+image.path+'\');'"></div>
               </a>
@@ -98,14 +98,16 @@ export default {
       rightContainerClass: '',
       photos: [],
       thumbnailDir: '',
+      userId: ( this.$route.params.id === ''? this.user.id : this.$route.params.id )
     };
   },
-  mounted() {
+  async mounted() {
     this.onScroll();
     window.addEventListener('scroll', this.onScroll);
-    this.photos = this.user.images
-    if(this.user.images.length > 0){
-      this.thumbnailDir = this.user.images[0].hostPath
+    await this.getImages({ userId: this.userId })
+    this.photos = this.profile.images
+    if(this.profile.images.length > 0){
+      this.thumbnailDir = this.profile.images[0].hostPath
     }
 
   },
@@ -114,7 +116,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'authentication/user'
+      user: 'authentication/user',
+      profile: 'profile/information'
     }),
   },
   methods: {
@@ -132,7 +135,7 @@ export default {
       this.$refs.lightbox.show(imageName);
     },
     ...mapActions({
-      getImages: 'authentication/getImages'
+      getImages: 'profile/getImages'
     }),
   }
 }

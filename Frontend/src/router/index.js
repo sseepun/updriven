@@ -76,17 +76,17 @@ const routes = [
     component: () => import('../views/user/Profile.vue')
   },
   {
-    path: '/user/profile/about',
+    path: '/user/profile/about/:id?',
     name: 'UserProfileAboutPage',
     component: () => import('../views/user/ProfileAbout.vue')
   },
   {
-    path: '/user/profile/following',
+    path: '/user/profile/following/:id?',
     name: 'UserProfileFollowingPage',
     component: () => import('../views/user/ProfileFollowing.vue')
   },
   {
-    path: '/user/profile/image',
+    path: '/user/profile/image/:id?',
     name: 'UserProfileImagePage',
     component: () => import('../views/user/ProfileImage.vue')
   },

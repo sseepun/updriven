@@ -32,15 +32,15 @@
       <div class="box-container full bshadow m-0">
       <h4 class="fw-600 color-01">Your Following</h4>
       </div>
-      <div v-if="user.followings.length > 0">
-        <div v-for="following in user.followings" class="box-container full bshadow m-0">
+      <div v-if="profile.followings.length > 0">
+        <div v-for="(following,i) in profile.followings" class="box-container full bshadow m-0">
           <p class="mt-4">
             
             <div  class=" ovf-hidden">
               <div class="content-container"  >
                 <div  :style="' padding: 10px;width:100%; display:flex; align-items:flex-end;'" >
                   <div class="avatar-container">
-                    <Avatar class="img-bg" :style="''" :avatar="user.avatar" classer="xxl border-4 bcolor-white" />
+                    <Avatar class="img-bg" :style="''" :avatar="following.follow.user_detail[0].profile_pic" classer="xxl border-4 bcolor-white" />
                   </div>
                   <div class="text" :style="'margin-left: 30px;'">
                     <h6 class="p lg fw-500">
@@ -62,7 +62,7 @@
                     </div>
                     <div v-else>
                       <p class="xxs fw-500 color-gray">
-                        Role : Nothing
+                        Role : Nothing 
                       </p>
                     </div>
                     <p class="xxs fw-500 color-gray">
@@ -74,11 +74,16 @@
                   </div>
                 </div>   
                 <div class="btn " :style="'width:100%; display: flex ; justify-content: flex-end;'">
-                    <Button 
-                      href="#" text="UNFOLLOW" 
-                      classer="d-block btn-color-03 btn-sm pl-4 pr-4 mr-2" 
-                      :style="'width:120px;'"
-                    />
+                    <div v-if="checkSelf">
+                      <Button  v-if="!checkFollow[i]"
+                        text="FOLLOW" v-on:click="followMethod(following.follow._id,i)" 
+                        classer="d-block btn-color-03 btn-sm pl-4 pr-4 mr-2" 
+                      />
+                      <Button  v-else
+                        text="UNFOLLOW" v-on:click="unFollowMethod(following.follow._id,i)" 
+                        classer="d-block btn-color-03 btn-sm pl-4 pr-4 mr-2" 
+                      />
+                    </div>
                   </div>
               </div>
             </div>
@@ -134,19 +139,34 @@ export default {
     return {
       bannerActiveIndex: 2,
       rightContainerClass: '',
+      userId: ( this.$route.params.id === ''? this.user.id : this.$route.params.id ),
+      checkFollow : [],
+      checkSelf:false,
     };
   },
   mounted() {
     this.onScroll();
     window.addEventListener('scroll', this.onScroll);
-    this.getFollowing()
+    this.getFollowing({ userId: this.userId }).then( response => {
+      for(let i = 0; i < this.profile.followings.length; i++){
+        this.checkFollow.push(true)
+      }
+      if(this.user.id === this.$route.params.id){
+        this.checkSelf = true
+      }
+    }
+      
+    )
+  
+
   },
   beforeUnmount() {
     window.removeEventListener('scroll', this.onScroll);
   },
   computed: {
     ...mapGetters({
-      user: 'authentication/user'
+      user: 'authentication/user',
+      profile: 'profile/information',
     }),
     
   },
@@ -160,9 +180,23 @@ export default {
         }
       }
     },
+    followMethod(id,i){
+      this.follow({userId: id})
+      // console.log(i)
+      this.checkFollow[i] = true
+    },
+    unFollowMethod(id,i){
+      console.log(i)
+      this.unFollow({userId: id})
+      // console.log(i)
+      this.checkFollow[i] = false
+    },
     ...mapActions({
-      getFollowing: 'authentication/getFollowing'
+      getFollowing: 'profile/getFollowing',
+      follow: 'authentication/follow',
+      unFollow: 'authentication/unFollow',
     }),
+    
   }
 }
 </script>
