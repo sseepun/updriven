@@ -1,13 +1,13 @@
 import { checkCookie } from "../helpers/authHeader";
 import {
-    StatusPost,
     changeStructurePost,
     _create,
     changeStructureFetchComment,
 } from "../models/post";
+import { Paginate } from "../models/paginate";
 import { postService } from "../services";
 
-const initial_StatusPost = new StatusPost("", "", false, false);
+const initial_StatusPost = new Paginate("", "", false, false);
 const createDetail = new _create();
 
 export const post = {
@@ -51,7 +51,7 @@ export const post = {
                 postService.fetchFeed(newOption)
                 .then(async (res) => {
                     // update status
-                    const statusPost = await new StatusPost(
+                    const statusPost = await new Paginate(
                         res.hasNext,
                         res.hasPrevious,
                         res.next,
@@ -89,7 +89,7 @@ export const post = {
                 postService.fetchPost(newOption)
                 .then(async (res) => {
                     // update status
-                    const statusPost = await new StatusPost(
+                    const statusPost = await new Paginate(
                         res.hasNext,
                         res.hasPrevious,
                         res.next,
@@ -323,7 +323,7 @@ export const post = {
 
             if ( state.StatusPost.hasNext === true ) {
                 option.next = state.StatusPost.nextID;
-            } 
+            }
             
             if ( state.category !== null ) {
                 option.category = state.category

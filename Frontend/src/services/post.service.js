@@ -190,7 +190,7 @@ function previewLink(link) {
 
   return new Promise((resolve, reject) => {
     axios({
-      methods: 'POST',
+      method: 'POST',
       url: 'http://api.linkpreview.net/?key=' + process.env.VUE_APP_KEY_LINKPREVIEW + '&q=' + link,
       header: {
         'Content-Type': 'application/json',
@@ -211,7 +211,7 @@ function search( option ) {
 
   return new Promise((resolve, reject) => {
     axios({
-      methods: 'POST',
+      method: 'POST',
       url: `feed/search`,
       data: option,
       withCredentials: true,

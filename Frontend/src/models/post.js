@@ -1,18 +1,5 @@
 import { postService } from '../services';
 
-export class StatusPost {
-    constructor(
-        hasNext,
-        hasPrevious,
-        next,
-        previous) {
-        this.hasNext = hasNext
-        this.hasPrevious = hasPrevious
-        this.nextID = next
-        this.previousID = previous
-    }
-}
-
 export class _create {
     constructor(subject = '', content = '', category = '', PVmedia = [], fileMedia = [], visible_to = '1') {
       this.subject = subject;

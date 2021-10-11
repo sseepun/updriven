@@ -8,16 +8,15 @@
       </div>
       <div class="right-container">
         <div class="search-container">
-          <form action="/user/search" @submit.prevent="onSubmitSearch" >
+          <form @submit.prevent="onSubmitSearch" >
             <FormGroup
               placeholder="Search UpDriven" wrapperClass="append"
-              icon="search.png" :value="searchInput.input"
-              @input="searchInput.input = $event" 
+              icon="search.png" :value="getSearchSentance"
+              @input="updateSentance($event)" 
             />
           </form>
         </div>
         <div class="option-container">
-
 
           <div class="option" :class="{ 'active': isActiveNoti }">
             <a class="icon icon-alert" href="javascript:" @click="onclickRemoveAllNotification()">
@@ -88,7 +87,7 @@
 
 <script>
 import moment from 'moment';
-import {mapGetters, mapActions, mapState} from "vuex"
+import {mapGetters, mapActions, mapMutations, mapState} from "vuex"
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 
@@ -103,17 +102,10 @@ export default {
       isActiveAdd: false,
       isActiveProfile: false,
       amountNotify: 0,
-      searchInput: {
-        input: '',
-        keyword: '',
-        career: []
-      },
     }
   },
   created() {
-    this.getSocketID.emit('join-with-id', {
-      user_id: this.user.id,
-    });
+    this.getSocketID.emit('join-with-id', { user_id: this.user.id });
     this.getAllNotify()
   },
   mounted() {
@@ -130,6 +122,9 @@ export default {
       getSocketID: 'socketIO/getSocketID',
       getAmount: 'socketIO/getAmount',
       getContents: 'socketIO/getContents',
+      getSearchSentance: 'search/getSearchSentance',
+      getSearchKeyword: 'search/getSearchKeyword',
+      getSearchcareers: 'search/getSearchcareers',
     })
   },
   methods: {
@@ -137,6 +132,14 @@ export default {
       signout: 'authentication/signout',
       removeNotification: 'socketIO/removeNotification',
       getAllNotify: 'socketIO/getAllNotify',
+      searchPost: 'search/searchPost'
+    }),
+
+    ...mapMutations({
+      updateSentance: 'search/updateSentance',
+      updateKeyword: 'search/updateKeyword',
+      updateCareer: 'search/updateCareer',
+      clearResult: 'search/clearResult'
     }),
     
     formatDate(value) {
@@ -162,8 +165,10 @@ export default {
       this.isActiveNoti = !this.isActiveNoti
     },
 
-    onSubmitSearch() {
-      
+    async onSubmitSearch() {
+      await this.clearResult()
+      await this.searchPost()
+      await this.$router.push('/user/search');
     }
 
   }
