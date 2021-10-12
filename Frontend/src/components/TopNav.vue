@@ -7,26 +7,34 @@
         </router-link>
       </div>
       <div class="right-container">
-        <div class="search-container">
-          <form @submit.prevent="onSubmitSearch" >
+        <div v-if="isAdmin" class="search-container">
+          <form @submit.prevent="onSubmitSearch" style="display: flex;">
             <FormGroup
               placeholder="Search UpDriven" wrapperClass="append"
               icon="search.png" :value="getSearchSentance"
               @input="updateSentance($event)"
             />
 
-            <div v-if="isAdmin" >
-              <FormGroup
-                type="select"
-                label="Careers"
-                placeholder="Select Careers"
-                classer="label-sm"
-                wrapperClass="fgray"
-                :options="optionList"
-                :value="getSearchcareers"
-                @input="updateCareer($event)"
-              />
-            </div>
+            <FormGroup
+              v-if="isAdmin"
+              type="select"
+              placeholder="Select Careers"
+              classer="label-sm"
+              wrapperClass="fgray"
+              :options="optionList"
+              :value="getSearchcareers"
+              @input="updateCareer($event)"
+            />
+          </form>
+        </div>
+
+        <div v-else class="search-container" >
+          <form @submit.prevent="onSubmitSearch" >
+            <FormGroup
+              placeholder="Search UpDriven" wrapperClass="append"
+              icon="search.png" :value="getSearchSentance"
+              @input="updateSentance($event)"
+            />
           </form>
         </div>
 

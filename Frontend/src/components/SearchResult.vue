@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import {mapGetters, mapActions, mapState} from "vuex"
+import {mapGetters, mapActions, mapMutations} from "vuex"
 
 export default {
     name: 'SearchResult',
@@ -39,6 +39,7 @@ export default {
         return {
             title: null,
             icon: null,
+            posts: []
         }
     },
     methods: {
@@ -60,17 +61,22 @@ export default {
             }
         },
 
-        updateCategory(tab) {
-            console.log( 'tab :', tab)
-            this.title = tab.title;
-            this.icon = tab.icon;
-            window.scrollTo(0,0);
-            this.posts = [];
-            this.searchPost()
+        async updateCategory(tab) {
+            console.log( 'tabtab :', tab)
+            this.title = await tab.title;
+            this.icon  = await tab.icon;
+            this.posts = await [];
+            await window.scrollTo(0,0);
+            await this.clearResult()
+            await this.searchPost()
         },
 
         ...mapActions({
             searchPost: 'search/searchPost',
+        }),
+
+        ...mapMutations({
+            clearResult: 'search/clearResult',
         })
     },
     created() {

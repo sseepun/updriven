@@ -1,7 +1,7 @@
 <template>
   <nav v-if="user" class="leftnav">
     <div class="menu-container">
-      <div class="menu menu-tab active mb-6">
+      <div class="menu menu-tab active mb-6" @click="refreshPage()">
         <router-link to="/user/dashboard">
           <div class="icon">
             <img src="/assets/img/icon/home-white.png" alt="Image Icon" />
@@ -111,7 +111,11 @@ export default {
   computed: {
     ...mapGetters({
       user: 'authentication/user',
-    })
+    }),
+
+    currentRouteName() {
+        return this.$route.name;
+    }
   },
   mounted() {
     categoryService._list().then(d => {
@@ -125,9 +129,11 @@ export default {
     });
   },
   methods: {
+
     ...mapActions({
       changeCategoryPost: 'post/changeCategoryPost'
     }),
+
     onClick(tab) {
       tab.status = !tab.status;
       if(tab.clickType && tab.clickType=='emit'){
@@ -136,7 +142,13 @@ export default {
       }else{
         return true;
       }
+    },
+
+    refreshPage() {
+      if ( this.currentRouteName === "UserDashboardPage" ) this.$router.go()
+      // console.log( 'router :', this.currentRouteName)
     }
+    
   },
   emits: [ 'on-click' ]
 }

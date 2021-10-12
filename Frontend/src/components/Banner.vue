@@ -1,5 +1,5 @@
 <template>
-  <div v-if="user" ref="bannerContainer" class="banner-container bshadow ovf-hidden">
+  <div v-if="profile" ref="bannerContainer" class="banner-container bshadow ovf-hidden">
     <div class="img-bg" :style="'background-image:url(\''+user.background+'\');'"></div>
     <div class="content-container">
       <div class="top-container">
