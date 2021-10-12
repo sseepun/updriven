@@ -1,5 +1,7 @@
 const axios = require('axios');
 import { authHeader } from '../helpers/authHeader';
+import httpClient from "./httpClient";
+import { server } from './constants';
 
 export const categoryService = {
   _list,
@@ -12,10 +14,12 @@ export const categoryService = {
 
 
 function _list() {
+  const Axiosmodel = server.FETCH_CATEGORY;
+
   return new Promise((resolve, reject) => {
-    axios({
-      method: 'GET',
-      url: `feed/category`,
+    httpClient({
+      method: Axiosmodel.method,
+      url: Axiosmodel.url,
       headers: authHeader()
     })
     .then(res => {
@@ -29,10 +33,12 @@ function _list() {
 
 // test get list Category 
 function test_list() {
+  const Axiosmodel = server.FETCH_CATEGORY;
+
   return new Promise((resolve, reject) => {
-    axios({
-      method: 'GET',
-      url: `feed/category`,
+    httpClient({
+      method: Axiosmodel.method,
+      url: Axiosmodel.url,
       headers: authHeader()
     })
     .then(res => {

@@ -47,7 +47,7 @@ export async function formContent(desc) {
 
     for(let lengthEachWord = 0; lengthEachWord < spiltText.length; lengthEachWord++) {
         // console.log( spiltText[lengthEachWord], `length: ${lengthEachWord} == ${spiltText.length - 1}` )
-
+    
         if ((spiltText[lengthEachWord]).match(new RegExp(URLMatcher))) {
             let dataLink = null
             try{

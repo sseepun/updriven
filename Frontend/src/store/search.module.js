@@ -1,9 +1,6 @@
 import { postService } from '../services/index';
 import { Paginate } from "../models/paginate";
-import {
-    changeStructurePost
-} from "../models/post"
-const axios = require('axios');
+import { changeStructurePost } from "../models/post"
 
 const initialPaginate = new Paginate("", "", false, false);
 export const search = {
