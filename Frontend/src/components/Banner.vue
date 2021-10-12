@@ -58,10 +58,12 @@
               classer="d-block btn-color-03 btn-sm pl-4 pr-4 mr-2" 
             />
           </div>
+          <div v-else>
           <Button 
             href="/user/profile/update" text="EDIT PROFILE" 
             classer="d-block btn-color-03 btn-sm pl-4 pr-4" 
           />
+          </div>
         </div>
       </div>
     </div>
