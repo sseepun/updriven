@@ -70,29 +70,46 @@ export default {
     createPost(post) {
       this.posts = [ post, ...this.posts ];
     },
-    updateCategory(tab) {
-      this.title = tab.title;
-      this.icon = tab.icon;
-      window.scrollTo(0,0);
-      this.posts = [];
-      this.selectFetchOption()
+    async updateCategory(tab) {
+      console.log('updateCategory :', tab)
+      this.title = await tab.title;
+      this.icon = await tab.icon;
+      this.posts = await [];
+      await window.scrollTo(0,0);
+      await this.changeStatusFilter(1);
+      await this.updateCareers(this.title);
+      await this.selectFetchOption();
     },
     selectFetchOption() {
-
-      if ( this.isDashboard && !this.haveFilter ) {
-        console.log('condition pull feed')
-        this.pullFeed();
-      } else if ( !this.isDashboard && !this.haveFilter ) {
-        console.log('condition pull post')
-        this.pullPost({
-          userID: this.profileInfo.id
-        });
+      if ( this.isDashboard ) {
+        if ( this.haveFilter ) {
+          console.log('condition pull feed and have filter')
+          this.pullFeed({ category: this.title });
+          return
+        } else {
+          console.log('condition pull feed and not have filter')
+          this.pullFeed();
+          return
+        }
+      } else if ( !this.isDashboard ) {
+        if ( this.haveFilter ) {
+          console.log('condition pull post and have filter')
+          this.pullPost({ userID: this.profileInfo.id, category: this.title });
+          return
+        } else {
+          console.log('condition pull post and not have filter')
+          this.pullPost({ userID: this.profileInfo.id });
+          return
+        }
       }
-
     },
     ...mapActions({
       pullFeed:'post/getFeed',
       pullPost:'post/getPost',
+    }),
+    ...mapMutations({
+      changeStatusFilter: 'post/changeStatusFilter',
+      updateCareers: 'post/updateCareers'
     })
   },
   created() {

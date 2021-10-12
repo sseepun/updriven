@@ -12,7 +12,7 @@
 
       <div 
         v-for="(tab, i) in menu" :key="i" 
-        class="menu" :class="{ 
+        class="menu" :class="{
           'has-children': tab.children && tab.children.length,
           'active': tab.status 
         }"

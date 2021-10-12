@@ -61,6 +61,7 @@ export default {
         },
 
         updateCategory(tab) {
+            console.log( 'tab :', tab)
             this.title = tab.title;
             this.icon = tab.icon;
             window.scrollTo(0,0);

@@ -45,8 +45,8 @@ export default {
   },
   async created() {
     await this.clearPost();
-    await this.changeOptionType({ isDashboard : 1 });
-    await this.fetchPost()
+    await this.changeOptionType(1);
+    await this.getFeed();
   },
   mounted() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
@@ -58,9 +58,19 @@ export default {
     })
   },
   methods: {
+    ...mapActions({
+      getFeed:'post/getFeed',
+      clearPost: 'post/clearPost'
+    }),
+
+    ...mapMutations({
+      changeOptionType: 'post/changeOptionType'
+    }),
+
     createPost(post) {
       this.$refs['posts'].createPost(post);
     },
+    
     onClickTab(tab) {
       if(tab.link=='javascript:'){
         this.$refs['posts'].updateCategory(tab);
@@ -68,18 +78,6 @@ export default {
         window.location.href = tab.link;
       }
     },
-    fetchPost() {
-      if ( this.isDashboard && !this.haveFilter ) {
-        this.getFeed();
-      }
-    },
-    ...mapActions({
-      getFeed:'post/getFeed',
-      clearPost: 'post/clearPost'
-    }),
-    ...mapMutations({
-      changeOptionType: 'post/changeOptionType'
-    })
   }
 }
 </script>

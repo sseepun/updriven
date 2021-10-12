@@ -74,9 +74,9 @@ export default {
   },
   async created() {
     await this.clearPost();
-    await this.changeOptionType({ isDashboard : 0 });
+    await this.changeOptionType(0);
     await this.fetchInfoProfile({ userId: this.userId })
-    await this.fetchPost()
+    await this.getPost({ userID: this.userId });
     
   },
   mounted() {
@@ -97,6 +97,17 @@ export default {
     })
   },
   methods: {
+    ...mapActions({
+
+      getPost:'post/getPost',
+      fetchInfoProfile: 'profile/fetchInfo',
+      clearPost: 'post/clearPost',
+    }),
+
+    ...mapMutations({
+      changeOptionType: 'post/changeOptionType'
+    }),
+
     onScroll() {
       if(this.$refs.rightContainer && this.$refs.bannerContainer) {
         if(window.scrollY < this.$refs.bannerContainer.getHeight()+16) {
@@ -106,9 +117,11 @@ export default {
         }
       }
     },
+
     createPost(post) {
       this.$refs['posts'].createPost(post);
     },
+    
     onClickTab(tab) {
       if(tab.link=='javascript:'){
         this.$refs['posts'].updateCategory(tab);
@@ -116,25 +129,7 @@ export default {
         window.location.href = tab.link;
       }
     },
-    fetchPost() {
-      if ( !this.isDashboard && !this.haveFilter ) {
-        this.getPost({
-          userID: this.userId
-        });
-      } else {
-        this.getPost({
-          userID: this.userId
-        });
-      }
-    },
-    ...mapActions({
-      getPost:'post/getPost',
-      fetchInfoProfile: 'profile/fetchInfo',
-      clearPost: 'post/clearPost',
-    }),
-    ...mapMutations({
-      changeOptionType: 'post/changeOptionType'
-    })
+    
   }
 }
 </script>

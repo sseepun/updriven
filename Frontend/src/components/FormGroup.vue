@@ -1,5 +1,4 @@
 <template>
-
   <div v-if="type === 'textarea'" class="form-group" :class="classer">
     <label v-if="label" class="p" :class="{ 'focused': isFocused }">
       {{label}} <div v-if="errorText" class="error">{{errorText}}</div>
@@ -26,8 +25,8 @@
       {{label}} <div v-if="errorText" class="error">{{errorText}}</div>
     </label>
     <div :class="wrapperClass">
-      <select 
-        :name="name" 
+      <select
+        :name="name"
         v-model="value" 
         @input="(event)=>$emit('input', event.target.value)" 
         @focusin="isFocused = true" @focusout="isFocused = false" 
