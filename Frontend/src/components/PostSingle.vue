@@ -3,7 +3,9 @@
   <div v-if="user" class="post bshadow">
     <div class="p-3" v-if="selfPost.shared">     
       <p class="xs fw-500">
-        {{selfPost.shared.firstname}} {{selfPost.shared.lastname}} 
+        <router-link :to="'/user/profile/' + selfPost.shared.user">
+          {{selfPost.shared.firstname}} {{selfPost.shared.lastname}} 
+        </router-link>
         shared this post on 
         {{formatDate(selfPost.createdAt)}}
       </p>
@@ -133,7 +135,9 @@
       </div>
 
       <p class="stat xs fw-600 color-gray">
-        {{selfPost.user.firstname}} {{selfPost.user.lastname}}
+        <router-link :to="selfPost.user.profileLink">
+          {{selfPost.user.firstname}} {{selfPost.user.lastname}}
+        </router-link>
         <span class="dot"></span>
         {{formatDate(selfPost.createdAt)}}
       </p>
@@ -308,7 +312,7 @@ export default {
     }
   },
   created() {
-
+    // console.log( this.selfPost )
   },
   mounted: function() {
     // try{

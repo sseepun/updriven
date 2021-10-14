@@ -42,7 +42,10 @@ export default {
       user: 'authentication/user',
       getPost: 'post/getPost',
       getStatusPost: 'post/getStatusPost',
-      isLoading: 'post/isLoading'
+      isLoading: 'post/isLoading',
+      isDashboard: 'post/isDashboard',
+      haveFilter: 'post/haveFilter',
+      profileInfo: 'profile/information',
     })
   },
   methods: {
@@ -67,25 +70,46 @@ export default {
     createPost(post) {
       this.posts = [ post, ...this.posts ];
     },
-    updateCategory(tab) {
-      this.title = tab.title;
-      this.icon = tab.icon;
-      window.scrollTo(0,0);
-      this.posts = [];
-      this.selectFetchOption()
+    async updateCategory(tab) {
+      console.log('updateCategory :', tab)
+      this.title = await tab.title;
+      this.icon = await tab.icon;
+      this.posts = await [];
+      await window.scrollTo(0,0);
+      await this.changeStatusFilter(1);
+      await this.updateCareers(this.title);
+      await this.selectFetchOption();
     },
     selectFetchOption() {
-
-      if (this.typePost == true ) {
-        this.fetchPostAll();
-      } else if (this.typePost == false) {
-        this.fetchPostOwner();
+      if ( this.isDashboard ) {
+        if ( this.haveFilter ) {
+          console.log('condition pull feed and have filter')
+          this.pullFeed({ category: this.title });
+          return
+        } else {
+          console.log('condition pull feed and not have filter')
+          this.pullFeed();
+          return
+        }
+      } else if ( !this.isDashboard ) {
+        if ( this.haveFilter ) {
+          console.log('condition pull post and have filter')
+          this.pullPost({ userID: this.profileInfo.id, category: this.title });
+          return
+        } else {
+          console.log('condition pull post and not have filter')
+          this.pullPost({ userID: this.profileInfo.id });
+          return
+        }
       }
-
     },
     ...mapActions({
-      fetchPostOwner:'post/fetchPostOwner',
-      fetchPostAll:'post/fetchPostAll'
+      pullFeed:'post/getFeed',
+      pullPost:'post/getPost',
+    }),
+    ...mapMutations({
+      changeStatusFilter: 'post/changeStatusFilter',
+      updateCareers: 'post/updateCareers'
     })
   },
   created() {

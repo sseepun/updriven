@@ -67,14 +67,20 @@ export default {
   data() {
     return {
       bannerActiveIndex: 1,
-      rightContainerClass: ''
+      rightContainerClass: '',
+      userId: ( this.$route.params.id === ''? this.user.id : this.$route.params.id ),
+      following:[],
     }
   },
   async created() {
     await this.clearPost();
-    await this.fetchPostOwner();
+    await this.changeOptionType(0);
+    await this.fetchInfoProfile({ userId: this.userId })
+    await this.getPost({ userID: this.userId });
+    
   },
   mounted() {
+    console.log(this.profileInfo)
     onMounted();
     this.onScroll();
     window.addEventListener('scroll', this.onScroll);
@@ -82,7 +88,26 @@ export default {
   beforeUnmount() {
     window.removeEventListener('scroll', this.onScroll);
   },
+  computed: {
+    ...mapGetters({
+      user: 'authentication/user',
+      profileInfo: 'profile/information',
+      isDashboard: 'post/isDashboard',
+      haveFilter: 'post/haveFilter',
+    })
+  },
   methods: {
+    ...mapActions({
+
+      getPost:'post/getPost',
+      fetchInfoProfile: 'profile/fetchInfo',
+      clearPost: 'post/clearPost',
+    }),
+
+    ...mapMutations({
+      changeOptionType: 'post/changeOptionType'
+    }),
+
     onScroll() {
       if(this.$refs.rightContainer && this.$refs.bannerContainer) {
         if(window.scrollY < this.$refs.bannerContainer.getHeight()+16) {
@@ -92,9 +117,11 @@ export default {
         }
       }
     },
+
     createPost(post) {
       this.$refs['posts'].createPost(post);
     },
+    
     onClickTab(tab) {
       if(tab.link=='javascript:'){
         this.$refs['posts'].updateCategory(tab);
@@ -102,10 +129,7 @@ export default {
         window.location.href = tab.link;
       }
     },
-    ...mapActions({
-      fetchPostOwner:'post/fetchPostOwner',
-      clearPost: 'post/clearPost'
-    })
+    
   }
 }
 </script>

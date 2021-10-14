@@ -59,7 +59,7 @@ import {mapGetters, mapActions, mapMutations} from "vuex"
 export default {
   name: 'SectionInfo',
   props: {
-    //user: { type: Object, default: {} }
+    userProfile: { type: Object, default: {} }
   },
   date() {
     return {

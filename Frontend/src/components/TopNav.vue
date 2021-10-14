@@ -7,17 +7,38 @@
         </router-link>
       </div>
       <div class="right-container">
-        <div class="search-container">
-          <form action="/" method="GET">
+        <div v-if="isAdmin" class="search-container">
+          <form @submit.prevent="onSubmitSearch" style="display: flex;">
             <FormGroup
               placeholder="Search UpDriven" wrapperClass="append"
-              icon="search.png"
+              icon="search.png" :value="getSearchSentance"
+              @input="updateSentance($event)"
+            />
+
+            <FormGroup
+              v-if="isAdmin"
+              type="select"
+              placeholder="Select Careers"
+              classer="label-sm"
+              wrapperClass="fgray"
+              :options="optionList"
+              :value="getSearchcareers"
+              @input="updateCareer($event)"
             />
           </form>
         </div>
+
+        <div v-else class="search-container" >
+          <form @submit.prevent="onSubmitSearch" >
+            <FormGroup
+              placeholder="Search UpDriven" wrapperClass="append"
+              icon="search.png" :value="getSearchSentance"
+              @input="updateSentance($event)"
+            />
+          </form>
+        </div>
+
         <div class="option-container">
-
-
           <div class="option" :class="{ 'active': isActiveNoti }">
             <a class="icon icon-alert" href="javascript:" @click="onclickRemoveAllNotification()">
               <img src="/assets/img/icon/bell.png" alt="Bell Icon" />
@@ -67,7 +88,7 @@
             </a>
             <div class="dropdown bshadow" :class="{ 'active': isActiveProfile }">
               <div class="submenu">
-                <router-link to="/user/profile">
+                <router-link :to="user.profileLink">
                   My Profile
                 </router-link>
               </div>
@@ -87,7 +108,8 @@
 
 <script>
 import moment from 'moment';
-import {mapGetters, mapActions, mapState} from "vuex"
+import {mapGetters, mapActions, mapMutations, mapState} from "vuex"
+import { categoryService } from '../services/index'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 
@@ -102,29 +124,37 @@ export default {
       isActiveAdd: false,
       isActiveProfile: false,
       amountNotify: 0,
+      menuCategory: [
+        {
+          status: true,
+          title: 'Careers', link: 'javascript:',
+          icon: '/assets/img/profile/03.jpg',
+          children: []
+        } 
+      ]
     }
   },
   created() {
-    this.getSocketID.emit('join-with-id', {
-      user_id: this.user.id,
-    });
+    this.getSocketID.emit('join-with-id', { user_id: this.user.id });
     this.getAllNotify()
   },
   mounted() {
-    this.getSocketID.on('receive-notify', (data) => {
-        });
 
-    this.getSocketID.on('get-count-notify', (data) => {
-      this.getAllNotify()
-    });
+    this.getSocketID.on('receive-notify', (data) => { });
 
+    this.getSocketID.on('get-count-notify', (data) => { this.getAllNotify() });
   },
   computed: {
     ...mapGetters({
       user: 'authentication/user',
+      isAdmin: 'authentication/isAdmin',
       getSocketID: 'socketIO/getSocketID',
       getAmount: 'socketIO/getAmount',
       getContents: 'socketIO/getContents',
+      getSearchSentance: 'search/getSearchSentance',
+      getSearchKeyword: 'search/getSearchKeyword',
+      getSearchcareers: 'search/getSearchcareers',
+      optionList: "category/option_ilst",
     })
   },
   methods: {
@@ -132,12 +162,20 @@ export default {
       signout: 'authentication/signout',
       removeNotification: 'socketIO/removeNotification',
       getAllNotify: 'socketIO/getAllNotify',
+      searchPost: 'search/searchPost'
+    }),
+
+    ...mapMutations({
+      updateSentance: 'search/updateSentance',
+      updateKeyword: 'search/updateKeyword',
+      updateCareer: 'search/updateCareer',
+      clearResult: 'search/clearResult'
     }),
     
     formatDate(value) {
-      const momentValue = moment(value, 'DD-MM-YYYY HH:mm:ssZ')
-      return momentValue.fromNow()
+      return moment(value).fromNow()
     },
+
     signOut() {
       this.signout().then(
         () => {
@@ -147,12 +185,20 @@ export default {
         }
       )
     },
+
     onclickClearNotification(id) {
       this.removeNotification({"notification_id": id}).then(response => {
       })
     },
+
     onclickRemoveAllNotification() {
       this.isActiveNoti = !this.isActiveNoti
+    },
+
+    async onSubmitSearch() {
+      await this.clearResult()
+      await this.searchPost()
+      await this.$router.push('/user/search');
     }
 
   }

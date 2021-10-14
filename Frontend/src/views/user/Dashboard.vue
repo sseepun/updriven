@@ -45,15 +45,32 @@ export default {
   },
   async created() {
     await this.clearPost();
-    await this.fetchPostAll();
+    await this.changeOptionType(1);
+    await this.getFeed();
   },
   mounted() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
   },
+  computed: {
+    ...mapGetters({
+      isDashboard: 'post/isDashboard',
+      haveFilter: 'post/haveFilter',
+    })
+  },
   methods: {
+    ...mapActions({
+      getFeed:'post/getFeed',
+      clearPost: 'post/clearPost'
+    }),
+
+    ...mapMutations({
+      changeOptionType: 'post/changeOptionType'
+    }),
+
     createPost(post) {
       this.$refs['posts'].createPost(post);
     },
+    
     onClickTab(tab) {
       if(tab.link=='javascript:'){
         this.$refs['posts'].updateCategory(tab);
@@ -61,10 +78,6 @@ export default {
         window.location.href = tab.link;
       }
     },
-    ...mapActions({
-      fetchPostAll:'post/fetchPostAll',
-      clearPost: 'post/clearPost'
-    })
   }
 }
 </script>

@@ -3,25 +3,94 @@ const User = db.user;
 const Post = db.post;
 const Sentiment = db.sentiment;
 const Media = db.media
+const Category = db.category;
 
 async function getPost(req, userId) {
-    let user;
-    if (userId) {
-        user = await User.findById(userId)
-        
+    let post_list;
+    if (req.body.category) {
+        const category = await Category.findOne({ category_name : req.body.category })
+        if (userId) {
+            post_list = await Post.paginate({
+                query: {
+                    category: category._id,
+                    user: userId._id
+                },
+                limit: 5,
+                next: req.body.next,
+                previous: req.body.previous,
+                paginatedField: 'Orderable'
+            })
+        }
+        else if (req.body.search) {
+            post_list = await Post.paginate({
+                query: {
+                    category: category._id,
+                    $or: [
+                        {
+                            content: { "$regex": req.body.search, "$options": "i" }
+                        },
+                        {
+                            subject: { "$regex": req.body.search, "$options": "i" }
+                        }
+                    ]
+                },
+                limit: 5,
+                next: req.body.next,
+                previous: req.body.previous,
+                paginatedField: 'Orderable'
+            })
+        }
+        else {
+            post_list = await Post.paginate({
+                query: {
+                    category: category._id
+                },
+                limit: 5,
+                next: req.body.next,
+                previous: req.body.previous,
+                paginatedField: 'Orderable'
+            })
+        }
     }
     else {
-        user = await User.findById(req.userId)
+        if (userId) {
+            post_list = await Post.paginate({
+                query: {
+                    user: userId._id
+                },
+                limit: 5,
+                next: req.body.next,
+                previous: req.body.previous,
+                paginatedField: 'Orderable'
+            })
+        }
+        else if (req.body.search) {
+            post_list = await Post.paginate({
+                query: {
+                    $or: [
+                        {
+                            content: { "$regex": req.body.search, "$options": "i" }
+                        },
+                        {
+                            subject: { "$regex": req.body.search, "$options": "i" }
+                        }
+                    ]
+                },
+                limit: 5,
+                next: req.body.next,
+                previous: req.body.previous,
+                paginatedField: 'Orderable'
+            })
+        }
+        else {
+            post_list = await Post.paginate({
+                limit: 5,
+                next: req.body.next,
+                previous: req.body.previous,
+                paginatedField: 'Orderable'
+            })
+        }
     }
-    const post_list = await Post.paginate({
-        query: {
-            user: user._id
-        },
-        limit: 5,
-        next: req.body.next,
-        previous: req.body.previous,
-        paginatedField: 'Orderable'
-    })
     await Post.populate(post_list,
         [
             {
@@ -84,16 +153,9 @@ async function getPost(req, userId) {
 }
 
 async function getImage(req, userId) {
-    let user;
-    if (userId) {
-        user = await User.findById(userId)
-    }
-    else {
-        user = await User.findById(req.userId)
-    }
     const image_list = await Media.paginate({
         query: {
-            user: user._id,
+            user: userId._id,
             type: 'image/jpeg'
         },
         limit: 20,

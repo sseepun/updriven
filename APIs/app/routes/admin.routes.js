@@ -21,5 +21,10 @@ module.exports = app => {
         adminController.deleteAds
     );
 
+    router.get("/list",
+        [auth.isLoggedIn, auth.isAdmin],
+        adminController.adsList
+    );
+
     app.use('/apis/admin', router);
 }

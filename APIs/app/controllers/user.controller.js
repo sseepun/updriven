@@ -96,17 +96,8 @@ exports.updateBackground = async (req, res) => {
 
 exports.posts = async (req, res) => {
     try {
-        const post_data = await global_functions.getPost(req)
-        return res.status(200).send(post_data)
-    }
-    catch (err) {
-        return res.status(500).send({message: err})
-    }
-}
-
-exports.otherUserPosts = async (req, res) => {
-    try {
-        const post_data = await global_functions.getPost(req, sanitize(req.body.userID))
+        const user = await User.findById(sanitize(req.body.userID))
+        const post_data = await global_functions.getPost(req, user)
         return res.status(200).send(post_data)
     }
     catch (err) {
@@ -116,18 +107,8 @@ exports.otherUserPosts = async (req, res) => {
 
 exports.imageList = async (req, res) => {
     try {
-        image_list = await global_functions.getImage(req)
-        return res.status(200).send(image_list)
-    }
-    catch (err) {
-        console.log(err)
-        return res.status(500).send({message: err})
-    }
-}
-
-exports.otherUserimageList = async (req, res) => {
-    try {
-        image_list = await global_functions.getImage(req, sanitize(req.body.userID))
+        const user = await User.findById(sanitize(req.body.userID))
+        image_list = await global_functions.getImage(req, user)
         return res.status(200).send(image_list)
     }
     catch (err) {
@@ -196,7 +177,7 @@ exports.unfollow = async (req, res) => {
 
 exports.following_list = async (req, res) => {
     try {
-        const user = await User.findById(req.userId)
+        const user = await User.findById(sanitize(req.body.userID))
         const following_list = await Follow.paginate({
             query: {
                 user: user._id
@@ -218,7 +199,7 @@ exports.following_list = async (req, res) => {
                         },
                         {
                             path: 'user_detail', 
-                            select: ['firstname', 'lastname', 'state_id', 'country_id']
+                            select: ['firstname', 'lastname', 'state_id', 'country_id' , 'profile_pic']
                         }
                     ]
                 },

@@ -4,18 +4,21 @@ import { checkCookie } from '../helpers/authHeader';
 import User from '../models/user.js';
 import router from '../router';
 import countrySC from '../assets/country-state-city'
+
 const user = JSON.parse(localStorage.getItem(`${process.env.VUE_APP_API_URL}_USER`));
 
 export const authentication = {
   namespaced: true,
   state: {
       user: user,
+      otherUser: null,
       authenticated: user? true: false
   },
   getters: {
     user: state => state.user,
     isSignedin: state => state.user? true: false,
     isAdmin: state => state.user && state.user.is_admin,
+    // isAdmin: state => 1,
     isUser: state => state.user,
     isAuthenticated: state => state.authenticated
   },
@@ -273,9 +276,11 @@ export const authentication = {
       })
     })
     },
-    getFollowing({ commit , dispatch }) {
-      return new Promise((resolve, reject) => {        
-          userService.getFollowing().then(
+    getFollowing({ commit , dispatch }, {userId}) {
+      return new Promise((resolve, reject) => {   
+          var formData = new FormData();
+          formData.append( 'userID' , userId);     
+          userService.getFollowing(formData).then(
               response => {
                 let myFollowings = response.data.results
                 for (let i = 0; i < myFollowings.length; i++) { 
@@ -306,34 +311,21 @@ export const authentication = {
           )
       })
     },
+
+    follow({ commit , dispatch }, {userId}){
+      var formData = new FormData();
+      formData.append( 'userID' , userId);     
+      userService.toFollow(formData)
+    },
+    unFollow({ commit , dispatch }, {userId}){
+      var formData = new FormData();
+      formData.append( 'userID' , userId);     
+      userService.toUnFollow(formData)
+    },
     async removeAllNotification ({ commit, state } ) {
         await commit('removeAllNotification')        
     },
-    getImages({ commit , dispatch }) {
-      return new Promise((resolve, reject) => {        
-          userService.getImages().then(
-              response => {
-                let images = response.data.results
-                if(images.length > 0){
-                  for (let i = 0; i < images.length; i++) { 
-                    let pathList = images[i].path.split('/')
-                    const lastIndex = pathList.pop(pathList.length-1)
-                    const hostPath =  pathList.join('/')+"/"
-                    images[i].hostPath = hostPath
-                    images[i].name = lastIndex
-                    images[i].id = i
-                    images[i].image = images[i].path
-                  }
-                }
-                commit('setImages', images);
-                resolve(response)
-              },
-              error => {
-                  reject(error)
-              }
-          )
-      })
-    },
+    
     
   },
   // Synchronous
@@ -365,13 +357,6 @@ export const authentication = {
       
       localStorage.setItem(`${process.env.VUE_APP_API_URL}_USER`, JSON.stringify(localUser));
     },
-    setImages(state , images) {
-      let localUser = localStorage.getItem(`${process.env.VUE_APP_API_URL}_USER`);
-      localUser = JSON.parse(localUser)
-      localUser.images = images
-      state.user.images = images
-      
-      localStorage.setItem(`${process.env.VUE_APP_API_URL}_USER`, JSON.stringify(localUser));
-    },
+    
   }
 }

@@ -4,40 +4,67 @@ export const NETWORK_TIMEOUT_MESSAGE = "A network timeout has occurred, Please t
 export const UPLOAD_PHOTO_FAIL_MESSAGE = "An error has occurred. The photo was unable to upload.";
 export const NOT_CONNECT_NETWORK = "NOT_CONNECT_NETWORK";
 
-export const apiUrl = (process.env.VUE_APP_API_URL + '/apis')
+export const API_URL = (process.env.VUE_APP_API_URL + '/apis')
 
 export const server = {
 
     // Authenticatin
-    GET_PROFILE_URL: `auth/status`,
-    SIGN_IN_URL: `auth/login`,
-    SIGN_FACEBOOK_URL: `auth/facebook`,
-    SIGN_GOOGLE_URL: `auth/google`,
-    CHECK_TOKEN_RESET_PASSWORD_URL: `auth/reset`,
-    RESET_PASSWORD_URL: `auth/reset`,
-    VERIFY_URL: `auth/success`,
-    SIGN_OUT: `auth/logout`,
-    VERIFY_EMAIL_REGISTER_URL: `auth/verify`,
-    FORGET_PASSWORD_SENT_ENAIL_URL: `auth/forgot`,
+    SIGN_IN: { method: 'POST', url: `auth/login`},
+    SIGN_FACEBOOK: { method: 'GET', url: `auth/facebook`},
+    SIGN_GOOGLE: { method: 'GET', url: `auth/google`},
+    SIGN_OUT: { method: 'GET', url: `auth/logout`},
+
+    REGISTER: { method: 'POST', url: `auth/signup`},
+
+    CHECK_AUTH: { method: 'GET', url: `auth/success`},
+    CHECK_TOKEN_RESET_PASSWORD: { method: 'GET', url: `auth/reset`},
+    RESET_PASSWORD: { method: 'POST', url: `auth/reset`},
+
+    VERIFY_EMAIL_REGISTER: { method: 'GET', url: `auth/verify`},
+    FORGET_PASSWORD_SENT_ENAIL: { method: 'GET', url: `auth/forgot`},
 
     // User
-    FETCH_POST_OWNER_URL: `user/post`,
-    EDIT_PICTURE_PROFILE_URL: `user/edit_profile_image`,
-    EDIT_BACKGROUND_PROFILE_URL: `user/edit_background_image`,
-    EDIT_PROFILE_URL: `user/edit_info`,
-    GET_ALL_NOTIFY: `/user/notification`,
-    CLEAR_ALL_NOTIFY: `/user/clear_notification`,
+    FETCH_OWNER_PROFILE: { method: 'GET', url: `auth/status`},
+    FETCH_USER_INFORMATION: { method: 'GET', url: `user/profile`},
+    FETCH_FOLLOWING_LIST: { method: 'POST', url: `user/following_list`},
+    FETCH_IMAGE_LIST: { method: 'POST', url: `user/image_list`},
 
-    // Post
-    CREATE_POST_URL: `post/create`,
-    DELETE_POST_URL: `post/delete`,
-    SENTIMENT_URL: `post/sentiment`,
-    REMOVE_SENTIMENT_URL: `post/remove_sentiment`,
-    COMMENT_OR_REPLY_URL: `post/comment`,
-    SHARE_POST_URL: `post/share`,
+    TO_FOLLOW: { method: 'POST', url: `user/follow`},
+    TO_UN_FOLLOW: { method: 'POST', url: `user/unfollow`},
+
+    EDIT_PROFILE: { method: 'POST', url: `user/edit_info`},
+    CHANGE_PICTURE_PROFILE: { method: 'POST', url: `user/edit_profile_image`},
+    CHANGE_BACKGROUND_PROFILE: { method: 'POST', url: `user/edit_background_image`},
+
+    // Notification
+    GET_ALL_NOTIFY: { method: 'GET', url: `user/notification`},
+    CLEAR_ALL_NOTIFY: { method: 'POST', url: `user/clear_notification`},
 
     // Feed
-    FETCH_POST_ALL_URL: `feed/post`,
-    FETCH_COMMENT_URL: `feed/comment`,
+    FETCH_FEED: { method: 'POST', url: `feed/post`},
+    FETCH_POST: { method: 'POST', url: `user/post`},
+    PREVIEW_LINK: { method: 'POST', url: ``},
+
+    CREATE_POST: { method: 'POST', url: `post/create`},
+    DELETE_POST: { method: 'POST', url: `post/delete`},
+
+    SENTIMENT_POST: { method: 'POST', url: `post/sentiment`},
+    REMOVE_SENTIMENT_POST: { method: 'POST', url: `post/remove_sentiment`},
+
+    FETCH_COMMENT: { method: 'POST', url: `feed/comment`},
+    COMMENT_OR_REPLY_POST: { method: 'POST', url: `post/comment`},
+
+    SHARE_POST: { method: 'POST', url: `post/share`},
+
+    // Category
+    FETCH_CATEGORY: { method: 'GET', url: `feed/category`},
+
+    // Search
+    SEARCH: { method: 'POST', url: `feed/search`},
+
+    // Ads
+    FETCH_ADS: { method: 'GET', url: `admin/list`},
+    ADD_ADS: { method: 'POST', url: `admin/add_ads`},
+    DELETE_ADS: { method: 'POST', url: `admin/delete_ads`},
 
 };

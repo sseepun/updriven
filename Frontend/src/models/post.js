@@ -1,18 +1,5 @@
 import { postService } from '../services';
 
-export class StatusPost {
-    constructor(
-        hasNext,
-        hasPrevious,
-        next,
-        previous) {
-        this.hasNext = hasNext
-        this.hasPrevious = hasPrevious
-        this.nextID = next
-        this.previousID = previous
-    }
-}
-
 export class _create {
     constructor(subject = '', content = '', category = '', PVmedia = [], fileMedia = [], visible_to = '1') {
       this.subject = subject;
@@ -60,7 +47,7 @@ export async function formContent(desc) {
 
     for(let lengthEachWord = 0; lengthEachWord < spiltText.length; lengthEachWord++) {
         // console.log( spiltText[lengthEachWord], `length: ${lengthEachWord} == ${spiltText.length - 1}` )
-
+    
         if ((spiltText[lengthEachWord]).match(new RegExp(URLMatcher))) {
             let dataLink = null
             try{
@@ -149,6 +136,7 @@ export async function changeStructurePost(posts) {
                 firstname: temp_data['user'][0]['user_detail'][0]['firstname'],
                 lastname: temp_data['user'][0]['user_detail'][0]['lastname'],
                 avatar: temp_data['user'][0]['_id'],
+                profileLink: '/user/profile/' + temp_data['user'][0]['_id'],
             },
             counts: {
                 likes: shared ? shared.sentiment_count : temp_data['sentiment_count'],

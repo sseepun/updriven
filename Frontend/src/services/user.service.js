@@ -1,5 +1,7 @@
 const axios = require('axios');
 import { authHeader } from '../helpers/authHeader';
+import httpClient from "./httpClient";
+import { server } from './constants';
 
 export  const userService = {
   getAllNotify,
@@ -9,14 +11,36 @@ export  const userService = {
   editPictureProfile,
   editBackgroundProfile,
   getFollowing,
-  getImages
+  getOtherProfile,
+  toFollow,
+  toUnFollow
 };
 
-function editPictureProfile(input) {
+function getProfile(input) {
+  const Axiosmodel = server.FETCH_OWNER_PROFILE;
+
   return new Promise((resolve, reject) => {
-    axios({
-      method: 'POST',
-      url: `user/edit_profile_image`,
+    httpClient({
+      method: Axiosmodel.method,
+      url: Axiosmodel.url,
+      withCredentials: true,
+    })
+    .then(res => {
+      resolve(res.data);
+    })
+    .catch(err => {
+      reject(err);
+    });
+  });
+}
+
+function editPictureProfile(input) {
+  const Axiosmodel = server.CHANGE_PICTURE_PROFILE;
+
+  return new Promise((resolve, reject) => {
+    httpClient({
+      method: Axiosmodel.method,
+      url: Axiosmodel.url,
       data: input,
       withCredentials: true,
     })
@@ -28,14 +52,16 @@ function editPictureProfile(input) {
 
       reject(err);
     });
-});
+  });
 }
 
 function editBackgroundProfile(input) {
+  const Axiosmodel = server.CHANGE_BACKGROUND_PROFILE;
+
   return new Promise((resolve, reject) => {
-    axios({
-      method: 'POST',
-      url: `user/edit_background_image`,
+    httpClient({
+      method: Axiosmodel.method,
+      url: Axiosmodel.url,
       data: input,
       withCredentials: true,
     })
@@ -47,14 +73,16 @@ function editBackgroundProfile(input) {
 
       reject(err);
     });
-});
+  });
 }
+
 function editProfile(input) {
+  const Axiosmodel = server.EDIT_PROFILE;
 
   return new Promise((resolve, reject) => {
-    axios({
-      method: 'POST',
-      url: `user/edit_info`,
+    httpClient({
+      method: Axiosmodel.method,
+      url: Axiosmodel.url,
       data: input,
       withCredentials: true,
       
@@ -70,11 +98,13 @@ function editProfile(input) {
 });
 }
 
-function getProfile(input) {
+function getOtherProfile(userID) {
+  const Axiosmodel = server.FETCH_USER_INFORMATION;
+
   return new Promise((resolve, reject) => {
-    axios({
-      method: 'GET',
-      url: `auth/status`,
+    httpClient({
+      method: Axiosmodel.method,
+      url: `${Axiosmodel.url}/${userID}`,
       withCredentials: true,
     })
     .then(res => {
@@ -83,14 +113,16 @@ function getProfile(input) {
     .catch(err => {
       reject(err);
     });
-});
+  });
 }
 
 function getAllNotify() {
+  const Axiosmodel = server.GET_ALL_NOTIFY;
+
   return new Promise((resolve, reject) => {
-    axios({
-      method: 'GET',
-      url: `/user/notification`,
+    httpClient({
+      method: Axiosmodel.method,
+      url: Axiosmodel.url,
       headers: authHeader()
     })
     .then(res => {
@@ -103,10 +135,12 @@ function getAllNotify() {
 }
 
 function clear_notify(input) {
+  const Axiosmodel = server.CLEAR_ALL_NOTIFY;
+
   return new Promise((resolve, reject) => {
-    axios({
-      method: 'POST',
-      url: `/user/clear_notification`,
+    httpClient({
+      method: Axiosmodel.method,
+      url: Axiosmodel.url,
       data: input,
     })
     .then(res => {
@@ -118,11 +152,14 @@ function clear_notify(input) {
 });
 }
 
-function getFollowing() {
+function getFollowing(input) {
+  const Axiosmodel = server.FETCH_FOLLOWING_LIST;
+
   return new Promise((resolve, reject) => {
-    axios({
-      method: 'POST',
-      url: `/user/following_list`,
+    httpClient({
+      method: Axiosmodel.method,
+      url: Axiosmodel.url,
+      data: input,
       headers: authHeader()
     })
     .then(res => {
@@ -133,11 +170,33 @@ function getFollowing() {
     });
 });
 }
-function getImages() {
+
+function toFollow(input) {
+  const Axiosmodel = server.TO_FOLLOW;
+
   return new Promise((resolve, reject) => {
-    axios({
-      method: 'POST',
-      url: `/user/image_list`,
+    httpClient({
+      method: Axiosmodel.method,
+      url: Axiosmodel.url,
+      data: input,
+      headers: authHeader()
+    })
+    .then(res => {
+      resolve(res);
+    })
+    .catch(err => {
+      reject(err);
+    });
+});
+}
+
+function toUnFollow(input) {
+  const Axiosmodel = server.TO_UN_FOLLOW;
+  return new Promise((resolve, reject) => {
+    httpClient({
+      method: Axiosmodel.method,
+      url: Axiosmodel.url,
+      data: input,
       headers: authHeader()
     })
     .then(res => {

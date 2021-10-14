@@ -407,7 +407,6 @@ export default {
     ...mapActions({
       get_list: "category/get_list",
       createPost: "post/create",
-      fetchPostOwner: "post/fetchPostOwner",
     }),
     onSubmitPost() {
       this.createPost().then(() => {
