@@ -204,12 +204,3 @@ exports.resetPwd = (req, res) => {
     }
 };
 
-exports.clearCookie = async (req, res) => {
-    try {
-        console.log(req.session)
-    }
-    catch (err) {
-
-    }
-}
-

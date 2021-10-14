@@ -35,5 +35,9 @@ module.exports = app => {
         feedController.getCategory
     ),
 
+    router.get("/ads_list",
+    feedController.adsList
+    );
+
     app.use('/apis/feed', router);
 }

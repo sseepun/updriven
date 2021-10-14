@@ -19,7 +19,7 @@ exports.createPost = async (req, res) => {
             status: true,
         });
         await post.save();
-        if (req.files) {
+        if (req.files.length > 0) {
             req.files.forEach(async (item, index) => {
                 const media = new Media({
                     user: req.userId,

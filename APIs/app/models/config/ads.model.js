@@ -6,6 +6,7 @@ const Ads = mongoose.model(
     new mongoose.Schema({
         title: String,
         path: String,
+        link: String
     }).plugin(sanitizerPlugin)
 );
 

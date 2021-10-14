@@ -61,7 +61,6 @@ module.exports = passport.use(new FacebookStrategy({
     },
     async function(request, accessToken, refreshToken, profile, done) {
         try {
-            console.log('hihi')
             if (profile.length === 0) {
                 return done(null);
             }
