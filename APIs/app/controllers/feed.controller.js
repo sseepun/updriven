@@ -6,6 +6,7 @@ const Post = db.post;
 const Category = db.category;
 const Comment = db.comment;
 const Sentiment = db.sentiment;
+const Ads = db.ads;
 
 exports.getComments = async (req, res) => {
     try {
@@ -142,5 +143,16 @@ exports.search = async (req, res) => {
     catch (err) {
     console.log(err)
         return res.status(500).send({message: err})
+    }
+}
+
+exports.adsList = async (req, res) => {
+    try {
+        const result = await Ads.find()
+        return res.status(200).send(result)
+    }
+    catch (err) {
+        console.log(err)
+        return res.status(500).send({message:err})
     }
 }

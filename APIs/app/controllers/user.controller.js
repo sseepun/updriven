@@ -1,19 +1,13 @@
 const global_functions = require("./modules/global_function");
 const db = require("../models");
 const sanitize = require('mongo-sanitize');
-const { rawListeners } = require("../models/log/log.model");
 const User = db.user;
-const User_detail = db.user_detail;
-const Post = db.post;
 const Organization = db.organization;
-const Sentiment = db.sentiment;
 const Notification = db.notification;
-const Media = db.media;
 const Follow = db.follow;
 
 exports.editInfo = async (req, res) => {
     try {
-        console.log(req.body)
         const user = await User.findById(req.userId).populate('user_detail')
         interests_list = req.body.interests.split(",");
         user.user_detail[0].interests = interests_list;
@@ -22,7 +16,6 @@ exports.editInfo = async (req, res) => {
         user.user_detail[0].state_id = req.body.state_id;
         user.user_detail[0].country_id = req.body.country_id;
         user.user_detail[0].about_us = req.body.about;
-        console.log(user.user_detail[0]);
         const organization = await Organization.findOne({ name: req.body.organization })
         if (user.user_detail[0].organization.length > 0) {
             user.user_detail[0].organization = []
@@ -51,7 +44,6 @@ exports.editInfo = async (req, res) => {
 exports.viewOtherUserInfo = async (req, res) => {
     try {
         const user = await User.findById(sanitize(req.params.userID)).populate('user_detail')
-        console.log(user.user_detail)
         return res.status(200).send(user.user_detail);
     }
     catch (err) {

@@ -16,14 +16,14 @@ module.exports = app => {
         adminController.addAds
     );
 
+    router.post("/edit_ads",
+        [auth.isLoggedIn, auth.isAdmin],
+        adminController.editAds
+    );
+
     router.post("/delete_ads",
         [auth.isLoggedIn, auth.isAdmin],
         adminController.deleteAds
-    );
-
-    router.get("/list",
-        [auth.isLoggedIn, auth.isAdmin],
-        adminController.adsList
     );
 
     app.use('/apis/admin', router);

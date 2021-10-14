@@ -92,8 +92,6 @@ io.on('connection', (socket) => {
     //   );
   });
   socket.on('sent-realtime-notify' , (data) =>{
-
-    console.log(data);
     io.in(data.user_id).emit('get-count-notify',{
         sentiment_type: data.sentiment_type,
         post_id: data.post_id,
@@ -106,12 +104,11 @@ io.on('connection', (socket) => {
   });
   
   socket.on('join', (data) => {
-      console.log('join room :', data.job_id)
       socket.join(data.job_id);
   });
 
   socket.on('disconnect', () => {
-      // console.log("A user disconnected");
+
   });
 
   socket.on('send-message', (data) => {
