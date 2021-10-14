@@ -297,20 +297,11 @@
                 <div class="blocks fw-wrap">
                   <div class="block">
                     <div class="btns mr-2">
-                      <input
-                        type="file"
-                        id="photoUpload"
-                        name="filefield"
-                        accept="video/*,image/*"
-                        multiple="multiple"
-                        @change="onPhotoSelected"
-                        hidden
-                      />
                       <Button
                         text="Add photo or video"
                         classer="btn-color-02"
                         iconPrepend="camera.png"
-                        @click="onClickAddfiles('photoUpload')"
+                        @click="onClickAddfiles('fileUpload')"
                       />
                       <!-- <Button
                           text="Add photo or video" classer="btn-color-02" href="javascript:" 
@@ -320,8 +311,9 @@
                         type="file"
                         id="fileUpload"
                         name="filefield"
+                        accept="video/*,image/*"
                         multiple="multiple"
-                        @change="onFileSelected"
+                        @change="onPhotoSelected"
                         hidden
                       />
                       <!-- <Button
