@@ -398,6 +398,7 @@ select{padding:.5625rem .875rem .4375rem .875rem;}
 
 .w-auto{width:auto!important;}
 .w-full{width:100%!important; max-width:100%!important;}
+.w-2{width:1.5rem!important;}
 .h-auto{height:auto!important;}
 .h-full{height:100%!important; max-height:100%!important;}
 

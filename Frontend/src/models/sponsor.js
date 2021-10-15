@@ -3,11 +3,9 @@ export default class Sponsor {
     link = "",
     image = "",
     btnText = "Join Us",
-    _id = "",
-    title = ""
+    _id = ""
   ) {
     (this._id = _id),
-      (this.title = title),
       (this.link = link),
       (this.image = image),
       (this.btnText = btnText);
@@ -17,22 +15,18 @@ export default class Sponsor {
     let output = [];
     response.forEach((data) => {
       output.push(
-        new Sponsor(data.link, data.path, data.btnText, data._id, data.title)
+        new Sponsor(data.link, data.path, data.title, data._id)
       );
     });
     return output;
   }
 
   static requestFormat(request) {
-    console.log(request);
     var formData = new FormData();
     formData.append("adsID", request._id);
-    formData.append("btnText", request.btnText);
+    formData.append("title", request.btnText);
     formData.append("link", request.link);
-    formData.append("title", request.title);
-    if (request.file) {
-      formData.append("media", file)
-    }
+    formData.append("media", request.file);
     return formData;
   }
 }

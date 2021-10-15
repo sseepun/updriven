@@ -4,10 +4,6 @@ const Ads = db.ads;
 
 exports.addAds = async (req, res) => {
     try {
-        const duplicate_title = await Ads.findOne({title: sanitize(req.body.title)})
-        if (duplicate_title) {
-            return res.status(403).send({message: "Duplicate ads title"})
-        }
         if (req.files.length > 0) {
             const ads = new Ads({
                 title: sanitize(req.body.title),
@@ -30,10 +26,6 @@ exports.editAds = async (req, res) => {
         const ads = await Ads.findById(sanitize(req.body.adsID))
         if (!ads) {
             return res.status(404).send({message: "Ads not found"})
-        }
-        const duplicate_title = await Ads.findOne({title: sanitize(req.body.title)})
-        if (duplicate_title) {
-            return res.status(403).send({message: "Duplicate ads title"})
         }
         if (req.files.length > 0) {
             ads.path = req.files[0].location
