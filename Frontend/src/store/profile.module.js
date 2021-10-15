@@ -4,11 +4,10 @@ import { post } from './post.module.js';
 import countrySC from '../assets/country-state-city'
 
 const user = JSON.parse(localStorage.getItem(`${process.env.VUE_APP_API_URL}_PROFILE`));
-
 export const profile = {
     namespaced: true,
     state: {
-        userInfo: user,
+        userInfo:user
     },
     getters: {
         information: state => state.userInfo,
@@ -127,6 +126,8 @@ export const profile = {
             let localProfile = localStorage.getItem(`${process.env.VUE_APP_API_URL}_PROFILE`);
             localProfile = JSON.parse(localProfile)
             localProfile.images = ( images? images : [] )
+            console.log(state.userInfo)
+            state.userInfo.images= []
             state.userInfo.images = ( images? images : [] )
             
             localStorage.setItem(`${process.env.VUE_APP_API_URL}_PROFILE`, JSON.stringify(localProfile));
@@ -134,10 +135,12 @@ export const profile = {
 
           setFollowing(state , myFollowings) {
             let localProfile = localStorage.getItem(`${process.env.VUE_APP_API_URL}_PROFILE`);
-            
             localProfile = JSON.parse(localProfile)
             localProfile.followings = ( myFollowings? myFollowings : [] )
+            state.userInfo.followings= []
+
             state.userInfo.followings = ( myFollowings? myFollowings : [] )
+
             
             localStorage.setItem(`${process.env.VUE_APP_API_URL}_PROFILE`, JSON.stringify(localProfile));
           },

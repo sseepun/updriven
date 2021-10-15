@@ -30,7 +30,7 @@
           <img src="/assets/img/icon/user-no-plus.png" alt="Image Icon" />
         </div>
         <p class="xs fw-500 color-gray">
-          Following <span class="color-dark">47 people</span>
+          Following <span class="color-dark">{{following}} people</span>
         </p>
       </div>
       <div class="info">
@@ -61,19 +61,37 @@ export default {
   props: {
     userProfile: { type: Object, default: {} }
   },
-  date() {
+  data() {
     return {
-     // user: this.$store.getters.user
+      // user: this.$store.getters.user,
+      userId: ( this.$route.params.id === ''? this.user.id : this.$route.params.id ),
+      friends: [],
+      following: 0,
+      isFetching: false,
     }
   },
    computed: {
     ...mapGetters({
       user: 'authentication/user',
+      profile: 'profile/information',
       countryFullName: 'csc/countryFullName',
       stateFullName: 'csc/stateFullName',
     })
   },
   created() {
+  },
+  async mounted() {
+    await this.getFollowing({ userId: this.userId })
+    console.log(this.profile.followings.length)
+    this.following = this.profile.followings.length
+    this.isFetching = true
+  },
+  methods: {
+    
+    ...mapActions({
+      getFollowing: 'profile/getFollowing',
+    }),
+    
   }
   
 }
