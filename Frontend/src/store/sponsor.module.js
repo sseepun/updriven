@@ -29,17 +29,39 @@ export const sponsor = {
     onEdit({ commit, state }, index) {
       commit("fetchTempSponsor", state.sponsored[index]);
     },
-    async submitDelete({ commit, state }, index) {
-      const deleteSponsor = await sponsorService.deleteAds(
-        Sponsor.requestFormat(state.tempSponsor)
-      );
-      commit("deleteSponsor", index);
+    async submitDelete({ commit, state, dispatch }, index) {
+      try {
+        const deleteSponsor = await sponsorService.deleteAds(
+          Sponsor.requestFormat(state.tempSponsor)
+        );
+        commit("deleteSponsor", index);
+      } catch (err) {
+        dispatch(
+          "alert/assign",
+          {
+            type: "Danger",
+            message: err.response.data.message || error.message,
+          },
+          { root: true }
+        );
+      }
     },
-    async submitEdit({ commit, state }, index) {
-      const editSponsor = await sponsorService.editAds(
-        Sponsor.requestFormat(state.tempSponsor)
-      );
-      commit("fetchSponsor", index);
+    async submitEdit({ commit, state, dispatch }, index) {
+      try {
+        const editSponsor = await sponsorService.editAds(
+          Sponsor.requestFormat(state.tempSponsor)
+        );
+        commit("fetchSponsor", index);
+      } catch (err) {
+        dispatch(
+          "alert/assign",
+          {
+            type: "Danger",
+            message: err.response.data.message || error.message,
+          },
+          { root: true }
+        );
+      }
     },
     async submitAdd({ commit, state }) {
       const addSponsor = await sponsorService.addAds(
