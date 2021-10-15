@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex jc-space-between">
     <h6 class="fw-600 color-01">Sponsored</h6>
-    <a class="post-icon color-gray mr-0" href="javascript:" @click="handleAdd">
+    <a class="post-icon color-gray mr-0 d-none" href="javascript:" @click="handleAdd">
       <img class="m-2 w-2" src="/assets/img/icon/add.png" alt="Image Icon" />
     </a>
   </div>
@@ -83,7 +83,7 @@
               CANCEL
             </a>
           </div>
-          <div v-if="currentSponsor!=null" class="mt-1 pt-2">
+          <div v-if="currentSponsor!=null" class="mt-1 pt-2 d-none">
             <Button
               text="Delete"
               classer="btn-color-02 w-full"
