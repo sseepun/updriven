@@ -63,8 +63,9 @@ export const server = {
     SEARCH: { method: 'POST', url: `feed/search`},
 
     // Ads
-    FETCH_ADS: { method: 'GET', url: `admin/list`},
+    FETCH_ADS: { method: 'GET', url: `feed/ads_list`},
     ADD_ADS: { method: 'POST', url: `admin/add_ads`},
+    EDIT_ADS: { method: 'POST', url: `admin/edit_ads`},
     DELETE_ADS: { method: 'POST', url: `admin/delete_ads`},
 
 };
