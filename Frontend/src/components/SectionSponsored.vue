@@ -31,6 +31,17 @@
             <div class="grid sm-100">
               <FormGroup
                 type="text"
+                label="title"
+                classer="label-sm"
+                wrapperClass="fgray"
+                :value="newSponsor.title"
+                :required="true"
+                @input="(event) => (newSponsor.title = event)"
+              />
+            </div>
+            <div class="grid sm-100 m-0">
+              <FormGroup
+                type="text"
                 label="link"
                 classer="label-sm"
                 wrapperClass="fgray"
@@ -100,7 +111,7 @@ export default {
     };
   },
   created() {
-    console.log( 'this.isAdmin :', this.isAdmin )
+    this.onFetch();
   },
   computed: {
     ...mapGetters({
@@ -112,6 +123,7 @@ export default {
   },
   methods: {
     ...mapActions({
+      onFetch: "sponsor/onFetch",
       onEdit: "sponsor/onEdit",
       submitEdit: "sponsor/submitEdit",
     }),
