@@ -333,6 +333,7 @@ export const authentication = {
     signinSuccess(state, user) {
       
       localStorage.setItem(`${process.env.VUE_APP_API_URL}_USER`, JSON.stringify(user));
+      localStorage.setItem(`${process.env.VUE_APP_API_URL}_PROFILE`, JSON.stringify(user));
       state.user = user;
       state.authenticated = true
     },
@@ -345,6 +346,7 @@ export const authentication = {
     async signout(state) {
       await localStorage.removeItem(`${process.env.VUE_APP_API_URL}_USER`);
       localStorage.removeItem(`${process.env.VUE_APP_API_URL}_CSC`);
+      localStorage.removeItem(`${process.env.VUE_APP_API_URL}_PROFILE`);
       state.user = null;
       state.authenticated = false
     },
