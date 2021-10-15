@@ -25,6 +25,7 @@
       <div class="popup-content">
         <div class="popup-comment bshadow">
           <div class="wrapper">
+            <Loader :active="isLoading" />
             <!-- <div class="blocks">
                 <div class="block fw-wrap mr-2">
                   <a 
@@ -371,11 +372,13 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import PostSinglePopupDetail from "./PostSinglePopupDetail";
+import Loader from "./Loader";
 
 export default {
   name: "NewPost",
   components: {
     PostSinglePopupDetail,
+    Loader
   },
   data() {
     return {
@@ -393,16 +396,19 @@ export default {
       user: "authentication/user",
       optionList: "category/option_ilst",
       createDetail: "post/_create",
+      isLoading: "post/isLoading",
     }),
   },
   methods: {
     ...mapActions({
       get_list: "category/get_list",
       createPost: "post/create",
+      finishCreate: "post/finish",
     }),
     onSubmitPost() {
       this.createPost().then(() => {
         this.isActivePopup = false;
+        this.finishCreate()
         this.previewImage.forEach((src) => {
           URL.revokeObjectURL(src);
         });
