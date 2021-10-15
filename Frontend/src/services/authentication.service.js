@@ -30,6 +30,7 @@ function signin(authen, password) {
       withCredentials: true,
     })
     .then(res => {
+      console.log( 'sign-in :', res)
       resolve(res.data);
     })
     .catch(err => {
