@@ -7,8 +7,8 @@
         </router-link>
       </div>
       <div class="right-container">
-        <div v-if="isAdmin" class="search-container">
-          <form @submit.prevent="onSubmitSearch" style="display: flex;">
+        <div v-if="isAdmin" class="search-container" style="width: 43rem;">
+          <form @submit.prevent="onSubmitSearch" style="display: flex; justify-content: space-around;">
             <FormGroup
               placeholder="Search UpDriven" wrapperClass="append"
               icon="search.png" :value="getSearchSentance"

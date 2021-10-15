@@ -7,7 +7,7 @@
         :link="card.link"
         :image="card.image"
         :btnText="card.btnText"
-        editable
+        :editable="isAdmin"
       />
     </div>
   </div>
@@ -99,9 +99,13 @@ export default {
       // user: this.$store.getters.user,
     };
   },
+  created() {
+    console.log( 'this.isAdmin :', this.isAdmin )
+  },
   computed: {
     ...mapGetters({
       user: "authentication/user",
+      isAdmin: "authentication/isAdmin",
       sponsored: "sponsor/sponsored",
       newSponsor: "sponsor/tempSponsor",
     }),

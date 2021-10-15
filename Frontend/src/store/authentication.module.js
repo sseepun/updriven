@@ -17,7 +17,7 @@ export const authentication = {
   getters: {
     user: state => state.user,
     isSignedin: state => state.user? true: false,
-    isAdmin: state => state.user && state.user.is_admin,
+    isAdmin: state => ( state.user && state.user.role.is_admin)? true : false,
     // isAdmin: state => 1,
     isUser: state => state.user,
     isAuthenticated: state => state.authenticated
@@ -28,20 +28,27 @@ export const authentication = {
       return await new Promise((resolve, reject) => {        
          authenService.signin( authen, password ).then(
           response => {
-            var resUser = new User(
-              response._id,
-              response.user_detail[0].firstname,
-              response.user_detail[0].lastname,
-              response.user_detail[0].profile_pic,
-              response.user_detail[0].background_pic,
-              response.user_detail[0].state_id,
-              response.user_detail[0].province,
-              response.email,
-              response.user_detail[0].organization,
-            )
-            resUser.country_id = response.user_detail[0].country_id
-            resUser.about = response.user_detail[0].about_us
-            resUser.interests = response.user_detail[0].interests
+
+            const modelData = {
+              id : response._id,
+              firstname : response.user_detail[0].firstname,
+              lastname : response.user_detail[0].lastname,
+              avatar : response.user_detail[0].profile_pic,
+              background : response.user_detail[0].background_pic,
+              state_id : response.user_detail[0].state_id,
+              province : response.user_detail[0].province,
+              email : response.email,
+              organization : response.user_detail[0].organization,
+              country_id: response.user_detail[0].country_id,
+              about : response.user_detail[0].about_us,
+              interests: response.user_detail[0].interests,
+              role: response.role[0]
+            }
+
+            console.log( 'response :', response )
+            console.log( 'modelData :', modelData )
+
+            var resUser = new User(modelData)
 
             commit('signinSuccess', resUser);
             dispatch('csc/mapFullName',{"country_code":response.user_detail[0].country_id , "states_code":response.user_detail[0].state_id}, { root: true })
@@ -162,16 +169,19 @@ export const authentication = {
       return new Promise((resolve, reject) => {    
         authenService.verify(id).then(
           response => {
-            var resUser = new User(
-              response._id,
-              response.user_detail[0].firstname,
-              response.user_detail[0].lastname,
-              response.user_detail[0].profile_pic,
-              response.user_detail[0].background_pic,
-            )
-            resUser.email = response.email
-            resUser.country_id = response.user_detail[0].country_id
-            resUser.state_id = response.user_detail[0].state_id
+            const modelData = {
+              id : response._id,
+              firstname : response.user_detail[0].firstname,
+              lastname : response.user_detail[0].lastname,
+              avatar : response.user_detail[0].profile_pic,
+              background : response.user_detail[0].background_pic,
+              state_id : response.user_detail[0].state_id,
+              email : response.email,
+              country_id: response.user_detail[0].country_id,
+            }
+
+            var resUser = new User(modelData)
+
             dispatch('csc/mapFullName',{"country_code":response.user_detail[0].country_id , "states_code":response.user_detail[0].state_id}, { root: true })
             commit('signinSuccess', resUser);
             dispatch('alert/assign', { type: 'Success', message: 'Sign In Successful' }, { root: true })
@@ -206,20 +216,25 @@ export const authentication = {
     },
     editProfileImage({ commit, dispatch },response) {
       return new Promise((resolve, reject) => {   
-        var resUser = new User(
-          response._id,
-          response.user_detail[0].firstname,
-          response.user_detail[0].lastname,
-          response.user_detail[0].profile_pic,
-          response.user_detail[0].background_pic,
-          response.user_detail[0].state_id,
-          response.user_detail[0].province,
-          response.email,
-          response.user_detail[0].organization,
-        )
-        resUser.country_id = response.user_detail[0].country_id
-        resUser.about = response.user_detail[0].about_us
-        resUser.interests = response.user_detail[0].interests
+
+        const modelData = {
+          id : response._id,
+          firstname : response.user_detail[0].firstname,
+          lastname : response.user_detail[0].lastname,
+          avatar : response.user_detail[0].profile_pic,
+          background : response.user_detail[0].background_pic,
+          state_id : response.user_detail[0].state_id,
+          province : response.user_detail[0].province,
+          email : response.email,
+          organization : response.user_detail[0].organization,
+          country_id: response.user_detail[0].country_id,
+          about : response.user_detail[0].about_us,
+          interests: response.user_detail[0].interests,
+          role: response.role[0]
+        }
+
+        var resUser = new User(modelData)
+
         commit('signinSuccess', resUser);
         dispatch('alert/assign', { type: 'Success', message: 'Edit Image Successfully.' }, { root: true })
         resolve(response)
@@ -227,43 +242,52 @@ export const authentication = {
     },  
     editProfileBackground({ commit, dispatch },response) {
       return new Promise((resolve, reject) => {   
-        var resUser = new User(
-          response._id,
-          response.user_detail[0].firstname,
-          response.user_detail[0].lastname,
-          response.user_detail[0].profile_pic,
-          response.user_detail[0].background_pic,
-          response.user_detail[0].state_id,
-          response.user_detail[0].province,
-          response.email,
-          response.user_detail[0].organization,
-        )
-        resUser.country_id = response.user_detail[0].country_id
-        resUser.about = response.user_detail[0].about_us
-        resUser.interests = response.user_detail[0].interests
+
+        const modelData = {
+          id : response._id,
+          firstname : response.user_detail[0].firstname,
+          lastname : response.user_detail[0].lastname,
+          avatar : response.user_detail[0].profile_pic,
+          background : response.user_detail[0].background_pic,
+          state_id : response.user_detail[0].state_id,
+          province : response.user_detail[0].province,
+          email : response.email,
+          organization : response.user_detail[0].organization,
+          country_id: response.user_detail[0].country_id,
+          about : response.user_detail[0].about_us,
+          interests: response.user_detail[0].interests,
+          role: response.role[0]
+        }
+
+        var resUser = new User(modelData)
+        
         commit('signinSuccess', resUser);
         dispatch('alert/assign', { type: 'Success', message: 'Edit Background Successfully.' }, { root: true })
         resolve(response)
-    })
+      })
     },
     getProfile({ commit , dispatch}) {
       return new Promise((resolve, reject) => {   
       userService.getProfile().then(
         response => {
-          var resUser = new User(
-            response._id,
-            response.user_detail[0].firstname,
-            response.user_detail[0].lastname,
-            response.user_detail[0].profile_pic,
-            response.user_detail[0].background_pic,
-            response.user_detail[0].state_id,
-            response.user_detail[0].province,
-            response.email,
-            response.user_detail[0].organization,
-          )
-          resUser.country_id = response.user_detail[0].country_id
-          resUser.about = response.user_detail[0].about_us
-          resUser.interests = response.user_detail[0].interests
+          const modelData = {
+            id : response._id,
+            firstname : response.user_detail[0].firstname,
+            lastname : response.user_detail[0].lastname,
+            avatar : response.user_detail[0].profile_pic,
+            background : response.user_detail[0].background_pic,
+            state_id : response.user_detail[0].state_id,
+            province : response.user_detail[0].province,
+            email : response.email,
+            organization : response.user_detail[0].organization,
+            country_id: response.user_detail[0].country_id,
+            about : response.user_detail[0].about_us,
+            interests: response.user_detail[0].interests,
+            role: response.role[0]
+          }
+  
+          var resUser = new User(modelData)
+
           dispatch('csc/mapFullName',{"country_code":response.user_detail[0].country_id , "states_code":response.user_detail[0].state_id}, { root: true })
           commit('signinSuccess', resUser);
           resolve()
