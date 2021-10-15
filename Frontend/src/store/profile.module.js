@@ -86,39 +86,46 @@ export const profile = {
     },
     mutations: {
         createUserInfo( state, userInfo ) {
-            state.userInfo = new User(
-                userInfo.username[0],
-                userInfo.firstname,
-                userInfo.lastname,
-                userInfo.profile_pic,
-                userInfo.background_pic,
-                userInfo.state_id,
-                userInfo.province,
-                userInfo.email,
-                userInfo.organization,
-                userInfo.interests,
-                userInfo.country_id,
-                userInfo.about_us,
-            )
+
+            const modelData = {
+                id : userInfo.username[0],
+                firstname : userInfo.firstname,
+                lastname : userInfo.lastname,
+                avatar : userInfo.profile_pic,
+                background : userInfo.background_pic,
+                state_id : userInfo.state_id,
+                province : userInfo.province,
+                email : userInfo.email,
+                organization : userInfo.organization,
+                country_id: userInfo.country_id,
+                about : userInfo.about_us,
+                interests: userInfo.interests,
+            }
+    
+            state.userInfo = new User(modelData)
+
             localStorage.setItem(`${process.env.VUE_APP_API_URL}_PROFILE`, JSON.stringify(state.userInfo));
 
         },
 
         temporaryCreateOwnerUserInfo( state, userInfo ) {
-            state.userInfo = new User(
-                userInfo.id,
-                userInfo.firstname,
-                userInfo.lastname,
-                userInfo.avatar,
-                userInfo.background,
-                userInfo.state_id,
-                userInfo.province,
-                userInfo.email,
-                userInfo.organization,
-                userInfo.interests,
-                userInfo.country_id,
-                userInfo.about_us,
-            )
+            const modelData = {
+                id : userInfo.id,
+                firstname : userInfo.firstname,
+                lastname : userInfo.lastname,
+                avatar : userInfo.profile_pic,
+                background : userInfo.background_pic,
+                state_id : userInfo.state_id,
+                province : userInfo.province,
+                email : userInfo.email,
+                organization : userInfo.organization,
+                country_id: userInfo.country_id,
+                about : userInfo.about_us,
+                interests: userInfo.interests,
+            }
+    
+            state.userInfo = new User(modelData)
+
             localStorage.setItem(`${process.env.VUE_APP_API_URL}_PROFILE`, JSON.stringify(state.userInfo));
         },
 
