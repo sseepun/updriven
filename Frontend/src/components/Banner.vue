@@ -47,6 +47,7 @@
             :to="'/user/profile/image/' + this.$route.params.id"
           >Image</router-link>
         </div>
+        <div v-if="isFetching">
         <div class="btn d-flex">
           <div  v-if="checkNotSelf">
             <Button  v-if="!checkFollow"
@@ -64,6 +65,7 @@
             classer="d-block btn-color-03 btn-sm pl-4 pr-4" 
           />
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -83,7 +85,8 @@ export default {
       // user: this.user
       following:[],
       checkFollow:false,
-      checkNotSelf:false
+      checkNotSelf:false,
+      isFetching:false,
     }
   },
   async mounted() {
@@ -98,6 +101,7 @@ export default {
       if(this.following.includes(this.profile.id) ){
         this.checkFollow = true
       }
+      this.isFetching= true
     })
   },
 

@@ -1,5 +1,6 @@
 <template>
   <div v-if="user">
+    <div v-if="isFetching">
     <div class="d-flex ai-center jc-space-between">
       <h6 class="fw-600 color-01">Following</h6>
       <p class="xxs fw-500 color-gray">{{profile.followings.length}} following</p>
@@ -26,6 +27,7 @@
     <div v-else>
       <p class="xxxs fw-600 lh-3xs mt-1">No following </p>
     </div>
+    </div>
 
   </div>
 </template>
@@ -39,7 +41,8 @@ export default {
     return {
       // user: this.$store.getters.user,
       userId: ( this.$route.params.id === ''? this.user.id : this.$route.params.id ),
-      friends: []
+      friends: [],
+      isFetching: false,
     }
   },
   computed: {
@@ -49,21 +52,12 @@ export default {
     }),
     
   },
-  mounted() {
-    this.getFollowing({ userId: this.userId })
+  async mounted() {
+    await this.getFollowing({ userId: this.userId })
+    this.isFetching = true
   },
   methods: {
-    loadData(num) {
-      for(var i=0; i<num; i++){
-        var id = this.friends.length + i + 1;
-        this.friends.push({
-          id: id,
-          image: `/assets/img/profile/0${id%9+1}.jpg`,
-          href: '#',
-          name: 'Kirsten Mckellar'
-        });
-      }
-    },
+    
     ...mapActions({
       getFollowing: 'profile/getFollowing',
     }),

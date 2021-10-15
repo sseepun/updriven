@@ -144,19 +144,18 @@ export default {
       checkSelf:false,
     };
   },
-  mounted() {
+  async mounted() {
     this.onScroll();
     window.addEventListener('scroll', this.onScroll);
-    this.getFollowing({ userId: this.userId }).then( response => {
-      for(let i = 0; i < this.profile.followings.length; i++){
-        this.checkFollow.push(true)
-      }
-      if(this.user.id === this.$route.params.id){
-        this.checkSelf = true
-      }
+    await this.getFollowing({ userId: this.userId })
+    console.log('following')
+
+    for(let i = 0; i < this.profile.followings.length; i++){
+      this.checkFollow.push(true)
     }
-      
-    )
+    if(this.user.id === this.$route.params.id){
+      this.checkSelf = true
+    }
   
 
   },
