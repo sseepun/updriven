@@ -23,12 +23,51 @@ export const sponsor = {
       const sponsor = await sponsorService.fetchAds();
       commit("fetchAll", Sponsor.responseFormat(sponsor));
     },
+    onAdd({ commit }) {
+      commit("fetchTempSponsor", new TempSponsor());
+    },
     onEdit({ commit, state }, index) {
       commit("fetchTempSponsor", state.sponsored[index]);
     },
-    async submitEdit({ commit, state }, index) {
-      commit("fetchSponsor", index);      
-      const editSponsor = await sponsorService.editAds(Sponsor.requestFormat(state.tempSponsor));
+    async submitDelete({ commit, state, dispatch }, index) {
+      try {
+        const deleteSponsor = await sponsorService.deleteAds(
+          Sponsor.requestFormat(state.tempSponsor)
+        );
+        commit("deleteSponsor", index);
+      } catch (err) {
+        dispatch(
+          "alert/assign",
+          {
+            type: "Danger",
+            message: err.response.data.message || error.message,
+          },
+          { root: true }
+        );
+      }
+    },
+    async submitEdit({ commit, state, dispatch }, index) {
+      try {
+        const editSponsor = await sponsorService.editAds(
+          Sponsor.requestFormat(state.tempSponsor)
+        );
+        commit("fetchSponsor", index);
+      } catch (err) {
+        dispatch(
+          "alert/assign",
+          {
+            type: "Danger",
+            message: err.response.data.message || error.message,
+          },
+          { root: true }
+        );
+      }
+    },
+    async submitAdd({ commit, state }) {
+      const addSponsor = await sponsorService.addAds(
+        Sponsor.requestFormat(state.tempSponsor)
+      );
+      commit("addSponsor");
     },
   },
 
@@ -42,6 +81,12 @@ export const sponsor = {
     },
     fetchSponsor(state, index) {
       state.sponsored[index] = { ...state.tempSponsor };
+    },
+    addSponsor(state) {
+      state.sponsored[state.sponsored.length] = { ...state.tempSponsor };
+    },
+    deleteSponsor(state, index) {
+      delete state.sponsored[index];
     },
   },
 };

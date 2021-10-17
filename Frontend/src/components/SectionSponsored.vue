@@ -1,5 +1,11 @@
 <template>
-  <h6 class="fw-600 color-01">Sponsored</h6>
+  <div class="d-flex jc-space-between">
+    <h6 class="fw-600 color-01">Sponsored</h6>
+    <a class="post-icon color-gray mr-0 d-none" href="javascript:" @click="handleAdd">
+      <img class="m-2 w-2" src="/assets/img/icon/add.png" alt="Image Icon" />
+    </a>
+  </div>
+
   <div class="grids">
     <div v-for="(card, i) in sponsored" :key="i" class="grid sm-100">
       <SpecialCard01
@@ -25,20 +31,9 @@
           :image="newSponsor.image"
           :btnText="newSponsor.btnText"
         />
-        <form class="w-full" @submit.prevent="onClickEdit">
+        <form class="w-full" @submit.prevent="onClickSubmit">
           <h6 class="h5 fw-600 text-center lh-xs">Edit Sponsor</h6>
           <div class="grids">
-            <div class="grid sm-100">
-              <FormGroup
-                type="text"
-                label="title"
-                classer="label-sm"
-                wrapperClass="fgray"
-                :value="newSponsor.title"
-                :required="true"
-                @input="(event) => (newSponsor.title = event)"
-              />
-            </div>
             <div class="grid sm-100 m-0">
               <FormGroup
                 type="text"
@@ -79,7 +74,7 @@
             </div>
           </div>
           <div class="d-flex ai-center jc-center mt-4 pt-2">
-            <Button type="submit" text="Edit" classer="btn-color-06 mr-3" />
+            <Button type="submit" :text="currentSponsor==null ? 'Add' :'Edit'" classer="btn-color-06 mr-3" />
             <a
               href="javascript:"
               class="btn btn-action btn-color-05"
@@ -87,6 +82,13 @@
             >
               CANCEL
             </a>
+          </div>
+          <div v-if="currentSponsor!=null" class="mt-1 pt-2 d-none">
+            <Button
+              text="Delete"
+              classer="btn-color-02 w-full"
+              @click="onClickDelete"
+            />
           </div>
         </form>
       </div>
@@ -125,8 +127,16 @@ export default {
     ...mapActions({
       onFetch: "sponsor/onFetch",
       onEdit: "sponsor/onEdit",
+      onAdd: "sponsor/onAdd",
       submitEdit: "sponsor/submitEdit",
+      submitAdd: "sponsor/submitAdd",
+      submitDelete: "sponsor/submitDelete",
     }),
+    handleAdd() {
+      this.currentSponsor = null;
+      this.onAdd();
+      this.isActivePopupEdit = !this.isActivePopupEdit;
+    },
     handleEdit(index) {
       this.currentSponsor = index;
       this.onEdit(index);
@@ -139,9 +149,17 @@ export default {
       this.newSponsor.image = URL.createObjectURL(event.target.files[0]);
       this.newSponsor.file = event.target.files[0];
     },
-    async onClickEdit() {
+    async onClickSubmit() {
       if (this.currentSponsor != null) {
         await this.submitEdit(this.currentSponsor);
+      } else {
+        await this.submitAdd();
+      }
+      this.isActivePopupEdit = !this.isActivePopupEdit;
+    },
+    async onClickDelete() {
+      if (this.currentSponsor != null) {
+        await this.submitDelete(this.currentSponsor);
       }
       this.isActivePopupEdit = !this.isActivePopupEdit;
     },
