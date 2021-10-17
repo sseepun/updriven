@@ -74,7 +74,7 @@ exports.getComments = async (req, res) => {
         )
     }
     catch (err) {
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -84,7 +84,7 @@ exports.getPosts = async (req, res) => {
         res.status(200).send(post_list)
     }
     catch (err) {
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -94,7 +94,7 @@ exports.getCategory = async (req, res) => {
         res.status(200).send(category)
     }
     catch (err) {
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -131,7 +131,7 @@ exports.getSentiments = async (req, res) => {
         res.status(200).send(sentiment_list)
     }
     catch (err) {
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -141,8 +141,7 @@ exports.search = async (req, res) => {
         return res.status(200).send(post_list)
     }
     catch (err) {
-    console.log(err)
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -152,7 +151,6 @@ exports.adsList = async (req, res) => {
         return res.status(200).send(result)
     }
     catch (err) {
-        console.log(err)
-        return res.status(500).send({message:err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }

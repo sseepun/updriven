@@ -37,7 +37,7 @@ exports.editInfo = async (req, res) => {
         }
     }
     catch (err) {
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -47,8 +47,7 @@ exports.viewOtherUserInfo = async (req, res) => {
         return res.status(200).send(user.user_detail);
     }
     catch (err) {
-        console.log(err)
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -65,7 +64,7 @@ exports.updateProfileImage = async (req, res) => {
         }
     }
     catch (err) {
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -82,7 +81,7 @@ exports.updateBackground = async (req, res) => {
         }
     }
     catch (err) {
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -93,7 +92,7 @@ exports.posts = async (req, res) => {
         return res.status(200).send(post_data)
     }
     catch (err) {
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -104,8 +103,7 @@ exports.imageList = async (req, res) => {
         return res.status(200).send(image_list)
     }
     catch (err) {
-        console.log(err)
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -138,8 +136,7 @@ exports.follow = async (req, res) => {
         return res.status(200).send({message: "Follow successful"})
     }
     catch (err) {
-        console.log(err)
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -162,8 +159,7 @@ exports.unfollow = async (req, res) => {
         return res.status(200).send({message: "Unfollow successful"})
     }
     catch (err) {
-        console.log(err)
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -200,8 +196,7 @@ exports.following_list = async (req, res) => {
         return res.status(200).send(following_list)
     }
     catch (err) {
-        console.log(err)
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -213,7 +208,7 @@ exports.getNotification = async (req, res) => {
         return res.status(200).send(notification)
     }
     catch (err) {
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -227,6 +222,6 @@ exports.deleteNotification = async (req, res) => {
         return res.status(200).send({message: "OK"})
     }
     catch (err) {
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }

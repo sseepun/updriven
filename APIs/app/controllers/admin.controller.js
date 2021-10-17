@@ -20,8 +20,7 @@ exports.addAds = async (req, res) => {
         return res.status(404).send({message: "Image not found"})
     }
     catch (err) {
-        console.log(err)
-        return res.status(500).send({message:err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 };
 
@@ -48,8 +47,7 @@ exports.editAds = async (req, res) => {
         return res.status(200).send(ads)
     }
     catch (err) {
-        console.log(err)
-        return res.status(500).send({message:err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 };
 
@@ -62,7 +60,6 @@ exports.deleteAds = async (req, res) => {
         return res.status(200).send({message: "Delete ads successfully"})
     }
     catch (err) {
-        console.log(err)
-        return res.status(500).send({message:err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 };
