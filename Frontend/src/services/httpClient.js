@@ -24,7 +24,7 @@ axios.interceptors.response.use(
     err => {
         console.log( 'response error :', err)
         console.log( 'router :', router.currentRoute._rawValue.fullPath)
-        if (err.message == "Network Error") {
+        if (err.message === "Network Error" || err.message === undefined ) {
             console.log('The server is down');
 
             if ( router.currentRoute._rawValue.fullPath !== "/" ) {
