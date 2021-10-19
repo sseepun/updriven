@@ -147,7 +147,7 @@ export const post = {
      * comment on post or reply comment
      */
     async commentOrReply({ state, dispatch }, detail) {
-      console.log(detail);
+      // console.log(detail);
       var promise = await new Promise((resolve, reject) => {
         postService
           .commentOrReply(detail)
@@ -333,19 +333,19 @@ export const post = {
     },
 
     addStatusPostToOption({ state }, option = {}) {
-      console.log("old option :", option);
+      // console.log("old option :", option);
 
       if (state.StatusPost.hasNext === true)
         option.next = state.StatusPost.nextID;
       // if ( state.category !== null ) option.category = state.category
 
-      console.log("new option :", option);
+      // console.log("new option :", option);
 
       return option;
     },
 
     searchPost({ state }, option = {}) {
-      console.log("Input :", option);
+      // console.log("Input :", option);
     },
     finish({ commit }) {
         commit("updateStatusLoading", true);
@@ -353,7 +353,7 @@ export const post = {
   },
   mutations: {
     changeOptionType(state, newStatus) {
-      console.log("changeOptionType :", newStatus);
+      // console.log("changeOptionType :", newStatus);
       state.isDashboard = newStatus;
     },
 

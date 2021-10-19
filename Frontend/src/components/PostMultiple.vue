@@ -71,7 +71,7 @@ export default {
       this.posts = [ post, ...this.posts ];
     },
     async updateCategory(tab) {
-      console.log('updateCategory :', tab)
+      // console.log('updateCategory :', tab)
       this.title = await tab.title;
       this.icon = await tab.icon;
       this.posts = await [];
@@ -83,21 +83,21 @@ export default {
     selectFetchOption() {
       if ( this.isDashboard ) {
         if ( this.haveFilter ) {
-          console.log('condition pull feed and have filter')
+          // console.log('condition pull feed and have filter')
           this.pullFeed({ category: this.title });
           return
         } else {
-          console.log('condition pull feed and not have filter')
+          // console.log('condition pull feed and not have filter')
           this.pullFeed();
           return
         }
       } else if ( !this.isDashboard ) {
         if ( this.haveFilter ) {
-          console.log('condition pull post and have filter')
+          // console.log('condition pull post and have filter')
           this.pullPost({ userID: this.profileInfo.id, category: this.title });
           return
         } else {
-          console.log('condition pull post and not have filter')
+          // console.log('condition pull post and not have filter')
           this.pullPost({ userID: this.profileInfo.id });
           return
         }

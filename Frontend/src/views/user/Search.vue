@@ -9,7 +9,6 @@
 
         <div class="right-container">
             <SectionSponsored />
-            {{ searchResult }}
         </div>
 
         <div class="middle-container">
@@ -52,6 +51,7 @@ export default {
         }),
 
         onClickTab(tab) {
+            // console.log( tab )
             if ( tab.link=='javascript:' ) {
                 this.$refs['search'].updateCategory(tab);
             } else {

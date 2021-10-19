@@ -98,7 +98,7 @@ export default {
       rightContainerClass: '',
       photos: [],
       thumbnailDir: '',
-      userId: ( this.$route.params.id === ''? this.user.id : this.$route.params.id )
+      userId: ( this.$route.params.id === ''? this.profile.id : this.$route.params.id )
     };
   },
   async mounted() {

@@ -4,10 +4,11 @@ import { post } from './post.module.js';
 import countrySC from '../assets/country-state-city'
 
 const user = JSON.parse(localStorage.getItem(`${process.env.VUE_APP_API_URL}_PROFILE`));
+
 export const profile = {
     namespaced: true,
     state: {
-        userInfo:user
+        userInfo: user
     },
     getters: {
         information: state => state.userInfo,
@@ -15,14 +16,14 @@ export const profile = {
     actions: {
         async fetchInfo( {dispatch, commit, rootGetters}, { userId } ) {
             const OwnerUser = rootGetters['authentication/user']
-            console.log( OwnerUser.id, userId)
+            // console.log( OwnerUser.id, userId)
             if ( (OwnerUser.id !== userId) && userId ) {
-                console.log('user id not match with id param')
+                // console.log('user id not match with id param')
                 const userInfo = await profileService.fetchInfoProfile(userId);
-                console.log( 'userInfo :', userInfo)
+                // console.log( 'userInfo :', userInfo)
                 await commit("createUserInfo", userInfo);
             } else {
-                console.log('user id match with id param');
+                // console.log('user id match with id param');
                 await commit("temporaryCreateOwnerUserInfo", OwnerUser);
             }
         },
@@ -105,7 +106,6 @@ export const profile = {
             state.userInfo = new User(modelData)
 
             localStorage.setItem(`${process.env.VUE_APP_API_URL}_PROFILE`, JSON.stringify(state.userInfo));
-
         },
 
         temporaryCreateOwnerUserInfo( state, userInfo ) {
@@ -148,7 +148,6 @@ export const profile = {
 
             state.userInfo.followings = ( myFollowings? myFollowings : [] )
 
-            
             localStorage.setItem(`${process.env.VUE_APP_API_URL}_PROFILE`, JSON.stringify(localProfile));
           },
     }

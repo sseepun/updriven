@@ -51,11 +51,9 @@ const routes = [
     component: () => import('../views/auth/SignUpMentor.vue')
   },
 
-
-
   // User Pages
   {
-    path: '/user/dashboard/:username?',
+    path: '/user/dashboard/:careers?',
     name: 'UserDashboardPage',
     component: () => import('../views/user/Dashboard.vue')
   },
@@ -71,22 +69,26 @@ const routes = [
   },
   
   {
-    path: '/user/profile/:id?',
+    path: '/user/profile/:username?',
     name: 'UserProfilePage',
-    component: () => import('../views/user/Profile.vue')
+    component: () => import('../views/user/Profile.vue'),
+    beforeEnter: (to, from, next) => {
+      if ( from.name == "UserProfilePage" ) next()
+      else next()
+    }
   },
   {
-    path: '/user/profile/about/:id?',
+    path: '/user/profile/about/:username?',
     name: 'UserProfileAboutPage',
     component: () => import('../views/user/ProfileAbout.vue')
   },
   {
-    path: '/user/profile/following/:id?',
+    path: '/user/profile/following/:username?',
     name: 'UserProfileFollowingPage',
     component: () => import('../views/user/ProfileFollowing.vue')
   },
   {
-    path: '/user/profile/image/:id?',
+    path: '/user/profile/image/:username?',
     name: 'UserProfileImagePage',
     component: () => import('../views/user/ProfileImage.vue')
   },

@@ -47,6 +47,8 @@ export default {
     await this.clearPost();
     await this.changeOptionType(1);
     await this.getFeed();
+
+    // console.log( this.$route)
   },
   mounted() {
     AOS.init({ easing: 'ease-in-out-cubic', duration: 750, once: true, offset: 10 });
