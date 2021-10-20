@@ -85,7 +85,6 @@ export const post = {
       await commit("updateStatusLoading", true);
 
       const newOption = await dispatch("addStatusPostToOption", option);
-
       return await new Promise((resolve, reject) => {
         postService
           .fetchPost(newOption)

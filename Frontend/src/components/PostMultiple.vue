@@ -92,6 +92,7 @@ export default {
           return
         }
       } else if ( !this.isDashboard ) {
+        console.log( 'profileInfo.id :', this.profileInfo.id )
         if ( this.haveFilter ) {
           // console.log('condition pull post and have filter')
           this.pullPost({ userID: this.profileInfo.id, category: this.title });

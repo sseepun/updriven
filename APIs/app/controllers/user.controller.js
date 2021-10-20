@@ -43,8 +43,17 @@ exports.editInfo = async (req, res) => {
 
 exports.viewOtherUserInfo = async (req, res) => {
     try {
-        const user = await User.findById(sanitize(req.params.userID)).populate('user_detail')
-        return res.status(200).send(user.user_detail);
+        const user = await User.findById(sanitize(req.params.userID)).populate([
+            {
+                path: 'role'
+            },
+            {
+                path: 'user_detail', 
+            }
+        ])
+
+        
+        return res.status(200).send(user);
     }
     catch (err) {
         return res.status(500).send({message: "Internal Server Error"})

@@ -21,7 +21,7 @@ function fetchInfoProfile(userId) {
       withCredentials: true,
     })
     .then(res => {
-        resolve(res.data[0]);
+        resolve(res);
     })
     .catch(err => {
         reject(err);
@@ -30,6 +30,7 @@ function fetchInfoProfile(userId) {
 }
 
 function getFollowing(input) {
+
   const Axiosmodel = server.FETCH_FOLLOWING_LIST;
     return new Promise((resolve, reject) => {
       httpClient({

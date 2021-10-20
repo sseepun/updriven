@@ -20,8 +20,8 @@ export const profile = {
             if ( (OwnerUser.id !== userId) && userId ) {
                 // console.log('user id not match with id param')
                 const userInfo = await profileService.fetchInfoProfile(userId);
-                // console.log( 'userInfo :', userInfo)
-                await commit("createUserInfo", userInfo);
+                console.log( 'userInfo :', userInfo)
+                await commit("createUserInfo", userInfo.data);
             } else {
                 // console.log('user id match with id param');
                 await commit("temporaryCreateOwnerUserInfo", OwnerUser);
@@ -87,20 +87,21 @@ export const profile = {
     },
     mutations: {
         createUserInfo( state, userInfo ) {
-
+            console.log( 'createUserInfo :', userInfo )
             const modelData = {
-                id : userInfo.username[0],
-                firstname : userInfo.firstname,
-                lastname : userInfo.lastname,
-                avatar : userInfo.profile_pic,
-                background : userInfo.background_pic,
-                state_id : userInfo.state_id,
-                province : userInfo.province,
-                email : userInfo.email,
-                organization : userInfo.organization,
-                country_id: userInfo.country_id,
-                about : userInfo.about_us,
-                interests: userInfo.interests,
+                id : userInfo.user_detail[0].username[0],
+                firstname : userInfo.user_detail[0].firstname,
+                lastname : userInfo.user_detail[0].lastname,
+                avatar : userInfo.user_detail[0].profile_pic,
+                background : userInfo.user_detail[0].background_pic,
+                state_id : userInfo.user_detail[0].state_id,
+                province : userInfo.user_detail[0].province,
+                email : userInfo.user_detail[0].email,
+                organization : userInfo.user_detail[0].organization,
+                country_id: userInfo.user_detail[0].country_id,
+                about : userInfo.user_detail[0].about_us,
+                interests: userInfo.user_detail[0].interests,
+                role: userInfo.role[0]
             }
     
             state.userInfo = new User(modelData)
@@ -109,12 +110,13 @@ export const profile = {
         },
 
         temporaryCreateOwnerUserInfo( state, userInfo ) {
+            console.log( 'temporaryCreateOwnerUserInfo :', userInfo )
             const modelData = {
                 id : userInfo.id,
                 firstname : userInfo.firstname,
                 lastname : userInfo.lastname,
-                avatar : userInfo.profile_pic,
-                background : userInfo.background_pic,
+                avatar : userInfo.avatar,
+                background : userInfo.background,
                 state_id : userInfo.state_id,
                 province : userInfo.province,
                 email : userInfo.email,
@@ -122,6 +124,7 @@ export const profile = {
                 country_id: userInfo.country_id,
                 about : userInfo.about_us,
                 interests: userInfo.interests,
+                role: userInfo.role
             }
     
             state.userInfo = new User(modelData)

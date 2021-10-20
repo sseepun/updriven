@@ -12,8 +12,8 @@
 
         <div class="mt-2">
           <router-link class="p xxs fw-600 color-gray h-color-01" :class="activeIndex==3? 'active': ''" 
-                :to="'/user/profile/image/' + this.$route.params.id"
-              >Load More
+            :to="{ name: 'UserProfileImagePage', params: { id: profile.id, username: profile.firstname + '_' + profile.lastname } }"
+            >Load More
           </router-link>
         </div>
       </div>
@@ -34,7 +34,7 @@ export default {
     return {
       // user: this.$store.getters.user,
       photos: [],
-      userId: ( this.$route.params.id === ''? this.user.id : this.$route.params.id )
+      userId: ( this.$route.params.id === undefined? 'Not found' : this.$route.params.id ),
     }
   },
   computed: {
@@ -44,7 +44,8 @@ export default {
     })
   },
   async mounted() {
-    await this.getImages({ userId: this.userId })
+    const userID = ( this.userId === 'Not found'? this.profile.id : this.$route.params.id )
+    await this.getImages({ userId: userID })
     if(this.profile.images.length > 9){
       for (let i = 0; i < 9; i++) { 
         this.photos.push(this.profile.images[i]) 
@@ -55,9 +56,6 @@ export default {
         this.photos.push(this.profile.images[i]) 
       }
     }
-      
-   
-
 
   },
   methods: {

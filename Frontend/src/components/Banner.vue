@@ -1,19 +1,35 @@
 <template>
   <div v-if="profileInfo" ref="bannerContainer" class="banner-container bshadow ovf-hidden">
-    <div class="img-bg" :style="'background-image:url(\''+user.background+'\');'"></div>
+    <div class="img-bg" :style="'background-image:url(\''+profileInfo.background+'\');'"></div>
     <div class="content-container">
       <div class="top-container">
         <div class="avatar-container">
-          <Avatar :avatar="user.avatar" classer="xxl border-4 bcolor-white" />
+          <Avatar :avatar="profileInfo.avatar" classer="xxl border-4 bcolor-white" />
         </div>
         <div class="text">
           <h6 class="p lg fw-500">
             {{ profileInfo.firstname }} {{ profileInfo.lastname }}
           </h6>
-          <p class="xxs fw-500 color-gray">
-            Role : Learner
+            <div v-if="profileInfo.role">
+              <p v-if="profileInfo.role.is_admin === true" class="xxs fw-500 color-gray">
+                Role : Admin
+              </p>
+              <p v-else-if="profileInfo.role.is_corporate" class="xxs fw-500 color-gray">
+                Role : Corporate
+              </p>
+              <p v-else-if="profileInfo.role.is_learner" class="xxs fw-500 color-gray">
+                Role : Learner
+              </p>
+              <p v-else-if="profileInfo.role.is_mentor" class="xxs fw-500 color-gray">
+                Role : Mentor
+              </p>
+            </div>
+            <div v-else>
+              <p class="xxs fw-500 color-gray">
+                Role : Nothing 
+              </p>
+            </div>
             
-          </p>
           <p class="xxs fw-500 color-gray">
             {{stateFullName && stateFullName!='-'? stateFullName: ''}}{{
               stateFullName && stateFullName!='-' && countryFullName
@@ -94,7 +110,7 @@ export default {
         this.following.push(this.user.followings[i].follow._id)
       }
       console.log(this.$route.params.id , this.user.id)
-      if(!(this.$route.params.id === this.user.id )){
+      if(!( this.$route.params.id === this.user.id )){
         this.checkNotSelf = true
       }
       if(this.following.includes(this.profileInfo.id) ){

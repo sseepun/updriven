@@ -64,7 +64,7 @@ export default {
   data() {
     return {
       // user: this.$store.getters.user,
-      userId: ( this.$route.params.id === ''? this.user.id : this.$route.params.id ),
+      userId: ( this.$route.params.id === undefined? 'Not found' : this.$route.params.id ),
       friends: [],
       following: 0,
       isFetching: false,
@@ -81,7 +81,8 @@ export default {
   created() {
   },
   async mounted() {
-    await this.getFollowing({ userId: this.userId })
+    const userID = ( this.userId === 'Not found'? this.profile.id : this.$route.params.id )
+    await this.getFollowing({ userId: userID })
     console.log(this.profile.followings.length)
     this.following = this.profile.followings.length
     this.isFetching = true

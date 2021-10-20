@@ -18,7 +18,6 @@ export default class User {
     // }
 
     constructor(data) {
-      console.log( data )
       this.id = data.id? data.id : '';
       this.firstname = data.firstname? data.firstname : '';
       this.lastname = data.lastname? data.lastname : '';
