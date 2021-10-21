@@ -347,7 +347,7 @@ export const post = {
       // console.log("Input :", option);
     },
     finish({ commit }) {
-        commit("updateStatusLoading", true);
+        commit("updateStatusLoading", false);
       },
   },
   mutations: {
