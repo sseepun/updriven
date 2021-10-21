@@ -1,14 +1,15 @@
 <template>
     <div v-if="user">
-        <div v-if="title" :key="title" class="post-header pt-1 pb-1 mt-6">
+        <div v-if="getSearchcareers" :key="getSearchcareers" class="post-header pt-1 pb-1 mt-6">
             <Avatar v-if="icon" :avatar="icon" classer="lg" />
             <div class="text-container">
                 <h6 class="h4 fw-500">
-                {{title}}
+                <!-- {{title}} -->
+                {{ getSearchcareers }}
                 </h6>
             </div>
         </div>
-        <div class="grids" :key="title">
+        <div class="grids" :key="getSearchcareers">
             <div v-for="post in getSearchResult" :key="post.id" class="grid sm-100">
                 <PostSingle :post="post"/>
             </div>
@@ -31,6 +32,7 @@ export default {
         ...mapGetters({
             user: 'authentication/user',
             getStatusPaginate: 'search/getStatusPaginate',
+            getSearchcareers: 'search/getSearchcareers',
             getSearchResult: 'search/getSearchResult',
             isLoading: 'search/isLoading',
         })
@@ -62,7 +64,7 @@ export default {
         },
 
         async updateCategory(tab) {
-            console.log( 'tabtab :', tab)
+            // console.log( 'tabtab :', tab)
             this.title = await tab.title;
             this.icon  = await tab.icon;
             this.posts = await [];

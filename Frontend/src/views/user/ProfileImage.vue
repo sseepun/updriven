@@ -98,13 +98,14 @@ export default {
       rightContainerClass: '',
       photos: [],
       thumbnailDir: '',
-      userId: ( this.$route.params.id === ''? this.user.id : this.$route.params.id )
+      userId: ( this.$route.params.id === undefined? 'Not found' : this.$route.params.id ),
     };
   },
   async mounted() {
     this.onScroll();
     window.addEventListener('scroll', this.onScroll);
-    await this.getImages({ userId: this.userId })
+    const userID = ( this.userId === 'Not found'? this.profile.id : this.$route.params.id )
+    await this.getImages({ userId: userID })
     this.photos = this.profile.images
     if(this.profile.images.length > 0){
       this.thumbnailDir = this.profile.images[0].hostPath

@@ -62,8 +62,7 @@ exports.createPost = async (req, res) => {
         res.status(200).send({post: post});
     }
     catch (err) {
-        console.log(err)
-        return res.status(500).send({message: err});
+        return res.status(500).send({message: "Internal Server Error"});
     }
 };
 
@@ -95,7 +94,7 @@ exports.deletePost = async (req, res) => {
         }
     }
     catch (err) {
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -152,7 +151,7 @@ exports.sharePost = async (req, res) => {
         res.status(200).send(post_data);
     }
     catch (err) {
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -182,7 +181,7 @@ exports.commentPost = async (req, res) => {
 
     }
     catch (err) {
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -196,7 +195,7 @@ exports.updateComment = async (req, res) => {
         })
     }
     catch (err) {
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -260,7 +259,7 @@ exports.giveSentiment = async (req, res) => {
         }
     }
     catch (err) {
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }
 
@@ -279,6 +278,6 @@ exports.removeSentiment = async (req, res) => {
         res.status(200).send({message: 'sentiment removed'})
     }
     catch (err) {
-        return res.status(500).send({message: err})
+        return res.status(500).send({message: "Internal Server Error"})
     }
 }

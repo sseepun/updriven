@@ -134,11 +134,29 @@ export default {
       changeCategoryPost: 'post/changeCategoryPost'
     }),
 
+    ...mapMutations({
+      changeStatusFilter: 'post/changeStatusFilter',
+      updateCareers: 'post/updateCareers'
+    }),
+
     onClick(tab) {
       tab.status = !tab.status;
       if(tab.clickType && tab.clickType=='emit'){
-        this.changeCategoryPost(tab.title)
-        return this.$emit('on-click', tab);
+        this.changeStatusFilter(1);
+        this.changeCategoryPost(tab.title);
+        this.updateCareers(this.title);
+        this.$emit('on-click', tab);
+        // this.$router.push({
+        //   name: 'UserDashboardPage',
+        //   params: { careers: tab.title }
+        // })
+
+        if ( this.$route.name != 'UserDashboardPage' ) {
+          this.$router.push({
+            name: 'UserDashboardPage'
+          });
+        }
+        return
       }else{
         return true;
       }

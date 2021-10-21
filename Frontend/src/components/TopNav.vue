@@ -88,7 +88,7 @@
             </a>
             <div class="dropdown bshadow" :class="{ 'active': isActiveProfile }">
               <div class="submenu">
-                <router-link :to="user.profileLink">
+                <router-link :to="{ name: 'UserProfilePage', params: { id: user.id, username: user.firstname + '_' + user.lastname } }">
                   My Profile
                 </router-link>
               </div>
@@ -169,7 +169,8 @@ export default {
       updateSentance: 'search/updateSentance',
       updateKeyword: 'search/updateKeyword',
       updateCareer: 'search/updateCareer',
-      clearResult: 'search/clearResult'
+      clearResult: 'search/clearResult',
+      changeStatusFilter: 'post/changeStatusFilter',
     }),
     
     formatDate(value) {

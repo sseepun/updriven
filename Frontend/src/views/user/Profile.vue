@@ -1,6 +1,5 @@
 <template>
   <TopNav />
-
   <div class="app-container">
 
     <div class="left-container">
@@ -10,7 +9,7 @@
     </div>
 
     <Banner ref="bannerContainer" :activeIndex="bannerActiveIndex" />
-    
+
     <div ref="rightContainer" class="right-container" :class="rightContainerClass">
       <div class="wrapper" data-simplebar>
         <div class="p-3 bshadow">
@@ -68,16 +67,18 @@ export default {
     return {
       bannerActiveIndex: 1,
       rightContainerClass: '',
-      userId: ( this.$route.params.id === ''? this.user.id : this.$route.params.id ),
+      userId: ( this.$route.params.id === undefined? 'Not found' : this.$route.params.id ),
       following:[],
     }
   },
   async created() {
+    const userID = ( this.userId === 'Not found'? this.profileInfo.id : this.$route.params.id )
+    console.log( 'this.userId :', this.userId )
+    console.log( 'userID :', userID )
     await this.clearPost();
     await this.changeOptionType(0);
-    await this.fetchInfoProfile({ userId: this.userId })
-    await this.getPost({ userID: this.userId });
-    
+    await this.fetchInfoProfile({ userId: userID })
+    await this.getPost({ userID: userID });
   },
   mounted() {
     console.log(this.profileInfo)

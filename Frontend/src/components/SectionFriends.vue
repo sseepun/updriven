@@ -17,9 +17,10 @@
           
       </div>
       <div class="mt-2">
-          <router-link class="p xxs fw-600 color-gray h-color-01" :class="activeIndex==3? 'active': ''" 
-                :to="'/user/profile/following/' + this.$route.params.id"
-              >Load More
+          <router-link 
+            class="p xxs fw-600 color-gray h-color-01" :class="activeIndex==3? 'active': ''" 
+            :to="{ name: 'UserProfileFollowingPage', params: { id: profile.id, username: profile.firstname + '_' + profile.lastname } }"
+          >Load More
           </router-link>
         </div>
 
@@ -40,7 +41,7 @@ export default {
   data() {
     return {
       // user: this.$store.getters.user,
-      userId: ( this.$route.params.id === ''? this.user.id : this.$route.params.id ),
+      userId: ( this.$route.params.id === undefined? 'Not found' : this.$route.params.id ),
       friends: [],
       isFetching: false,
     }
@@ -53,7 +54,8 @@ export default {
     
   },
   async mounted() {
-    await this.getFollowing({ userId: this.userId })
+    const userID = ( this.userId === 'Not found'? this.profile.id : this.$route.params.id )
+    await this.getFollowing({ userId: userID })
     this.isFetching = true
   },
   methods: {

@@ -3,7 +3,7 @@
   <div v-if="user" class="post bshadow">
     <div class="p-3" v-if="selfPost.shared">     
       <p class="xs fw-500">
-        <router-link :to="'/user/profile/' + selfPost.shared.user">
+        <router-link :to="{ name: 'UserProfilePage', params: { id: selfPost.shared.user, username: selfPost.shared.firstname + '_' + selfPost.shared.lastname } }">
           {{selfPost.shared.firstname}} {{selfPost.shared.lastname}} 
         </router-link>
         shared this post on 
@@ -13,7 +13,7 @@
 
     <template v-if="selfPost.desc.indexOf('https://www.youtube.com/') > -1">
       <div class="ss-img video-view no-hover">
-        <iframe 
+        <iframe
           class="img-bg w-full h-full" border="0" 
           :src="'https://www.youtube.com/embed/'+getYoutubeId(selfPost.desc)"
         ></iframe>
@@ -135,7 +135,7 @@
       </div>
 
       <p class="stat xs fw-600 color-gray">
-        <router-link :to="selfPost.user.profileLink">
+        <router-link :to="{ name: 'UserProfilePage', params: { id: selfPost.user.id, username: selfPost.user.firstname + '_' + selfPost.user.lastname } }">
           {{selfPost.user.firstname}} {{selfPost.user.lastname}}
         </router-link>
         <span class="dot"></span>

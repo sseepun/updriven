@@ -30,7 +30,7 @@ exports.checkLogIn = async (req, res) => {
         res.status(200).send(user);
     }
     catch (err) {
-        return res.status(500).send({message: err});
+        return res.status(500).send({message: "Internal Server Error"});
     }
 }
 
@@ -106,22 +106,22 @@ exports.signup = async (req, res) => {
         });
 
         // create email with verify link : /auth/verifyRegister/:token
-        // const email_html = fs.readFileSync(path.join(__dirname, '../assets/fromEmail/register/index.html'), 'utf8')
-        // let template =  handlebars.compile(email_html)
-        // let replacements = { verifyLink: process.env.EMAIL_DOMAIN + 'auth/verify-token-register/' + token };
-        // let complete_html = template(replacements);
-        // const msg = {
-        //     to: user.email,
-        //     from: process.env.EMAIL_FROM,
-        //     subject: "UpDriven Account Verification",
-        //     html: complete_html
-        //   }
-        // await sgMail.send(msg)
+        const email_html = fs.readFileSync(path.join(__dirname, '../assets/fromEmail/register/index.html'), 'utf8')
+        let template =  handlebars.compile(email_html)
+        let replacements = { verifyLink: process.env.EMAIL_DOMAIN + 'auth/verify-token-register/' + token };
+        let complete_html = template(replacements);
+        const msg = {
+            to: user.email,
+            from: process.env.EMAIL_FROM,
+            subject: "UpDriven Account Verification",
+            html: complete_html
+          }
+        await sgMail.send(msg)
 
         res.status(200).send({token: token});
     }
     catch (err) {
-        return res.status(500).send({message: err});
+        return res.status(500).send({message: "Internal Server Error"});
     }
 }
 
@@ -135,7 +135,7 @@ exports.verifyEmail = async (req, res) => {
         res.status(200).send({ message: "User is activated" });
     }
     catch (err) {
-        return res.status(500).send(err);
+        return res.status(500).send({message: "Internal Server Error"});
     }
 }
 
@@ -163,7 +163,7 @@ exports.generateForgotPwdLink = async (req, res) => {
         //res.status(200).send({ verifyLink: token });
     }
     catch (err) {
-        return res.status(500).send({message: err});
+        return res.status(500).send({message: "Internal Server Error"});
     }
 };
 
@@ -187,13 +187,13 @@ exports.resetPwd = (req, res) => {
 
         User.findById(sanitize(req.userId)).exec((err, user_callback) => {
             if (err) {
-                return res.status(500).send({message: err});
+                return res.status(500).send({message: "Internal Server Error"});
             }
             user_callback.updateOne( { password: bcrypt.hashSync(req.body.password, 8) },
                 [],
                 function (err){
                     if (err) {
-                        return res.status(500).send({message: err});
+                        return res.status(500).send({message: "Internal Server Error"});
                     }
                     res.status(200).send({message: "password เปลี่ยนแล้ว นะจ๊ะ นะจ๊ะ"})
                 });

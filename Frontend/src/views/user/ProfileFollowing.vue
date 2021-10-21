@@ -139,7 +139,7 @@ export default {
     return {
       bannerActiveIndex: 2,
       rightContainerClass: '',
-      userId: ( this.$route.params.id === ''? this.user.id : this.$route.params.id ),
+      userId: ( this.$route.params.id === undefined? 'Not found' : this.$route.params.id ),
       checkFollow : [],
       checkSelf:false,
     };
@@ -147,13 +147,15 @@ export default {
   async mounted() {
     this.onScroll();
     window.addEventListener('scroll', this.onScroll);
-    await this.getFollowing({ userId: this.userId })
+    const userID = ( this.userId === 'Not found'? this.profile.id : this.$route.params.id )
+    console.log( 'userID :', userID )
+    await this.getFollowing({ userId: userID })
     console.log('following')
 
     for(let i = 0; i < this.profile.followings.length; i++){
       this.checkFollow.push(true)
     }
-    if(this.user.id === this.$route.params.id){
+    if(this.user.id === userID){
       this.checkSelf = true
     }
   
