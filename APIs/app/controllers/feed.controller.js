@@ -137,10 +137,25 @@ exports.getSentiments = async (req, res) => {
 
 exports.search = async (req, res) => {
     try {
+        const keyword = await Category.findOne({ $or: 
+            [
+                {
+                    category_name: { $in: new RegExp(req.body.search, "i") }
+                },
+                {
+                    keyword: { $in: new RegExp(req.body.search, "i") }
+                }
+            ] 
+        })
+        if (keyword) {
+            req.body.search = undefined
+            req.body.category = keyword.category_name
+        }
         let post_list = await global_functions.getPost(req)
         return res.status(200).send(post_list)
     }
     catch (err) {
+        console.log(err)
         return res.status(500).send({message: "Internal Server Error"})
     }
 }
