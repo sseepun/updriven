@@ -16,14 +16,12 @@ export const profile = {
     actions: {
         async fetchInfo( {dispatch, commit, rootGetters}, { userId } ) {
             const OwnerUser = rootGetters['authentication/user']
-            console.log(OwnerUser)
-            // console.log( OwnerUser.id, userId)
+
             if ( (OwnerUser.id !== userId) && userId ) {
                 // console.log('user id not match with id param')
                 const userInfo = await profileService.fetchInfoProfile(userId);
                 await commit("createUserInfo", userInfo.data);
             } else {
-                
                 // console.log('user id match with id param');
                 await commit("temporaryCreateOwnerUserInfo", OwnerUser);
             }
@@ -87,7 +85,7 @@ export const profile = {
     },
     mutations: {
         createUserInfo( state, userInfo ) {
-            console.log( 'createUserInfo :', userInfo )
+            // console.log( 'createUserInfo :', userInfo )
             const modelData = {
                 id : userInfo.user_detail[0].username[0],
                 firstname : userInfo.user_detail[0].firstname,
@@ -110,7 +108,7 @@ export const profile = {
         },
 
         temporaryCreateOwnerUserInfo( state, userInfo ) {
-            console.log( 'temporaryCreateOwnerUserInfo :', userInfo )
+            // console.log( 'temporaryCreateOwnerUserInfo :', userInfo )
             const modelData = {
                 id : userInfo.id,
                 firstname : userInfo.firstname,
