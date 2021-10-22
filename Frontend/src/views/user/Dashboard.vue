@@ -31,7 +31,7 @@ import PostNew from '../../components/PostNew';
 import PostMultiple from '../../components/PostMultiple';
 import SectionSponsored from '../../components/SectionSponsored';
 import SectionLive from '../../components/SectionLive';
-import {mapGetters, mapActions, mapState, mapMutations} from "vuex"
+import {mapGetters, mapActions, mapState, mapMutations} from "vuex";
 
 export default {
   name: 'UserDashboardPage',

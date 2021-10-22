@@ -55,7 +55,12 @@ const routes = [
   {
     path: '/user/dashboard/:careers?',
     name: 'UserDashboardPage',
-    component: () => import('../views/user/Dashboard.vue')
+    component: () => import('../views/user/Dashboard.vue'),
+    beforeEnter: (to, from, next) => {
+      if ( from.name === "UserProfilePage" ) store.dispatch('post/clearCategory')
+      else if ( from.name === "UserProfilePage" ) store.dispatch('post/clearCategory')
+      next()
+    }
   },
   {
     path: '/user/chat',
@@ -73,8 +78,8 @@ const routes = [
     name: 'UserProfilePage',
     component: () => import('../views/user/Profile.vue'),
     beforeEnter: (to, from, next) => {
-      if ( from.name == "UserProfilePage" ) next()
-      else next()
+      if ( from.name === "UserDashboardPage" ) store.dispatch('post/clearCategory')
+      next()
     }
   },
   {

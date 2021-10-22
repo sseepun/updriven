@@ -20,7 +20,6 @@ export const profile = {
             if ( (OwnerUser.id !== userId) && userId ) {
                 // console.log('user id not match with id param')
                 const userInfo = await profileService.fetchInfoProfile(userId);
-                console.log( 'userInfo :', userInfo)
                 await commit("createUserInfo", userInfo.data);
             } else {
                 // console.log('user id match with id param');
@@ -74,7 +73,6 @@ export const profile = {
                             }
                             }
                         }
-                        console.log(myFollowings)
                         commit('setFollowing', myFollowings);
                         resolve(response)
                     },
@@ -136,7 +134,6 @@ export const profile = {
             let localProfile = localStorage.getItem(`${process.env.VUE_APP_API_URL}_PROFILE`);
             localProfile = JSON.parse(localProfile)
             localProfile.images = ( images? images : [] )
-            console.log(state.userInfo)
             state.userInfo.images= []
             state.userInfo.images = ( images? images : [] )
             

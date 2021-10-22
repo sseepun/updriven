@@ -25,7 +25,7 @@ export const search = {
     actions: {
         async searchPost( {state, dispatch, commit } ) {
             await commit("updateStatusLoading", true);
-
+            console.log('uses search function')
             try {
                 const newOption = await dispatch("checkPaginate");
                 const response = await postService.search( newOption );
@@ -38,46 +38,32 @@ export const search = {
                 
                 await commit("updateStatusLoading", false);
             } catch (err) {
+                console.log('err :', err)
                 await commit("updateStatusLoading", false);
             }
         },
 
-        checkPaginate({ state }, option={}) {
+        checkPaginate({ state, commit, rootGetters }, option={}) {
 
             if ( state.sentance ) option.search = state.sentance
-            if ( state.careers != '' ) option.category = state.careers
             if ( state.StatusPaginate.hasNext === true ) option.next = state.StatusPaginate.nextID
+            if ( rootGetters["post/getCateerTitle"] !== null) {
+                option.category = rootGetters["post/getCateerTitle"]
+                commit("updateCareer", rootGetters["post/getCateerTitle"])
+            }
 
             return option
         },
     },
     mutations: {
-        updateSentance( state, sentance ) {
-            state.sentance = sentance
-        },
-
-        updateKeyword( state, input ) {
-            state.keyword = input
-        },
-
-        updateCareer( state, input ) {
-            state.careers = input
-        },
-
-        updateStatusPaginate( state, response ) {
-            state.StatusPaginate = new Paginate( response.hasNext, response.hasPrevious, response.next, response.previous )
-        },
-
-        updateSearchResult( state, results ) {
-            state.searchResult = state.searchResult.concat(results);
-        },
-
-        updateStatusLoading(state, statusLoading) {
-            state.loading = statusLoading;
-        },
-
-        clearResult( state ) {
-            state.searchResult = []
-        }
+        updateSentance: (state, sentance) => state.sentance = sentance,
+        updateKeyword: (state, input) => state.keyword = input,
+        updateCareer: (state, input) => state.careers = input,
+        updateStatusPaginate: (state, response) => state.StatusPaginate = new Paginate( response.hasNext, response.hasPrevious, response.next, response.previous ),
+        updateSearchResult: (state, results) => state.searchResult = state.searchResult.concat(results),
+        updateStatusLoading: (state, statusLoading) => state.loading = statusLoading,
+        
+        clearResult: (state) => state.searchResult = [],
+        clearStatusPaginate: (state) => state.StatusPaginate = initialPaginate
     }
 }

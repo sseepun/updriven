@@ -83,7 +83,6 @@ export default {
   async mounted() {
     const userID = ( this.userId === 'Not found'? this.profile.id : this.$route.params.id )
     await this.getFollowing({ userId: userID })
-    console.log(this.profile.followings.length)
     this.following = this.profile.followings.length
     this.isFetching = true
   },

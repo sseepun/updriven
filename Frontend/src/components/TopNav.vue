@@ -7,7 +7,7 @@
         </router-link>
       </div>
       <div class="right-container">
-        <div v-if="isAdmin" class="search-container" style="width: 43rem;">
+        <!-- <div v-if="isAdmin" class="search-container" style="width: 43rem;">
           <form @submit.prevent="onSubmitSearch" style="display: flex; justify-content: space-around;">
             <FormGroup
               placeholder="Search UpDriven" wrapperClass="append"
@@ -26,9 +26,10 @@
               @input="updateCareer($event)"
             />
           </form>
-        </div>
+        </div> -->
 
-        <div v-else class="search-container" >
+        <!-- <div v-else class="search-container" > -->
+        <div class="search-container" >
           <form @submit.prevent="onSubmitSearch" >
             <FormGroup
               placeholder="Search UpDriven" wrapperClass="append"

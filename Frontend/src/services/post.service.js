@@ -94,7 +94,6 @@ function rm_sentiment(detail) {
 
 function fetchPost(options) {
   const Axiosmodel = server.FETCH_POST;
-  console.log( 'options :', options)
   return new Promise((resolve, reject) => {
     httpClient({
       method: Axiosmodel.method,

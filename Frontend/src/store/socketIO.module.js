@@ -65,7 +65,7 @@ export const socketIO = {
                 // const [yyyy,mm,dd,hh,mi]=notification.createdAt.split(/[/:\-T]/)
                 const createtimestamp =  new Date( notification.createdAt )
                 const [mm,dd,yyyy,,hh,mi,ss] =createtimestamp.toLocaleString().split(/[/:\-T, ]/)
-                console.log(moment( createtimestamp))
+                // console.log(moment( createtimestamp))
                 state.contents.push({
                     _id: notification._id,
                     action_type: notification.action_on,

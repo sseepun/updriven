@@ -105,12 +105,12 @@ export default {
     }
   },
   async mounted() {
+    const userID = ( this.$route.params.id === undefined ? this.profileInfo.id : this.$route.params.id )
     this.getFollowing({ userId: this.user.id }).then(response => {
       for(let i = 0; i < this.user.followings.length; i++){
         this.following.push(this.user.followings[i].follow._id)
       }
-      console.log(this.$route.params.id , this.user.id)
-      if(!( this.$route.params.id === this.user.id )){
+      if(!( userID === this.user.id )){
         this.checkNotSelf = true
       }
       if(this.following.includes(this.profileInfo.id) ){

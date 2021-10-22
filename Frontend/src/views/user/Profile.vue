@@ -72,16 +72,14 @@ export default {
     }
   },
   async created() {
+    await window.scrollTo(0,0);
     const userID = ( this.userId === 'Not found'? this.profileInfo.id : this.$route.params.id )
-    console.log( 'this.userId :', this.userId )
-    console.log( 'userID :', userID )
     await this.clearPost();
     await this.changeOptionType(0);
     await this.fetchInfoProfile({ userId: userID })
     await this.getPost({ userID: userID });
   },
   mounted() {
-    console.log(this.profileInfo)
     onMounted();
     this.onScroll();
     window.addEventListener('scroll', this.onScroll);
@@ -103,6 +101,7 @@ export default {
       getPost:'post/getPost',
       fetchInfoProfile: 'profile/fetchInfo',
       clearPost: 'post/clearPost',
+
     }),
 
     ...mapMutations({

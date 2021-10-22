@@ -6,7 +6,7 @@
         <router-link :to="{ name: 'UserProfilePage', params: { id: selfPost.shared.user, username: selfPost.shared.firstname + '_' + selfPost.shared.lastname } }">
           {{selfPost.shared.firstname}} {{selfPost.shared.lastname}} 
         </router-link>
-        shared this post on 
+        shared this post on
         {{formatDate(selfPost.createdAt)}}
       </p>
     </div>

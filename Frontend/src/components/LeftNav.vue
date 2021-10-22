@@ -129,44 +129,42 @@ export default {
     });
   },
   methods: {
-
     ...mapActions({
-      changeCategoryPost: 'post/changeCategoryPost'
+      changeCategoryPost: 'post/changeCategoryPost',
+      clearCategory: 'post/clearCategory',
+      clearPost: 'post/clearPost',
     }),
-
     ...mapMutations({
       changeStatusFilter: 'post/changeStatusFilter',
-      updateCareers: 'post/updateCareers'
+      updateCareersTitle: 'post/updateCareersTitle',
+      updateCareersIcon: 'post/updateCareersIcon',
+      updateSeachCareer: 'search/updateCareer',
     }),
 
-    onClick(tab) {
-      tab.status = !tab.status;
-      if(tab.clickType && tab.clickType=='emit'){
-        this.changeStatusFilter(1);
-        this.changeCategoryPost(tab.title);
-        this.updateCareers(this.title);
-        this.$emit('on-click', tab);
-        // this.$router.push({
-        //   name: 'UserDashboardPage',
-        //   params: { careers: tab.title }
-        // })
+    async onClick(tab) {
+      tab.status = await !tab.status;
 
-        if ( this.$route.name != 'UserDashboardPage' ) {
-          this.$router.push({
-            name: 'UserDashboardPage'
-          });
-        }
+      if(tab.clickType && tab.clickType=='emit'){
+
+        await this.changeStatusFilter(1);
+        await this.changeCategoryPost({ title: tab.title, icon: tab.icon });
+        await this.$emit('on-click', tab);
+        if ( this.$route.name === 'UserDashboardPage' ) await this.$router.push({ name: 'UserDashboardPage', params: { careers: tab.title } });
+
         return
-      }else{
-        return true;
-      }
+      } 
+      else return true;
+      
     },
 
-    refreshPage() {
-      if ( this.currentRouteName === "UserDashboardPage" ) this.$router.go()
-      // console.log( 'router :', this.currentRouteName)
+    async refreshPage() {
+      await this.clearCategory();
+      // await this.clearPost();
+      if ( this.$route.name === 'UserDashboardPage' ) this.$router.go()
+      else this.$router.push({
+        name: 'UserDashboardPage'
+      })
     }
-    
   },
   emits: [ 'on-click' ]
 }

@@ -1,14 +1,14 @@
 <template>
   <div v-if="user">
-    <div v-if="title" :key="title" class="post-header pt-1 pb-1 mt-6">
-      <Avatar v-if="icon" :avatar="icon" classer="lg" />
+    <div v-if="getCateerTitle" :key="getCateerTitle" class="post-header pt-1 pb-1 mt-6">
+      <Avatar v-if="getCateerIcon" :avatar="getCateerIcon" classer="lg" />
       <div class="text-container">
         <h6 class="h4 fw-500">
-          {{title}}
+          {{getCateerTitle}}
         </h6>
       </div>
     </div>
-    <div class="grids" :key="title">
+    <div class="grids" :key="getCateerTitle">
       <div v-for="post in getPost" :key="post.id" class="grid sm-100">
         <PostSingle :post="post"/>
       </div>
@@ -46,6 +46,8 @@ export default {
       isDashboard: 'post/isDashboard',
       haveFilter: 'post/haveFilter',
       profileInfo: 'profile/information',
+      getCateerTitle: 'post/getCateerTitle',
+      getCateerIcon: 'post/getCateerIcon',
     })
   },
   methods: {
@@ -72,13 +74,21 @@ export default {
     },
     async updateCategory(tab) {
       // console.log('updateCategory :', tab)
-      this.title = await tab.title;
-      this.icon = await tab.icon;
-      this.posts = await [];
+      // this.title = await tab.title;
+      // this.icon = await tab.icon;
+      // this.posts = await [];
       await window.scrollTo(0,0);
-      await this.changeStatusFilter(1);
-      await this.updateCareers(this.title);
-      await this.selectFetchOption();
+      // await this.changeStatusFilter(1);
+      // await this.updateCareersTitle(this.title);
+      // await this.selectFetchOption();
+
+      // await this.clearPost();
+
+      // await this.pullFeed();
+      if ( this.$route.name === 'UserDashboardPage' ) await this.pullFeed()
+      else if ( this.$route.name === 'UserProfilePage' ) await this.pullPost()
+
+      // if ( this.$route.name === 'UserProfilePage' ) await this.pullPost()
     },
     selectFetchOption() {
       if ( this.isDashboard ) {
@@ -105,12 +115,13 @@ export default {
       }
     },
     ...mapActions({
+      clearPost: 'post/clearPost',
       pullFeed:'post/getFeed',
       pullPost:'post/getPost',
     }),
     ...mapMutations({
       changeStatusFilter: 'post/changeStatusFilter',
-      updateCareers: 'post/updateCareers'
+      updateCareersTitle: 'post/updateCareersTitle'
     })
   },
   created() {

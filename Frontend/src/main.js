@@ -7,6 +7,7 @@ import axios from 'axios'
 import Lightbox from 'vue-my-photos'
 const app = createApp(App)
 
+app.config.devtools = true
 import AlertPopup from './components/AlertPopup'
 import Avatar from './components/Avatar'
 import Button from './components/Button'

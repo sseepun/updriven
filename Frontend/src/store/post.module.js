@@ -19,7 +19,8 @@ export const post = {
     haveFilter: 0, // 0 = Not fillter, 1 = Fillter
     _create: createDetail,
     loading: false,
-    category: null,
+    categoryTitle: null,
+    categoryIcon: null,
   },
   getters: {
     getPost: (state) => state.Post,
@@ -28,17 +29,22 @@ export const post = {
     isLoading: (state) => state.loading,
     isDashboard: (state) => state.isDashboard,
     haveFilter: (state) => state.haveFilter,
+    getCateerTitle: (state) => state.categoryTitle,
+    getCateerIcon: (state) => state.categoryIcon
   },
   actions: {
+
     /**
      * Change category post
      */
-    async changeCategoryPost({ state, commit, dispatch }, newcategory) {
-      state.Post = [];
-      state.StatusPost = initial_StatusPost;
-      state.category = newcategory;
-      commit("changeStatusFilter", 1);
+    async changeCategoryPost({ state, commit, dispatch }, category) {
+      await commit("clearPost");
+      await commit("updateStatusPost", initial_StatusPost);
+      await commit("updateCareersTitle", category.title);
+      await commit("updateCareersIcon", category.icon);
+      await commit("changeStatusFilter", 1);
     },
+
     /**
      * fetch all posts to display on dashboard page
      */
@@ -326,17 +332,31 @@ export const post = {
     async clearPost({ state, commit }) {
       state.Post = await [];
       state.StatusPost = await initial_StatusPost;
-      state.category = await null;
       await commit("changeOptionType", 0);
       await commit("changeStatusFilter", 0);
     },
 
-    addStatusPostToOption({ state }, option = {}) {
+    async clearStatusOption() {
+
+    },
+
+    async clearCategory({ state, commit }) {
+      state.categoryTitle = null;
+      state.categoryIcon = null;
+    },
+
+    addStatusPostToOption({ state, rootGetters }, option = {}) {
       // console.log("old option :", option);
 
-      if (state.StatusPost.hasNext === true)
-        option.next = state.StatusPost.nextID;
-      // if ( state.category !== null ) option.category = state.category
+      const userInformation = rootGetters["profile/information"];
+
+      if ( state.isDashboard === 0 ) {
+        if ( option.userID !== null ) {
+          option.userID = userInformation.id
+        }
+      }
+      if ( state.StatusPost.hasNext === true ) option.next = state.StatusPost.nextID
+      if ( state.categoryTitle !== null ) option.category = state.categoryTitle
 
       // console.log("new option :", option);
 
@@ -360,6 +380,10 @@ export const post = {
       state.haveFilter = newStatus;
     },
 
+    clearPost(state) {
+      state.Post = []
+    },
+
     updatePost(state, newPosts) {
       state.Post = state.Post.concat(newPosts);
       // state.Post = [...state.Post, ...newPosts];
@@ -373,8 +397,12 @@ export const post = {
       state.loading = statusLoading;
     },
 
-    updateCareers(state, input) {
-      state.category = input;
+    updateCareersTitle(state, input) {
+      state.categoryTitle = input;
+    },
+
+    updateCareersIcon(state, input) {
+      state.categoryIcon = input;
     },
 
     clear_create(state) {
