@@ -16,12 +16,14 @@ export const profile = {
     actions: {
         async fetchInfo( {dispatch, commit, rootGetters}, { userId } ) {
             const OwnerUser = rootGetters['authentication/user']
+            console.log(OwnerUser)
             // console.log( OwnerUser.id, userId)
             if ( (OwnerUser.id !== userId) && userId ) {
                 // console.log('user id not match with id param')
                 const userInfo = await profileService.fetchInfoProfile(userId);
                 await commit("createUserInfo", userInfo.data);
             } else {
+                
                 // console.log('user id match with id param');
                 await commit("temporaryCreateOwnerUserInfo", OwnerUser);
             }
