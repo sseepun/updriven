@@ -237,6 +237,7 @@ export const authentication = {
 
         commit('signinSuccess', resUser);
         dispatch('alert/assign', { type: 'Success', message: 'Edit Image Successfully.' }, { root: true })
+        dispatch('profile/fetchInfo',response._id, { root: true })
         resolve(response)
     })
     },  
@@ -263,6 +264,7 @@ export const authentication = {
         
         commit('signinSuccess', resUser);
         dispatch('alert/assign', { type: 'Success', message: 'Edit Background Successfully.' }, { root: true })
+        dispatch('profile/fetchInfo',response._id, { root: true })
         resolve(response)
       })
     },
@@ -290,6 +292,7 @@ export const authentication = {
 
           dispatch('csc/mapFullName',{"country_code":response.user_detail[0].country_id , "states_code":response.user_detail[0].state_id}, { root: true })
           commit('signinSuccess', resUser);
+          dispatch('profile/fetchInfo',response._id, { root: true })
           resolve()
         },
         error => {
