@@ -203,6 +203,7 @@ function toUnFollow(input) {
       resolve(res);
     })
     .catch(err => {
+      err.message = "Interrupting post loading because of unmount."
       reject(err);
     });
 });

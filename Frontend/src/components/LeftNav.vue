@@ -145,7 +145,6 @@ export default {
       tab.status = await !tab.status;
 
       if(tab.clickType && tab.clickType=='emit'){
-
         await this.changeStatusFilter(1);
         await this.changeCategoryPost({ title: tab.title, icon: tab.icon });
         await this.$emit('on-click', tab);
