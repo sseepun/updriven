@@ -185,6 +185,7 @@ function toFollow(input) {
       resolve(res);
     })
     .catch(err => {
+      // console.log( err.response )
       reject(err);
     });
 });
@@ -203,7 +204,8 @@ function toUnFollow(input) {
       resolve(res);
     })
     .catch(err => {
-      err.message = "Interrupting post loading because of unmount."
+      // console.log( err.response )
+      // err.message = "Interrupting post loading because of unmount."
       reject(err);
     });
 });

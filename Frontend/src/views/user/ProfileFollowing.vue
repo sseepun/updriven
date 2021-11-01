@@ -148,9 +148,9 @@ export default {
     this.onScroll();
     window.addEventListener('scroll', this.onScroll);
     const userID = ( this.userId === 'Not found'? this.profile.id : this.$route.params.id )
-    console.log( 'userID :', userID )
+    // console.log( 'userID :', userID )
     await this.getFollowing({ userId: userID })
-    console.log('following')
+    // console.log('following')
 
     for(let i = 0; i < this.profile.followings.length; i++){
       this.checkFollow.push(true)
@@ -187,7 +187,7 @@ export default {
       this.checkFollow[i] = true
     },
     unFollowMethod(id,i){
-      console.log(i)
+      // console.log(i)
       this.unFollow({userId: id})
       // console.log(i)
       this.checkFollow[i] = false

@@ -9,7 +9,7 @@ axios.interceptors.request.use(
     function (config) {
         let source = axios.CancelToken.source();
         config.cancelToken = source.token;
-        store.commit('axios/addCancelToken', source);
+        store.commit('axios/addCancelToken', {config, source});
         return config;
     }, function (error) {
         console.log( 'request error :', err.response)
@@ -23,7 +23,7 @@ axios.interceptors.response.use(
     },
     err => {
         console.log( 'response error :', err)
-        console.log( 'router :', router.currentRoute._rawValue.fullPath)
+        // console.log( 'router :', router.currentRoute._rawValue.fullPath)
         if (err.message === "Network Error" ) {
             console.log('The server is down');
 
@@ -34,6 +34,7 @@ axios.interceptors.response.use(
             }
         }
         else if (!err.response) {
+            err.message = "Interrupting post loading because of unmount."
             return Promise.reject(err)
         }
         else if (err.response.status === 401 && err.response.data.message === 'Token expired') {

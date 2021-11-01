@@ -117,6 +117,7 @@ export const post = {
             resolve(res);
           })
           .catch((err) => {
+            err.message = "Interrupting post loading because of unmount."
             commit("updateStatusLoading", false);
             reject(err);
           });

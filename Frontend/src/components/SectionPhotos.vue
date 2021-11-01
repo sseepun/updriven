@@ -11,7 +11,8 @@
 
 
         <div class="mt-2">
-          <router-link class="p xxs fw-600 color-gray h-color-01" :class="activeIndex==3? 'active': ''" 
+          <!-- <router-link class="p xxs fw-600 color-gray h-color-01" :class="activeIndex==3? 'active': ''"  -->
+          <router-link class="p xxs fw-600 color-gray h-color-01" 
             :to="{ name: 'UserProfileImagePage', params: { id: profile.id, username: profile.firstname + '_' + profile.lastname } }"
             >Load More
           </router-link>

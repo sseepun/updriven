@@ -149,7 +149,6 @@ export default {
         await this.changeCategoryPost({ title: tab.title, icon: tab.icon });
         await this.$emit('on-click', tab);
         if ( this.$route.name === 'UserDashboardPage' ) await this.$router.push({ name: 'UserDashboardPage', params: { careers: tab.title } });
-
         return
       } 
       else return true;

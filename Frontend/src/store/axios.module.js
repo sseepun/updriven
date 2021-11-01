@@ -11,6 +11,7 @@ export const axios = {
     },
     mutations: {
         addCancelToken(state, token) {
+            // console.log( 'token :', token )
             state.cancelTokens.push(token);
         },
         clearCancelTokens(state) {
@@ -22,8 +23,12 @@ export const axios = {
 
             // Cancel all request where a token exists
             context.state.cancelTokens.forEach((request, i) => {
-                if(request.cancel){
-                    request.cancel();
+                // console.log( request )
+                if ( request.config.url === 'user/follow' || request.config.url === 'user/unfollow' ) {
+                    
+                }
+                else if(request.source.cancel){
+                    request.source.cancel();
                 }
             });
 
