@@ -111,6 +111,7 @@ export default {
   computed: {
     ...mapGetters({
       user: 'authentication/user',
+      profileInfo: 'profile/information',
     }),
 
     currentRouteName() {
@@ -143,12 +144,12 @@ export default {
 
     async onClick(tab) {
       tab.status = await !tab.status;
-
       if(tab.clickType && tab.clickType=='emit'){
         await this.changeStatusFilter(1);
         await this.changeCategoryPost({ title: tab.title, icon: tab.icon });
         await this.$emit('on-click', tab);
         if ( this.$route.name === 'UserDashboardPage' ) await this.$router.push({ name: 'UserDashboardPage', params: { careers: tab.title } });
+        else if ( this.$route.name === 'UserProfileAboutPage' || this.$route.name === 'UserProfileFollowingPage' || this.$route.name === 'UserProfileImagePage' ) await this.$router.push({ name: 'UserProfilePage', params: { id: this.profileInfo.id, username: this.profileInfo.firstname + '_' + this.profileInfo.lastname } });
         return
       } 
       else return true;

@@ -5,7 +5,7 @@
 
     <div class="left-container">
       <div class="wrapper" data-simplebar>
-        <LeftNav @on-click="(tab) => onClickTab(tab)" />
+        <LeftNav />
       </div>
     </div>
 
