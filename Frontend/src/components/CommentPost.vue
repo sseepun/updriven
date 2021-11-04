@@ -23,10 +23,10 @@
               <span v-if="c.counts.likes">
                 {{c.counts.likes}}
               </span>
-            </a> 
+            </a>
             <a 
               class="color-gray h-color-01 fw-600 ml-3" href="javascript:"
-              @click="_DisplayInputComment = !_DisplayInputComment, _ReplyCommentID = c.id, _DepthComment = c.depth, _IndexReply = i"
+              @click="_DisplayInputComment = !_DisplayInputComment, (_ReplyCommentID === c.id? _ReplyCommentID = 0 : _ReplyCommentID = c.id), _DepthComment = c.depth, _IndexReply = i"
             >
               Reply
             </a>
@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <form @submit.prevent="replyComment()" v-if="_DisplayInputComment == true" class="comments">
+      <form @submit.prevent="replyComment()" v-if="_ReplyCommentID === c.id" class="comments">
         <div class="comment mt-3">
           <div class="wrapper ai-center">
               <Avatar :avatar="user.avatar" />
@@ -84,6 +84,9 @@ export default {
       return this._Comments
     }
   },
+  updated() {
+    console.log('_ReplyCommentID :', this._ReplyCommentID)
+  },
   methods: {
     ...mapActions({
       commentOrReply: 'post/commentOrReply',
@@ -124,6 +127,7 @@ export default {
 
     replyComment() {
       const commentObject = new _CommentPost(this._PostID, this.comment, this.user, this._DepthComment + 1, this._ReplyCommentID);
+      console.log(commentObject)
       this._Comments[this._IndexReply].children.push( commentObject )
       this.commentOrReply(commentObject).then( 
         this.comment = ''

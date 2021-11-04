@@ -72,7 +72,10 @@ export const post = {
 
             // fetch comment each postID
             await res.results.map((x) => {
-              dispatch("post/fetchComment", x._id, { root: true });
+              // console.log(x)
+              // if ( x.share.length > 0 ) dispatch("post/fetchComment", x.share[0].post[0]._id, { root: true })
+              // else dispatch("post/fetchComment", x._id, { root: true })
+              dispatch("post/fetchComment", x._id, { root: true })
             });
 
             await commit("updateStatusLoading", false);
@@ -297,21 +300,26 @@ export const post = {
       });
     },
     sharePost({ dispatch, commit }, post_id) {
+      commit("updateStatusLoading", true);
       return new Promise((resolve, reject) => {
         postService
           .sharePost(post_id)
           .then(
-            (res) => {
-              const post = changeStructurePost([res.data]);
-              commit("fetchCreated", post);
+            async (res) => {
+              console.log('res.data :', res.data)
+              const post = await changeStructurePost([res.data]);
+              console.log('post :', post)
+              await commit("fetchCreated", post);
               dispatch(
                 "alert/assign",
                 { type: "Success", message: "Post shared successfully." },
                 { root: true }
               );
+              await commit("updateStatusLoading", false);
               resolve(res);
             },
             (err) => {
+              commit("updateStatusLoading", false);
               dispatch(
                 "alert/assign",
                 { type: "Warning", message: err.response.data.message },
@@ -321,6 +329,7 @@ export const post = {
             }
           )
           .catch((err) => {
+            commit("updateStatusLoading", false);
             dispatch(
               "alert/assign",
               { type: "Danger", message: "System error." },

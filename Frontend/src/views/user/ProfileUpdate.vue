@@ -2,7 +2,6 @@
   <TopNav />
 
   <div class="app-container">
-
     <div class="left-container">
       <div class="wrapper" data-simplebar>
         <LeftNav />
@@ -199,7 +198,7 @@ export default {
     this.dataset.interests = this.user.interests;
     this.dataset.avatar = this.user.avatar;
     this.dataset.background = this.user.background;
-    this.dataset.country = this.user.country_id;
+    this.dataset.country = (this.user.country_id !== "-"? this.user.country_id : null);
     this.dataset.about = this.user.about;
     if(this.dataset.country){
       this.assignCountry(this.dataset.country)

@@ -6,7 +6,8 @@ export const authenService = {
     signin,
     signFacebook,
     signGoogle,
-    register,
+    registerLearner,
+    registerMentor,
     verify,
     verifyEmailRegister,
     forgetPasswordSentEmail,
@@ -77,7 +78,7 @@ function signGoogle() {
   });
 }
 
-function register(user) {
+function registerLearner(user) {
   const Axiosmodel = server.REGISTER;
 
   return new Promise((resolve, reject) => {
@@ -89,6 +90,33 @@ function register(user) {
         lastname : user.lastname,
         password : user.password,
         email : user.email,
+      },
+      withCredentials: true,
+    })
+    .then(res => {
+      resolve(res.data);
+    })
+    .catch(err => {
+      reject(err);
+    });
+  });
+}
+
+function registerMentor(user) {
+  const Axiosmodel = server.REGISTER;
+
+  return new Promise((resolve, reject) => {
+    httpClient({
+      method: Axiosmodel.method,
+      url: Axiosmodel.url,
+      data: {
+        firstname : user.firstname,
+        lastname : user.lastname,
+        password : user.password,
+        email : user.email,
+        company: user.organization,
+        occupation: user.occupation,
+        providing: user.providing,
       },
       withCredentials: true,
     })

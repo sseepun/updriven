@@ -1,12 +1,11 @@
 export default class RegisUser {
-    constructor(
-        password, 
-        email, 
-        firstname,
-        lastname) {
-      this.password = password;
-      this.email = email;
-      this.firstname = firstname;
-      this.lastname = lastname;
+    constructor(data) {
+      this.password = data.password? data.password : null;
+      this.email = data.email? data.email : null;
+      this.firstname = data.firstname? data.firstname : null;
+      this.lastname = data.lastname? data.lastname : null;
+      this.organization = data.organization? data.organization : null;
+      this.occupation = data.occupation? data.occupation : null;
+      this.providing = data.providing? data.providing : null;
     }
   }

@@ -26,7 +26,7 @@ exports.logInExternalStatus = (req, res) => {
 exports.checkLogIn = async (req, res) => {
     try {
         const decoded = await jwt.verify(req.params.token, process.env.LOGIN_SUCCESS_SECRET)
-        const user = await User.findById(decoded.id).populate({path:'user_detail', populate: 'organization'})
+        const user = await User.findById(decoded.id).populate({path:'user_detail', populate: 'organization'}).populate('role')
         res.status(200).send(user);
     }
     catch (err) {
@@ -39,7 +39,7 @@ exports.signup = async (req, res) => {
         let user;
         let user_detail;
         let role;
-        if (req.body.occupation && req.body.company && req.body.job_title && req.body.providing) {
+        if (req.body.occupation && req.body.company && req.body.providing) {
             role = new Role({
                 is_mentor: true,
                 is_admin: false,
@@ -57,7 +57,6 @@ exports.signup = async (req, res) => {
                 firstname: sanitize(req.body.firstname),
                 lastname: sanitize(req.body.lastname),
                 occupation: sanitize(req.body.occupation),
-                job_title: sanitize(req.body.job_title),
                 providing: sanitize(req.body.providing),
                 profile_pic: process.env.DEFAULT_PROFILE_IMAGE,
                 background_pic: process.env.DEFAULT_BACKGROUND_IMAGE
@@ -108,7 +107,7 @@ exports.signup = async (req, res) => {
         // create email with verify link : /auth/verifyRegister/:token
         const email_html = fs.readFileSync(path.join(__dirname, '../assets/fromEmail/register/index.html'), 'utf8')
         let template =  handlebars.compile(email_html)
-        let replacements = { verifyLink: process.env.EMAIL_DOMAIN + 'auth/verify-token-register/' + token };
+        let replacements = { verifyLink: process.env.CLIENT_URL + '/auth/verify-token-register/' + token };
         let complete_html = template(replacements);
         const msg = {
             to: user.email,
@@ -150,7 +149,7 @@ exports.generateForgotPwdLink = async (req, res) => {
         });
         const email_html = fs.readFileSync(path.join(__dirname, '../assets/fromEmail/register/index.html'), 'utf8')
         let template =  handlebars.compile(email_html)
-        let replacements = { verifyLink: process.env.EMAIL_DOMAIN + 'auth/check-forget-password/' + token };
+        let replacements = { verifyLink: process.env.CLIENT_URL + '/auth/check-forget-password/' + token };
         let complete_html = template(replacements);
         const msg = {
             to: user.email,

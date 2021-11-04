@@ -42,7 +42,9 @@ export const authentication = {
               country_id: response.user_detail[0].country_id,
               about : response.user_detail[0].about_us,
               interests: response.user_detail[0].interests,
-              role: response.role[0]
+              role: response.role[0],
+              numberOfFollowers: response.Followed,
+              numberOfFollowers: response.following
             }
 
             var resUser = new User(modelData)
@@ -75,9 +77,28 @@ export const authentication = {
           })
         });
     },
-    register({ dispatch, commit }, regisuser) {
+    registerL({ dispatch, commit }, regisuser) {
       return new Promise((resolve, reject) => {   
-      authenService.register(regisuser).then(
+      authenService.registerLearner(regisuser).then(
+        response => {
+          dispatch('alert/assign', { type: 'Success', message: 'Sign Up Successful' }, { root: true })
+          
+          resolve(response)
+        },
+        error => {
+          dispatch('alert/assign', { type: 'Warning', message: error.response.data.message }, { root: true })
+          
+          reject(error)
+        }
+      ).catch(err => {
+        dispatch('alert/assign', { type: 'Danger', message: 'System error.' }, { root: true })
+        
+      })
+    })
+    },
+    registerM({ dispatch, commit }, regisuser) {
+      return new Promise((resolve, reject) => {   
+      authenService.registerMentor(regisuser).then(
         response => {
           dispatch('alert/assign', { type: 'Success', message: 'Sign Up Successful' }, { root: true })
           
@@ -180,7 +201,9 @@ export const authentication = {
               country_id: response.user_detail[0].country_id,
               about : response.user_detail[0].about_us,
               interests: response.user_detail[0].interests,
-              role: response.role[0]
+              role: response.role[0],
+              numberOfFollowers: response.Followed,
+              numberOfFollowers: response.following
             }
 
             var resUser = new User(modelData)

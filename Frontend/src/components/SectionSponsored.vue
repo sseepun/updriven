@@ -5,13 +5,13 @@
       <img class="m-2 w-2" src="/assets/img/icon/add.png" alt="Image Icon" />
     </a>
   </div>
-
+  
   <div class="grids">
     <div v-for="(card, i) in sponsored" :key="i" class="grid sm-100">
       <SpecialCard01
         @on-edit="handleEdit(i)"
         :link="card.link"
-        :image="card.image"
+        :image="card.image === 'default'? '/assets/img/sponser/default.jpeg' : card.image"
         :btnText="card.btnText"
         :editable="isAdmin"
       />
@@ -28,7 +28,7 @@
       <div class="popup-box md bg-white">
         <SpecialCard01
           :link="newSponsor.link"
-          :image="newSponsor.image"
+          :image="newSponsor.image === 'default'? '/assets/img/sponser/default.jpeg' : newSponsor.image"
           :btnText="newSponsor.btnText"
         />
         <form class="w-full" @submit.prevent="onClickSubmit">

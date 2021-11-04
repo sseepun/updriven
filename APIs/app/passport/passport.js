@@ -8,6 +8,7 @@ const LocalStrategy = require('passport-local').Strategy;
 
 const User = db.user;
 const User_detail = db.user_detail;
+const Role = db.role;
 
 require('dotenv').config()
 
@@ -94,6 +95,7 @@ module.exports = passport.use(new LocalStrategy(
       User.findOne({ email: username }, function (err, user) {
         if (err) { return done(err); }
         if (!user) { return done(null, false); }
+        if (!user.password) { return done(null, false); }
         let passwordIsValid = bcrypt.compareSync(
             password,
             user.password
@@ -106,9 +108,17 @@ module.exports = passport.use(new LocalStrategy(
 
 async function createUser(profile, type) {
     try {
+        const role = new Role({
+            is_mentor: false,
+            is_admin: false,
+            is_learner: true,
+            is_corporate: false,
+        });
+        await role.save()
         const user = new User({
             email: profile.emails[0].value,
             status: true,
+            role: role,
         });
         if (type === 'google') {
             user.google_id = profile.id

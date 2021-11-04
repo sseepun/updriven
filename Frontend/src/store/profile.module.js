@@ -8,7 +8,7 @@ const user = JSON.parse(localStorage.getItem(`${process.env.VUE_APP_API_URL}_PRO
 export const profile = {
     namespaced: true,
     state: {
-        userInfo: user
+        userInfo: (user === null? new User({}) : user)
     },
     getters: {
         information: state => state.userInfo,
@@ -85,7 +85,7 @@ export const profile = {
     },
     mutations: {
         createUserInfo( state, userInfo ) {
-            // console.log( 'createUserInfo :', userInfo )
+            
             const modelData = {
                 id : userInfo.user_detail[0].username[0],
                 firstname : userInfo.user_detail[0].firstname,
@@ -99,8 +99,11 @@ export const profile = {
                 country_id: userInfo.user_detail[0].country_id,
                 about : userInfo.user_detail[0].about_us,
                 interests: userInfo.user_detail[0].interests,
-                role: userInfo.role[0]
+                role: userInfo.role[0],
+                numberOfFollowers: userInfo.Followed,
+                numberOfFollowing: userInfo.following
             }
+            // console.log( 'createUserInfo :', modelData )
     
             state.userInfo = new User(modelData)
 
@@ -108,7 +111,7 @@ export const profile = {
         },
 
         temporaryCreateOwnerUserInfo( state, userInfo ) {
-            // console.log( 'temporaryCreateOwnerUserInfo :', userInfo )
+            
             const modelData = {
                 id : userInfo.id,
                 firstname : userInfo.firstname,
@@ -122,8 +125,11 @@ export const profile = {
                 country_id: userInfo.country_id,
                 about : userInfo.about_us,
                 interests: userInfo.interests,
-                role: userInfo.role
+                role: userInfo.role,
+                numberOfFollowers: userInfo.numberOfFollowers,
+                numberOfFollowing: userInfo.numberOfFollowing
             }
+            // console.log( 'temporaryCreateOwnerUserInfo :', modelData )
     
             state.userInfo = new User(modelData)
 
@@ -134,7 +140,7 @@ export const profile = {
             let localProfile = localStorage.getItem(`${process.env.VUE_APP_API_URL}_PROFILE`);
             localProfile = JSON.parse(localProfile)
             localProfile.images = ( images? images : [] )
-            state.userInfo.images= []
+            // state.userInfo.images= []
             state.userInfo.images = ( images? images : [] )
             
             localStorage.setItem(`${process.env.VUE_APP_API_URL}_PROFILE`, JSON.stringify(localProfile));

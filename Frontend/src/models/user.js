@@ -18,7 +18,7 @@ export default class User {
     // }
 
     constructor(data) {
-      this.id = data.id? data.id : '';
+      this.id = data.id? data.id : 1;
       this.firstname = data.firstname? data.firstname : '';
       this.lastname = data.lastname? data.lastname : '';
       this.avatar = data.avatar? data.avatar : '';
@@ -34,5 +34,7 @@ export default class User {
       this.images = data.images? data.images : []; 
       this.role = data.role? data.role : [];
       this.profileLink = `/user/profile/${this.id}`;
+      this.numberOfFollowers = data.numberOfFollowers? data.numberOfFollowers : 0;
+      this.numberOfFollowing = data.numberOfFollowing? data.numberOfFollowing : 0;
     }
 }

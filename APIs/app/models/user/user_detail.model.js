@@ -16,7 +16,6 @@ const User_detail = mongoose.model(
         firstname: { type: String, default: '-' },
         lastname: { type: String, default: '-' },
         occupation: { type: String, default: '-' },
-        job_title: { type: String, default: '-' },
         providing: { type: String, default: '-' },
         phone: { type: String, default: '-' },
         address: { type: String, default: '-' },

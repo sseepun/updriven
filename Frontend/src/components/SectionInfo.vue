@@ -38,7 +38,7 @@
           <img src="/assets/img/icon/user-plus.png" alt="Image Icon" />
         </div>
         <p class="xs fw-500 color-gray">
-          Followed by <span class="color-dark">125 people</span>
+          Followed by <span class="color-dark">{{ profile.numberOfFollowers }} people</span>
         </p>
       </div>
       <div class="info" v-if="false">

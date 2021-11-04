@@ -89,13 +89,13 @@
               <div class="grid sm-100">
                 <Button 
                   type="Social Google" text="Continue with Google" 
-                  classer="d-block btn-color-04 w-full" href="/user/dashboard" 
+                  classer="d-block btn-color-04 w-full" @click.prevent="onClickGoogle"  href="/user/dashboard" 
                 />
               </div>
               <div class="grid sm-100">
                 <Button 
                   type="Social Facebook" text="Continue with Facebook" 
-                  classer="d-block btn-color-04 w-full" href="/user/dashboard" 
+                  classer="d-block btn-color-04 w-full" @click.prevent="onClickFacebook" href="/user/dashboard" 
                 />
               </div>
               <div class="grid sm-100">
@@ -160,16 +160,16 @@ export default {
   },
   methods:{
     ...mapActions({
-      register: 'authentication/register',
+      register: 'authentication/registerL',
       
     }),
     handleRegister(e) {
-        let regisUser = new RegisUser(
-          this.dataset.password,
-          this.dataset.email,
-          this.dataset.firstname,
-          this.dataset.lastname
-        )
+        let regisUser = new RegisUser({
+          password: this.dataset.password,
+          email: this.dataset.email,
+          firstname: this.dataset.firstname,
+          lastname: this.dataset.lastname
+        })
         if (this.dataset.firstname && this.dataset.email && this.dataset.lastname && this.dataset.password) {
           this.register(regisUser).then(
             response => {
@@ -188,6 +188,13 @@ export default {
           );
         }
         this.isValidated = true;
+    },
+
+    onClickFacebook() {
+      window.location = `${process.env.VUE_APP_API_URL}/apis/auth/facebook`;
+    },
+    onClickGoogle() {
+      window.location = `${process.env.VUE_APP_API_URL}/apis/auth/google`;
     }
   }
 }

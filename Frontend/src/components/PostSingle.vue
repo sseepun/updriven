@@ -1,5 +1,4 @@
 <template>
-
   <div v-if="user" class="post bshadow">
     <div class="p-3" v-if="selfPost.shared">     
       <p class="xs fw-500">
