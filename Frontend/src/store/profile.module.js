@@ -23,7 +23,9 @@ export const profile = {
                 await commit("createUserInfo", userInfo.data);
             } else {
                 // console.log('user id match with id param');
-                await commit("temporaryCreateOwnerUserInfo", OwnerUser);
+                const userInfo = await profileService.fetchInfoProfile(userId);
+                await commit("createUserInfo", userInfo.data);
+                // await commit("temporaryCreateOwnerUserInfo", OwnerUser);
             }
         },
 
@@ -144,9 +146,9 @@ export const profile = {
             state.userInfo.images = ( images? images : [] )
             
             localStorage.setItem(`${process.env.VUE_APP_API_URL}_PROFILE`, JSON.stringify(localProfile));
-          },
+        },
 
-          setFollowing(state , myFollowings) {
+        setFollowing(state , myFollowings) {
             let localProfile = localStorage.getItem(`${process.env.VUE_APP_API_URL}_PROFILE`);
             localProfile = JSON.parse(localProfile)
             localProfile.followings = ( myFollowings? myFollowings : [] )
@@ -155,6 +157,14 @@ export const profile = {
             state.userInfo.followings = ( myFollowings? myFollowings : [] )
 
             localStorage.setItem(`${process.env.VUE_APP_API_URL}_PROFILE`, JSON.stringify(localProfile));
-          },
+        },
+
+        increaseFollowed(state) {
+            state.userInfo.numberOfFollowers += 1
+        },
+
+        decreaseFollowed(state) {
+            state.userInfo.numberOfFollowers -= 1
+        }
     }
 }

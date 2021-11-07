@@ -140,16 +140,22 @@ export default {
     followMethod(id){
       this.follow({userId: id})
       this.checkFollow = true
+      this.increaseFollowed()
     },
     unFollowMethod(id){
       this.unFollow({userId: id})
       this.checkFollow = false
+      this.decreaseFollowed()
     },
     ...mapActions({
       getFollowing: 'authentication/getFollowing',
       follow: 'authentication/follow',
       unFollow: 'authentication/unFollow',
     }),
+    ...mapMutations({
+      increaseFollowed: 'profile/increaseFollowed',
+      decreaseFollowed: 'profile/decreaseFollowed',
+    })
   }
 }
 </script>
